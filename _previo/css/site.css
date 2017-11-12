@@ -1,0 +1,60 @@
+* { font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; font-size:11px; 
+margin:0; padding:0; 
+outline:0 none}
+html, body {
+margin: 0;
+padding: 0;
+height: 100%;
+background: #fff;
+}
+* {outline:0 !important;}
+form { margin:0; padding:0}
+
+
+input {padding:6px; border:1px solid #666 }
+/*
+input[type=checkbox]:not(old){
+  width   : 16px;
+  margin  : 0;
+  padding : 0;
+  opacity : 0;
+}
+input[type=checkbox]:not(old) + label {
+  display      : inline-block;
+  margin-left  : -16px;
+  padding-left : 24px;
+  background   : url('../img/checks.png') no-repeat 0 0;
+  line-height  : 24px;
+}	
+input[type=checkbox]:not(old):checked + label{
+  background-position : 0 -24px;
+}
+*/
+input:disabled {color: #999}
+
+select { padding: 3px 5px}
+input.fecha { padding: 3px; width: 90px; text-align: center;}
+
+button { border:0 none; background-color:#06c; color:#f6f6f6; padding:8px 15px; cursor:pointer;
+	border-radius: 3px; transition:all 0.25s}
+button:hover { background-color:#093; box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);}
+
+.wrapper { position:relative; overflow-y:auto; margin:0px auto; background-color:#f2f2f2; overflow-x: hidden }
+
+table.tablesorter {margin: 0; padding: 0; position:relative; border-spacing: 1px; border-color:#CCC; 
+border:0 none; border-collapse:collapse}
+table.tablesorter thead tr th, 	table.tablesorter tbody tr td {border:1px solid #ccc;}
+table.tablesorter {border:0 none}
+table.tablesorter a { color:#06c}
+
+
+    .highlight {background-color: yellow; color: #333}
+
+    .al_cielo {
+      display:none;
+      color:#fff;
+      cursor:pointer;
+      position: fixed;
+      bottom:15px;
+      right:15px; 
+    }

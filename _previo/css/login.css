@@ -1,0 +1,67 @@
+
+@font-face {
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 300;
+src: url('../fonts/OpenSans-Light.ttf') format('truetype');
+}
+
+* {font-family: 'Open Sans'; font-size: 12px; outline: 0 none}
+body { background-color: #333}
+
+.wrapper { width: 350px; margin: 5% auto;}
+.login .logo { padding: 10px; text-align: center;}
+.login .content {background-color:rgba(255,255,255,.25); margin: auto; padding: 10px}
+.login h3 {font-size: 20px; font-weight: 300; padding: 0; margin: 5px 3px}
+.login .pie { text-align: center; padding: 10px}
+
+.login .control-group { left: 0; right: 0; width: 100%;text-align: center;}
+
+
+div.div-icon {vertical-align: middle; position: relative; }
+
+[class^="icon-"] { background:url('../img/glyphicons-halflings-gray.png') no-repeat rgba(255,0,0,0); z-index: 99; width: 30px; 
+height: 30px; position: absolute; top: 4px; opacity: 0.3}
+
+i.icon-build {background-position: -424px -135px}
+i.icon-user {background-position: -160px 7px}
+i.icon-lock {background-position: -279px -16px}
+i.icon-fire {background-position: -63px -111px}
+i.icon-gmap {background-position: -16px -64px}
+
+button { 
+padding: 10px 20px; cursor: pointer; border: none; background-color: #06c; background-repeat: no-repeat;
+background-position: center center; color: #eee;
+transition: all 0.2s ease-in;
+}
+button:hover { background-color: #0A55A1;}
+button:disabled { background-color: #C5C5C5; cursor: no-drop}
+
+.form-actions { margin: 10px 0; text-align: center;}
+a {color: #000; text-decoration: none; border-bottom: 1px dotted #333;}
+a:hover {border-bottom: 1px solid  #333;}
+
+select {padding: 5px 10px 5px 27px; margin: 5px 0; width: 240px}
+
+input {
+	font-size: 12px; background-color: #fff; padding: 5px 10px 5px 30px; 
+	border: 1px solid #ccc; display: inline-block; width: 200px; margin: 5px 0; outline: none; text-transform: uppercase;
+	transition: all 0.2s ease-in;
+}
+
+input:focus { border: 1px solid #8D8C8C;}
+
+input.error{border:1px solid red; background-color: #FF9}
+
+
+div#mensaje { text-align:center; padding:10px; margin: 0; color:#000; display: none}
+div.correcto {background-color:rgba(0,255,0,0.2); }
+div.error { background-color:rgba(255,0,0,0.2); } 
+
+#listar{display:none}
+#agencias { display: none;}
+
+#progreso { width: 100%; position: relative; height: 3px; background-color:rgba(0,102,204,.2); display: none;}
+#progreso .barra {background-color: #06c; display: inline-block; height: 3px; position: absolute;}
+
+select:disabled, input:disabled {background-color:#ddd; border:1px solid #999}

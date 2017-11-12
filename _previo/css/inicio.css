@@ -1,0 +1,136 @@
+
+#sidebar {    
+background-color: #47a3da;
+height: 100%;
+left: 0;
+overflow-x: hidden;
+position: fixed; 
+top: 0;
+width: 0; 
+z-index: 100;
+width: 250px 
+}
+
+#dinamico {  
+z-index: 10;
+}
+#header {background-color: #999;}
+
+.contenedor-general { padding: 10px}
+
+#header, #dinamico {  margin-left: 250px }
+.usuario { padding: 12px 10px 10px 50px; line-height: 16px; border:0px solid #F00; font-size: 16px; color: #fff}
+
+
+.botonSidebar { 
+left: 9px; 
+top: 8px; 
+z-index: 150; 
+}
+
+.hamburger {padding: 0px; width: 25px; height: 24px}
+.hamburger-inner, .hamburger-inner::before, .hamburger-inner::after { 
+background-color: #fff; width: 25px
+}
+.hamburger-inner::before {top: -8px;}
+.hamburger-inner::after {bottom: -8px;}
+
+
+
+/*** MENU ***/
+#accordian { margin: 0 auto; color: white;}
+/*heading styles*/
+#accordian h3 {font-size: 12px;line-height: 34px;padding: 0 10px;cursor: pointer;}
+/*iconfont styles*/
+#accordian h3 span {font-size: 16px;margin-right: 10px;}
+/*list items*/
+#accordian li {list-style-type: none; position:relative; border-bottom:1px solid #258ecd;}
+/*links*/
+#accordian ul ul li { border:0 none}
+
+#accordian ul ul li a {
+background-color:#2a2f33;
+color: white;
+text-decoration: none;
+font-size: 11px;
+line-height: 27px;
+display: block;
+padding: 4px 15px 4px 30px;	
+background-image:url(../img/bg-menu.png);
+background-repeat:no-repeat;
+background-position:10px center;
+transition: all 0.15s;
+}
+
+#accordian ul ul li:last-child a { background-image:url(../img/bg-menu-ending.png);}
+
+/*hover effect on links*/
+#accordian ul ul li a:hover, #accordian ul li ul li.activo a { background-color:#5c5f61; }
+#accordian ul ul li:hover a.ventana, #accordian ul ul li.activo a.ventana  { background-color:#06c}
+#accordian ul ul li:hover a.inner {background-color:#5c5f61;}
+
+/*Lets hide the non active LIs by default*/
+#accordian ul ul {display: none;}
+#accordian li.active ul {display: block;}
+
+
+#accordian ul li ul li {position: relative}
+#accordian ul li ul li a.ventana {
+color:#F00; display:inline-block; position:absolute; right:0;
+top:0; height:27px;
+background:none; 
+background-color:#1c2024; 
+}
+
+#accordian ul li ul li a.ventana span { 
+width:20px; height:22px; padding:0; margin:0; right:12px; 
+display:inline-block; position:absolute; vertical-align:middle; 
+background-image:url("../img/glyphicons-halflings-mini-white.png");
+background-repeat:no-repeat; 
+background-position:-98px -55px;
+
+}
+/*** MENU: ending ***/
+
+
+
+/*** Nav superior ***/
+ul.menu {
+list-style-type: none;
+margin: 0;
+padding: 0;
+overflow: hidden;
+background-color: #333;
+}
+
+ul.menu li {
+float: left;
+}
+
+ul.menu li a {
+display: block;
+color: white;
+text-align: center;
+padding: 14px 16px;
+text-decoration: none;
+}
+
+ul.menu li span.agencia {
+display: block;
+color: white;
+text-align: center;
+padding: 14px 16px;
+text-decoration: none;
+}
+
+ul.menu li a:hover:not(.active) {
+background-color: #111;
+}
+
+ul.menu li a.active {
+background-color: #4CAF50;
+}
+ul.menu li span.libre { width: 45px; display: none;}
+
+ul.menu li a.seccion { background-color:#222; opacity: 0}
+/*** Nav superior: Ending ***/
