@@ -87,11 +87,11 @@
             $(".message.negative").slideUp("fast");
           },
           success: function (data) {
-            if (data==="error"){
+            if (data==="true"){
+              window.location = "<?=site_url("/welcome/inicio");?>";
+            }else{
               $(".message.negative").slideDown("fast");
               $formLogin.parent().removeClass("loading");
-            }else{
-              window.location = "<?=site_url("/welcome/inicio");?>";
             }
           }
         });

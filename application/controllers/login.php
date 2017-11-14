@@ -19,7 +19,7 @@ class Login extends CI_Controller {
     ];
 
     if($this->m_login->login($datos)){
-      $this->session->set_userdata($datos);
+      echo "true";
     }else{
       echo "error";
     }

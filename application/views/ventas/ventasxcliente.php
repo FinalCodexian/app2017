@@ -62,7 +62,7 @@ $data = array(
 
             <button class="ui tiny fluid primary labeled icon button" style="margin-bottom:4px">
               <i class="icon mdi mdi-flash mdi-18px"></i>
-              Ejecutar reporte
+              Buscar
             </button>
 
             <button class="ui tiny fluid green labeled icon button" disabled>
@@ -121,7 +121,10 @@ $(function(){
     minimumInputLength: 3,
     ajax: {
       url: '<?=site_url('datos/fnListaSimple_Clientes');?>',
-      data: function(params){ return { q: params.term }; },
+      data: function(params){ return {
+        q: params.term,
+        vendedor: "<?=$this->session->userdata('vendedor');?>"
+      }},
       dataType: 'json',
       delay: 850
     },
@@ -140,6 +143,19 @@ $(function(){
     escapeMarkup: function (markup) { return markup; },
     templateResult: formatRepo
   });
+
+  if("<?=$this->session->userdata('vendedor');?>" !== ""){
+    $("#cboVendedor")
+    .select2("destroy")
+    .select2({
+      data: [{
+        id: "<?=$this->session->userdata('vendedor');?>",
+        text: "<?=$this->session->userdata('usuarioNom');?>"
+      }],
+      disabled: true
+    });
+  }
+
 
   $('#cboProducto').select2({
     minimumInputLength: 3,

@@ -14,7 +14,7 @@
   </a>
   <div class="right menu">
     <div class="item">
-      <?=$this->session->userdata('empresa_nom');?>
+      <?=$this->session->userdata('empresa');?>
     </div>
     <div class="ui dropdown item mnuOpciones">
       <i class="icon large setting"></i>
