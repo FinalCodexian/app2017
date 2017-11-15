@@ -6,13 +6,6 @@ $data = array(
 
 <? $this->load->view("header", $data); ?>
 
-<link rel="stylesheet" href="<?=base_url('tools/select2/dist/css/select2.css');?>">
-<link rel="stylesheet" href="<?=base_url('tools/select2/dist/css/select2-xLuis.css');?>">
-<script type="text/javascript" src="<?=base_url('tools/select2/dist/js/select2.full.js');?>"></script>
-<script type="text/javascript" src="<?=base_url('tools/select2/dist/js/i18n/es.js');?>"></script>
-<link rel="stylesheet" href="<?=base_url('tools/pretty-checkbox/dist/pretty-checkbox.css');?>">
-<link rel="stylesheet" href="<?=base_url('tools/mdi/css/materialdesignicons.css');?>">
-
 <div id="sidebar"><? $this->load->view("sidebar"); ?></div>
 
 <div id="wrapper">
@@ -43,13 +36,13 @@ $data = array(
               <div class="field">
                 <label>Fecha inicio</label>
                 <div class="ui icon input">
-                  <input placeholder="Fecha inicio" type="text" class="datepicker"><i class="calendar icon"></i>
+                  <input placeholder="Fecha inicio" type="text" class="datepicker" value="<?=date("d/m/Y");?>"><i class="calendar icon"></i>
                 </div>
               </div>
               <div class="field">
                 <label>Fecha final</label>
                 <div class="ui icon input">
-                  <input placeholder="Fecha final" type="text" class="datepicker"><i class="calendar icon"></i>
+                  <input placeholder="Fecha final" type="text" class="datepicker" value="<?=date("d/m/Y");?>"><i class="calendar icon"></i>
                 </div>
               </div>
             </div>
@@ -60,12 +53,12 @@ $data = array(
 
           <div class="three wide column">
 
-            <button class="ui tiny fluid primary labeled icon button" style="margin-bottom:4px">
+            <button id="btnEjecutar" class="ui tiny fluid basic teal labeled icon button" style="margin-bottom:4px">
               <i class="icon mdi mdi-flash mdi-18px"></i>
-              Buscar
+              Buscar ventas
             </button>
 
-            <button class="ui tiny fluid green labeled icon button" disabled>
+            <button class="ui tiny basic fluid green labeled icon button" disabled>
               <i class="icon mdi mdi-file-excel mdi-18px"></i>
               Exportar a excel
             </button>
@@ -84,11 +77,9 @@ $data = array(
 
   </div>
 
-
 </div>
 
 </div>
-
 </div>
 
 <script>
@@ -156,7 +147,6 @@ $(function(){
     });
   }
 
-
   $('#cboProducto').select2({
     minimumInputLength: 3,
     ajax: {
@@ -183,7 +173,6 @@ $(function(){
     $(".select2-selection__rendered").removeAttr('title');
   });
 
-
   $('.datepicker').pikaday({
     firstDay: 1,
     yearRange: [2010,2020],
@@ -194,11 +183,67 @@ $(function(){
     }
   });
 
-  $("#btn").on('click',function(){
-    $.post("<?=site_url('datos/fnListaSimple_Clientes')?>", {}, function(d){
-      alert(d);
-    })
-  })
+
+  $("#btnEjecutar").on('click',function(){
+    $resultado = $("#resultado");
+    //HoldOn.open({ theme:"sk-bounce" });
+
+    $resultado.html("");
+    $.post("<?=site_url('ventas/fnVentasxCliente')?>", {
+      vendedor: "vendedor"
+    },
+    function(data){
+      var $doc = "";
+      var $detalle = "";
+      //var myJSON = JSON.parse(data);
+      //console.log(myJSON);
+      $resultado.html(data);
+      HoldOn.close();
+      return false;
+
+      $.each(myJSON.data, function(i, item) {
+
+        if($doc !== item.TD + item.DOCUMENTO){
+
+          $tabla = $("<table border=1 width=100% style='margin-bottom:20px'></table>");
+          $fila = $("<tr></tr>").appendTo($tabla);
+          $td = $("<td>"+ item.TD + item.DOCUMENTO + "</td>").appendTo($fila);
+          $td = $("<td>"+ item.FECHA +"</td>").appendTo($fila);
+          $td = $("<td>"+ item.FORMA_VENTA +"</td>").appendTo($fila);
+
+          $fila = $("<tr></tr>").appendTo($tabla);
+          $td = $("<td colspan=3>"+ item.RUC + item.CLIENTE + "</td>").appendTo($fila);
+
+          $fila = $("<tr></tr>").appendTo($tabla);
+          $td = $("<td>"+ item.VENDEDOR + "</td>").appendTo($fila);
+          $td = $("<td colspan=2>"+ item.ALMACEN +"</td>").appendTo($fila);
+
+          $fila = $("<tr></tr>").appendTo($tabla);
+          $td = $("<td>PEDIDO:</td>").appendTo($fila);
+          $fila = $("<tr></tr>").appendTo($tabla);
+          $td = $("<td>GLOSA:</td>").appendTo($fila);
+          $fila = $("<tr></tr>").appendTo($tabla);
+          $td = $("<td>DOCUMENTO RELACIONADOS:</td>").appendTo($fila);
+
+
+          $doc = item.TD + item.DOCUMENTO;
+
+          $detalle = $etalle + item.CODIGO;
+
+          $resultado.append($tabla);
+        }else{
+          $detalle = $detalle + item.CODIGO;
+          $resultado.append($tabla);
+        }
+
+      });
+
+
+
+      HoldOn.close();
+    });
+  });
+
 
 })
 </script>

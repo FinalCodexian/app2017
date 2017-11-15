@@ -28,10 +28,13 @@ $(function(){
 
 <style>
 #info {
-  bottom: 0; position: absolute; width: 300px; background: rgb(232, 232, 232); margin: 7px; font-size: 11px; padding: 10px;
+  border-radius: 6px;
+  opacity: .4;
+  bottom: 0; position: fixed; width: 360px; background: rgb(232, 232, 232); margin: 7px; font-size: 11px; padding: 10px;
   z-index: 999; overflow-y: auto; display: inline-block; max-height: 400px;
   color: rgb(27, 66, 131)
 }
+#info:hover {  opacity: .9; }
 </style>
 <div id="info">
   Session:

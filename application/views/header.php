@@ -12,14 +12,27 @@
   <title>JCH - <?=$titulo?></title>
   <link rel="stylesheet" href="<?=base_url('tools/css/hamburgers.css');?>">
   <link rel="stylesheet" href="<?=base_url('tools/semantic/semantic.min.css');?>">
+  <link rel="stylesheet" href="<?=base_url('tools/HoldOn/HoldOn.min.css');?>">
   <link rel="stylesheet" href="<?=base_url('tools/css/estilos.css');?>">
+
+  <link rel="stylesheet" href="<?=base_url('tools/select2/dist/css/select2.css');?>">
+  <link rel="stylesheet" href="<?=base_url('tools/select2/dist/css/select2-xLuis.css');?>">
+  <link rel="stylesheet" href="<?=base_url('tools/pretty-checkbox/dist/pretty-checkbox.css');?>">
+  <link rel="stylesheet" href="<?=base_url('tools/mdi/css/materialdesignicons.css');?>">
+
+
   <script type="text/javascript" src="<?=base_url('tools/jquery/jquery.min.js');?>"></script>
   <script type="text/javascript" src="<?=base_url('tools/semantic/semantic.min.js');?>"></script>
-
   <link rel="stylesheet" href="<?=base_url('tools/handsontable/dist/pikaday/pikaday.css');?>">
   <script type="text/javascript" src="<?=base_url('tools/handsontable/dist/moment/moment.js');?>"></script>
   <script type="text/javascript" src="<?=base_url('tools/handsontable/dist/pikaday/pikaday.js');?>"></script>
   <script type="text/javascript" src="<?=base_url('tools/handsontable/dist/pikaday/pikaday.jquery.js');?>"></script>
-
+  <script type="text/javascript" src="<?=base_url('tools/select2/dist/js/select2.full.js');?>"></script>
+  <script type="text/javascript" src="<?=base_url('tools/select2/dist/js/i18n/es.js');?>"></script>
+  <script type="text/javascript" src="<?=base_url('tools/HoldOn/HoldOn.min.js');?>"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Condensed" />
+  <style>
+  *, .dropdown, input, textarea {font-family: 'Roboto Condensed', sans-serif }
+  </style>
 </head>
 <body>

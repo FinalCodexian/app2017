@@ -8,16 +8,31 @@ class Ventas extends CI_Controller {
     $result = $this->m_ventas->mVentasXcliente();
 
     $data = array();
-    foreach ($result as $item) {
-      //$item["desplegar"] = "a";
-      //$d["opciones"] = '<div align="center"><img src="'.base_url().'/tools/img/edit.png" onclick=editar_descuento("'.$d["DEScod_descu"].'") style="cursor:pointer;"> <img src="'.base_url().'/tools/img/delete.png" onclick=eliminar_descuento("'.$d["DEScod_descu"].'") style="cursor:pointer;"></div>';
-      $data[] = $item;
-    }
+    $docActual = "";
+
+    foreach ($result as $row):
+      if($docActual !== $row["TD"] . $row["DOCUMENTO"]):
+        $data[] = array(
+          "td" => $row["TD"],
+          "documento" => $row["DOCUMENTO"]
+        );
+      endif;
+      $docActual = $row["TD"] . $row["DOCUMENTO"];
+    endforeach;
+
+    foreach ($result as $row):
+      foreach ($data as $ind => $item):
+        if($item["documento"] == $row["documento"]):
+          $data[$ind][] = $row["CODIGO"]; 
+        endif;
+      endforeach;
+    endforeach;
 
     $datos = array(
       "total" => count($result),
       "data" => $data
     );
+
 
     echo json_encode($datos);
 
