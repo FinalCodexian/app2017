@@ -186,7 +186,7 @@ $(function(){
 
   $("#btnEjecutar").on('click',function(){
     $resultado = $("#resultado");
-    //HoldOn.open({ theme:"sk-bounce" });
+    HoldOn.open({ theme:"sk-bounce" });
 
     $resultado.html("");
     $.post("<?=site_url('ventas/fnVentasxCliente')?>", {
@@ -195,57 +195,160 @@ $(function(){
     function(data){
       var $doc = "";
       var $detalle = "";
-      //var myJSON = JSON.parse(data);
-      //console.log(myJSON);
-      $resultado.html(data);
-      HoldOn.close();
-      return false;
+      var myJSON = JSON.parse(data);
 
-      $.each(myJSON.data, function(i, item) {
+      $.each(myJSON.data, function(i, item){
 
-        if($doc !== item.TD + item.DOCUMENTO){
+        $div = $("<div class='ui basic segment resultado'></div>")
+        $tabla = $("<table class='cabecera'></table>");
 
-          $tabla = $("<table border=1 width=100% style='margin-bottom:20px'></table>");
-          $fila = $("<tr></tr>").appendTo($tabla);
-          $td = $("<td>"+ item.TD + item.DOCUMENTO + "</td>").appendTo($fila);
-          $td = $("<td>"+ item.FECHA +"</td>").appendTo($fila);
-          $td = $("<td>"+ item.FORMA_VENTA +"</td>").appendTo($fila);
+        $pie = $("<table class='pie'></table>");
 
-          $fila = $("<tr></tr>").appendTo($tabla);
-          $td = $("<td colspan=3>"+ item.RUC + item.CLIENTE + "</td>").appendTo($fila);
+        $fila = $("<tr></tr>").appendTo($tabla);
+        $td = $("<td class='documento' colspan=2><label class='ui blue right pointing label'>Documento</label><label class='ui basic label'>"+ item.cabecera.td + " " + item.cabecera.documento + "</label> <label class='ui basic label'><i class='calendar icon'></i>"+ item.cabecera.fecha +"</label></td>").appendTo($fila);
+        //$td = $("<td class='fecha'><i class='calendar icon'></i>"+ item.cabecera.fecha +"</td>").appendTo($fila);
+        $td = $("<td><label class='ui right pointing label'>Cond. Pago</label>"+ item.cabecera.forma_venta +"</td>").appendTo($fila);
 
-          $fila = $("<tr></tr>").appendTo($tabla);
-          $td = $("<td>"+ item.VENDEDOR + "</td>").appendTo($fila);
-          $td = $("<td colspan=2>"+ item.ALMACEN +"</td>").appendTo($fila);
+        $fila = $("<tr></tr>").appendTo($tabla);
+        $td = $("<td colspan=3><label class='ui right pointing label'>Cliente</label> "+ item.cabecera.ruc + ' - ' + item.cabecera.cliente + "</td>").appendTo($fila);
 
-          $fila = $("<tr></tr>").appendTo($tabla);
-          $td = $("<td>PEDIDO:</td>").appendTo($fila);
-          $fila = $("<tr></tr>").appendTo($tabla);
-          $td = $("<td>GLOSA:</td>").appendTo($fila);
-          $fila = $("<tr></tr>").appendTo($tabla);
-          $td = $("<td>DOCUMENTO RELACIONADOS:</td>").appendTo($fila);
-
-
-          $doc = item.TD + item.DOCUMENTO;
-
-          $detalle = $etalle + item.CODIGO;
-
-          $resultado.append($tabla);
+        $fila = $("<tr></tr>").appendTo($tabla);
+        $td = $("<td colspan=2><label class='ui right pointing label'>Vendedor</label>"+ item.cabecera.vendedor + "</td>").appendTo($fila);
+        if(item.cabecera.almacen.indexOf("NO USAR") > 0){
+          $td = $("<td class='almacen'><label class='ui right pointing label'>Almacen</label>"+ item.cabecera.almacen2 + "</td>").appendTo($fila);
         }else{
-          $detalle = $detalle + item.CODIGO;
-          $resultado.append($tabla);
+          $td = $("<td class='almacen'><label class='ui right pointing label'>Almacen</label>"+ item.cabecera.almacen + "</td>").appendTo($fila);
         }
 
+        $fila = $("<tr></tr>").appendTo($tabla);
+        $td = $("<td colspan=2><label class='ui right pointing label'>Glosa</label> Glosa....</td>").appendTo($fila);
+        $td = $("<td><label class='ui right pointing label'>Pedido</label> Pedido....</td>").appendTo($fila);
+
+
+        // Detalle del documento
+
+
+        $detalle = $("<table class='detalle'></table>");
+        $("<thead></thead>")
+        .append("<tr></tr>")
+        .append("<th>Cantidad</th>")
+        .append("<th>Por saldar</th>")
+        .append("<th>Codigo</th>")
+        .append("<th>Descripcion</th>")
+        .append("<th>Moneda</th>")
+        .append("<th>P. Unitario</th>")
+        .append("<th>Sub Total</th>")
+        .appendTo($detalle);
+
+        $.each(item.detalle, function(di, ditem){
+          $detFila = $("<tr></tr>").appendTo($detalle);
+          $td = $("<td class='cantidad'>"+ parseInt(ditem.cant) + "</td>").appendTo($detFila);
+
+          if(parseInt(ditem.saldar)>0){
+            $td = $("<td class='cantidad'><a class='ui red circular label'>" + ditem.saldar + "</a></td>").appendTo($detFila);
+          }else{
+            $td = $("<td class='cantidad'>0</td>").appendTo($detFila);
+          }
+          $td = $("<td class='codigo'>"+ ditem.codigo + "</td>").appendTo($detFila);
+          $td = $("<td>"+ ditem.descrip +"</td>").appendTo($detFila);
+
+          $td = $("<td class='moneda'>"+ item.cabecera.moneda +"</td>").appendTo($detFila);
+
+          if(item.cabecera.moneda == "US"){
+            $td = $("<td class='precio'>"+ parseFloat(ditem.precio_us).toFixed(2) +"</td>").appendTo($detFila);
+            $td = $("<td class='precio'>"+ parseFloat(ditem.subtot_us).toFixed(2) +"</td>").appendTo($detFila);
+          }
+
+          if(item.cabecera.moneda == "MN"){
+            $td = $("<td class='precio'>"+ parseFloat(ditem.precio_mn).toFixed(2) +"</td>").appendTo($detFila);
+            $td = $("<td class='precio'>"+ parseFloat(ditem.subtot_mn).toFixed(2) +"</td>").appendTo($detFila);
+          }
+
+        });
+
+        // subtotales del detalle
+        $detFila = $("<tr></tr>").appendTo($detalle);
+        $td = $("<td class='totCantidad'>"+ parseFloat(item.tot_cantidad) +"</td>").appendTo($detFila);
+        $td = $("<td class='totVacio'></td>").appendTo($detFila);
+        $td = $("<td class='totVacio'></td>").appendTo($detFila);
+        $td = $("<td class='totVacio'></td>").appendTo($detFila);
+        $td = $("<td class='totVacio'></td>").appendTo($detFila);
+        $td = $("<td class='totVacio'></td>").appendTo($detFila);
+
+        if(item.cabecera.moneda == "US"){
+          $td = $("<td class='totPrecio'>"+ parseFloat(item.tot_US).toFixed(2) +"</td>").appendTo($detFila);
+        }
+        if(item.cabecera.moneda == "MN"){
+          $td = $("<td class='totPrecio'>"+ parseFloat(item.tot_MN).toFixed(2) +"</td>").appendTo($detFila);
+        }
+
+
+        $filaPie = $("<tr></tr>").appendTo($pie);
+        if(item.tot_guias > 0){
+          $detGuias = $("<td><label class='ui right pointing label'>Guias de atencion</label></td>").appendTo($filaPie);
+          $.each(item.guias, function(di, gitem){
+            $td = $("<a class='ui basic blue medium label'>"+ gitem.guia +' ('+ gitem.guia_fecha + ")</a>").appendTo($detGuias);
+          })
+        }else{
+          if(item.cabecera.td == 'NC' || item.cabecera.td == 'ND'){
+            $td = $("<td><label class='ui right pointing label'>Sustento</label>Sustento.....</td>").appendTo($filaPie);
+          }else{
+            if(item.cabecera.tipo_almacen == "C"){
+              $td = $("<td><label class='ui right pointing label'>Nota</label>REGULARIZACION DE CONSIGNACION</td>").appendTo($filaPie);
+            }else{
+              $td = $("<td><label class='ui right pointing label'>Nota</label><label class='ui red label'>SIN GUIA DE ATENCION</label></td>").appendTo($filaPie);
+            }
+          }
+        }
+
+        if(item.tot_notas > 0){
+          $filaPie = $("<tr></tr>").appendTo($pie);
+          $detNotas = $("<td><label class='ui right pointing label'>Notas NC/ND</label></td>").appendTo($filaPie);
+          $.each(item.notas, function(di, nitem){
+            $td = $("<a class='ui basic orange medium label'>"+ nitem.td + ' ' + nitem.nota +' ('+ nitem.nota_fecha + ")</a>").appendTo($detNotas);
+          })
+        }
+
+
+        $div.append($tabla);
+        $div.append($detalle);
+        $div.append($pie);
+        $resultado.append($div);
       });
 
-
-
       HoldOn.close();
+
     });
   });
 
 
 })
 </script>
+
+<style>
+.resultado * { font-size: 12px; }
+
+.resultado table.cabecera {width: 100%; border-collapse: collapse; margin: 3px auto }
+.resultado table.cabecera td {border: 1px solid #ccc; padding: 3px}
+.resultado table.cabecera td.documento { width: 220px}
+.resultado table.cabecera td.fecha { text-align: left;}
+.resultado table.cabecera td.almacen { width: 350px; }
+
+
+.resultado table.detalle { width: 100%; border-collapse: collapse; margin: 3px auto}
+.resultado table.detalle thead th { border: 1px solid #ccc; background: rgb(241, 241, 241)}
+.resultado table.detalle td { border: 1px solid #ccc; padding: 0 4px}
+.resultado table.detalle td.cantidad { text-align: center; width: 65px}
+.resultado table.detalle td.codigo { text-align: center; width: 100px}
+.resultado table.detalle td.moneda { text-align: center; width: 60px}
+.resultado table.detalle td.precio { text-align: right; width: 90px; padding-right: 7px}
+.resultado table.detalle td.totCantidad { text-align: center; font-weight: bold; background: rgb(241, 241, 241)}
+.resultado table.detalle td.totPrecio { text-align: right;; font-weight: bold; padding-right: 7px; background: rgb(241, 241, 241)}
+.resultado table.detalle td.totVacio { border: 0 none}
+
+
+.resultado table.pie { width: 100%; border-collapse: collapse; margin: 3px auto}
+.resultado table.pie td { border: 1px solid #ccc; padding: 4px}
+</style>
 
 <? $this->load->view("footer"); ?>
