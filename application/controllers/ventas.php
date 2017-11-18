@@ -9,8 +9,14 @@ class Ventas extends CI_Controller {
     $contador = 0;
     $final = array();
 
+    $params = [
+      "vendedor" => $this->input->post("vendedor"),
+      "inicio" => '',
+      "final" => '',
+      "opcion" => ''
+    ];
     $this->load->model('ventas/m_ventas');
-    $result = $this->m_ventas->mVentasXcliente();
+    $result = $this->m_ventas->mVentasXcliente($params);
 
     if($result !== FALSE):
       $data = array();
@@ -138,36 +144,36 @@ class Ventas extends CI_Controller {
     endforeach;
   endif;
 
-/*
+  /*
   $datos = array(
-    "total" => $contador,
-    "data" => $final
-  );
+  "total" => $contador,
+  "data" => $final
+);
 */
 
-  if($contador>0):
-    if($contador>4500):
-      $datos = array(
-        "excedido" => TRUE,
-        "total" => $contador,
-        "mensaje" => "Muy pesado :("
-      );
-    else:
-      $datos = array(
-        "excedido" => FALSE,
-        "total" => $contador,
-        "html" => $this->formatoReporte(["total"=>$contador,"data"=>$final])
-      );
-    endif;
+if($contador>0):
+  if($contador>3500):
+    $datos = array(
+      "excedido" => TRUE,
+      "total" => $contador,
+      "mensaje" => "Muy pesado :("
+    );
   else:
     $datos = array(
       "excedido" => FALSE,
       "total" => $contador,
-      "data" => array()
+      "html" => $this->formatoReporte(["total"=>$contador,"data"=>$final])
     );
   endif;
+else:
+  $datos = array(
+    "excedido" => FALSE,
+    "total" => $contador,
+    "data" => array()
+  );
+endif;
 
-  echo json_encode($datos);
+echo json_encode($datos);
 
 }
 
@@ -268,25 +274,35 @@ public function formatoReporte($datos){
       $retorno .=  "<table class='pie'>";
 
       // guias de atencion
-      $retorno .=  "<tr>";
-      if($value["tot_guias"] > 0){
-        $retorno .=  "<td><label class='label'>Gu&iacute;as de atenci&oacute;n</label>";
+      if($value["tot_guias"] > 0):
+
+        $tx = "";
+        $g = 0;
+
+        $tx =  "<td><label class='label'>Gu&iacute;as de atenci&oacute;n</label>";
         foreach($value["guias"] as $gitem){
-          $retorno .=  "<a href='#' class='blue label'>" . $gitem["guia"] . ' (' . $gitem["guia_fecha"] . ")</a> ";
+          if(trim($gitem["guia"]) !== "SERVICIO"):
+            $tx .=  "<a href='#' class='blue label'>" . $gitem["guia"] . ' (' . $gitem["guia_fecha"] . ")</a> ";
+            ++$g;
+          endif;
         }
-        $retorno .=  "</td>";
-      }else{
+        $tx .=  "</td>";
+
+        if($g>0){ $retorno .= $tx; };
+
+      else:
         if($value["cabecera"]["td"] == 'NC' OR $value["cabecera"]["td"] == 'ND'){
           $retorno .=  "<td><label class='label'>Sustento</label>Sustento.....</td>";
         }else{
           if($value["cabecera"]["tipo_almacen"] == "C"){
-            $retorno .=  "<td><label class='label'>Nota</label><a class='green label'> REGULARIZACION DE CONSIGNACION</a></td>";
+            $retorno .=  "<tr><td><label class='label'>Nota</label><a class='green label'> REGULARIZACION DE CONSIGNACION</a></td></tr>";
           }else{
-            $retorno .=  "<td><label class='label'>Nota</label><a class='red label'> SIN GUIA DE ATENCION</a></td>";
+            $retorno .=  "<tr><td><label class='label'>Aviso</label><a class='red label'> SIN GUIA DE ATENCION</a></td></tr>";
           }
         }
-      }
-      $retorno .=  "</tr>";
+      endif;
+
+
 
       // notas relacionadas al documento actual
       if($value["tot_notas"] > 0){

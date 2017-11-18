@@ -23,17 +23,17 @@ $data = array(
 
           <div class="eight wide column">
             <div class="inline field">
-              <select id="cboClientes" data-placeholder='- Todos los <b>clientes</b> -'></select>
+              <select id="cboCliente" data-placeholder='- Todos los <b>clientes</b> -'></select>
             </div>
             <div class="field">
               <select id="cboVendedor" data-placeholder='- Todos los <b>vendedores</b> -'></select>
             </div>
 
             <div class="fields">
-              <div class="ten wide field">
+              <div class="eleven wide field">
                 <select id="cboProducto" data-placeholder='- Todos los <b>productos</b> -'></select>
               </div>
-              <div class="six wide right field">
+              <div class="five wide right field">
                 <select id="cboMarca" data-placeholder='- Todas las <b>marcas</b> -'></select>
               </div>
             </div>
@@ -45,13 +45,13 @@ $data = array(
               <div class="field">
                 <label>Fecha inicio</label>
                 <div class="ui icon input">
-                  <input placeholder="Fecha inicio" type="text" class="datepicker" value="<?=date("d/m/Y");?>"><i class="calendar icon"></i>
+                  <input id="fecInicio" type="text" class="datepicker" value="<?=date("d/m/Y");?>"><i class="calendar icon"></i>
                 </div>
               </div>
               <div class="field">
                 <label>Fecha final</label>
                 <div class="ui icon input">
-                  <input placeholder="Fecha final" type="text" class="datepicker" value="<?=date("d/m/Y");?>"><i class="calendar icon"></i>
+                  <input id="fecFinal" type="text" class="datepicker" value="<?=date("d/m/Y");?>"><i class="calendar icon"></i>
                 </div>
               </div>
             </div>
@@ -70,7 +70,7 @@ $data = array(
             <div class="opciones">
               <label class="header">Opciones segun atenci&oacute;n</label>
               <div class="pretty p-icon p-round p-pulse">
-                <input type="radio" name="opcion" checked/>
+                <input value="" type="radio" name="opcion" checked/>
                 <div class="state p-primary">
                   <i class="icon check"></i>
                   <label>Todo</label>
@@ -78,18 +78,10 @@ $data = array(
               </div>
 
               <div class="pretty p-icon p-round p-pulse">
-                <input type="radio" name="opcion" />
+                <input value="S" type="radio" name="opcion" />
                 <div class="state p-primary">
                   <i class="icon check"></i>
-                  <label>Estandar sin guia</label>
-                </div>
-              </div>
-
-              <div class="pretty p-icon p-round p-pulse">
-                <input type="radio" name="opcion" />
-                <div class="state p-primary">
-                  <i class="icon check"></i>
-                  <label>Diferidas por atender</label>
+                  <label>Sin gu&iacute;a de atenci&oacute;n</label>
                 </div>
               </div>
 
@@ -124,18 +116,9 @@ $data = array(
   </div>
 
   <style>
-  .alCielo {
-    display: none;
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    background-color: rgba(253, 255, 154, 0.57);
-    padding: 0 10px;
-    border-radius: 50%
-  }
+
   </style>
   <a href="#" class="alCielo"><i class="zmdi zmdi-chevron-up zmdi-hc-3x"></i></a>
-
 
   <div id="excedido" style="display:none">
     <div class="ui icon info message" style="width: 640px; margin:auto">
@@ -147,18 +130,15 @@ $data = array(
     </div>
   </div>
 
-
-
 </div>
 
 </div>
 </div>
-
-
-
 
 <script>
 $(function(){
+
+  $('.datepicker').mask('00/00/0000', {placeholder: "__/__/____"});
 
   $.fn.select2.defaults.set('theme', 'xLuis')
   $.fn.select2.defaults.set('language', 'es');
@@ -174,22 +154,23 @@ $(function(){
   $('#cboMarca').select2({
     minimumInputLength: 3,
     ajax: {
-      url: '<?=site_url('datos/fnListaSimple_Clientes');?>',
-      data: function(params){ return { q: params.term }; },
+      url: '<?=site_url('datos/fnListaSimple');?>',
+      data: function(params){ return { q: params.term, opcion: 'marcas' }; },
       dataType: 'json',
       delay: 850
     },
     escapeMarkup: function (markup) { return markup; },
-    templateResult: formatRepo
+    templateResult: formatRepo2
   });
 
-  $('#cboClientes').select2({
+  $('#cboCliente').select2({
     minimumInputLength: 3,
     ajax: {
-      url: '<?=site_url('datos/fnListaSimple_Clientes');?>',
+      url: '<?=site_url('datos/fnListaSimple');?>',
       data: function(params){ return {
         q: params.term,
-        vendedor: "<?=$this->session->userdata('vendedor');?>"
+        vendedor: "<?=$this->session->userdata('vendedor');?>",
+        opcion: "clientes"
       }},
       dataType: 'json',
       delay: 850
@@ -201,8 +182,8 @@ $(function(){
   $('#cboVendedor').select2({
     minimumInputLength: 3,
     ajax: {
-      url: '<?=site_url('datos/fnListaSimple_Clientes');?>',
-      data: function(params){ return { q: params.term }; },
+      url: '<?=site_url('datos/fnListaSimple');?>',
+      data: function(params){ return { q: params.term, opcion: "vendedores" }; },
       dataType: 'json',
       delay: 850
     },
@@ -225,8 +206,8 @@ $(function(){
   $('#cboProducto').select2({
     minimumInputLength: 3,
     ajax: {
-      url: '<?=site_url('datos/fnListaSimple_Clientes');?>',
-      data: function(params){ return { q: params.term }; },
+      url: '<?=site_url('datos/fnListaSimple');?>',
+      data: function(params){ return { q: params.term, opcion: "productos" }; },
       dataType: 'json',
       delay: 850
     },
@@ -261,14 +242,26 @@ $(function(){
 
   $("#btnEjecutar").on('click',function(){
     $resultado = $("#resultado");
-    HoldOn.open({ theme:"sk-bounce" });
 
-    $resultado.html("");
-    $.post("<?=site_url('ventas/fnVentasxCliente')?>", {
-      vendedor: "vendedor"
-    },
-    function(data){
-      $resp = JSON.parse(data);
+    $.ajax({
+      method: "POST",
+      url: "<?=site_url('ventas/fnVentasxCliente')?>",
+      cache: false,
+      dataType: 'json',
+      data: {
+        vendedor: $("#cboVendedor").val(),
+        cliente: $("#cboCliente").val(),
+        producto: $("#cboProducto").val(),
+        marca: $("#cboMarca").val(),
+        inicio: $("#fecInicio").val(),
+        final: $("#fecFinal").val(),
+        opcion: $("[name='opcion']:checked").val()
+      },
+      beforeSend: function(){
+        HoldOn.open({ theme:"sk-bounce" });
+        $resultado.html("");
+      }
+    }).done(function($resp){
       if($resp.excedido == true){
         $("#excedido").find("span").html($resp.total);
         $resultado.html($("#excedido").html());
@@ -277,6 +270,7 @@ $(function(){
       }
       HoldOn.close();
     });
+
   });
 
 
@@ -292,7 +286,7 @@ $(function(){
   border-top: 3px solid rgba(108, 108, 108, .1);
   border-bottom: 3px solid rgba(108, 108, 108, .1);
   border-radius: 5px;
-  max-width: 950px;
+  max-width: 850px;
   transition: all 0.3s
 }
 .resultado:hover{
