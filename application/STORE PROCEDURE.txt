@@ -1,0 +1,197 @@
+CREATE FUNCTION fn_LimpiaEspacios 
+(
+    @InputStr varchar(8000)
+)
+RETURNS varchar(8000)
+AS
+BEGIN
+declare @ResultStr varchar(8000)
+set @ResultStr = @InputStr
+while charindex(' ', @ResultStr) > 0
+    set @ResultStr = replace(@InputStr, ' ', '')
+
+return @ResultStr
+END
+GO
+
+
+
+
+CREATE PROCEDURE VTA_VTAXCLIENTE (
+	@base AS NVARCHAR (20),
+	@concar AS NVARCHAR(20),
+	@agencia AS NVARCHAR(20),
+	@vendedor AS NVARCHAR(50) = '',
+	@cliente AS NVARCHAR(50) = '',
+	@marca AS NVARCHAR(50) = '',
+	@producto AS NVARCHAR(50) = '',
+	@fecInicio AS VARCHAR(10) = '',
+	@fecFinal AS VARCHAR(10) = '',
+	@pendientes AS VARCHAR(1) = ''
+)
+AS BEGIN 
+	
+	SET NOCOUNT ON
+	DECLARE @strsql1 nvarchar(4000)
+		
+	set @strsql1 = ''
+	set @strsql1 = @strsql1 + 'SELECT '''' PENDIENTE, C.F5_CTD TD, C.F5_CNUMSER+C.F5_CNUMDOC DOCUMENTO, C.F5_DFECDOC FECHA, C.F5_CTF DIF, '
+	set @strsql1 = @strsql1 + 'C.F5_CNROPED PEDIDO, UP.TU_NOMUSU PEDIDO_USUARIO, PD.F5_DFECCRE PEDIDO_FECHA, '
+	set @strsql1 = @strsql1 + 'RTRIM(C.F5_CALMA) + '' - '' + RTRIM(A.A1_CDESCRI) ALMACEN, '
+	set @strsql1 = @strsql1 + 'RTRIM(C.F5_CALMA) + '' - '' + RTRIM(A1_CDESCR2) ALMACEN2, '
+	set @strsql1 = @strsql1 + 'A.A1_CTIPO TIPO_ALMACEN, RTRIM(C.F5_CGLOSA) GLOSA, C.F5_CRFTD+'' ''+RTRIM(C.F5_CRFNSER)+RTRIM(C.F5_CRFNDOC) REFERENCIA, '
+	set @strsql1 = @strsql1 + '	RTRIM(C.F5_CVENDE) + '' - '' + RTRIM(V.VE_CNOMBRE) VENDEDOR, '
+	set @strsql1 = @strsql1 + 'RTRIM(C.F5_CRUC) RUC, RTRIM(C.F5_CNOMBRE) CLIENTE, RTRIM(TC.TG_CDESCRI) TIPO_CLIENTE, '
+	set @strsql1 = @strsql1 + 'RTRIM(C.F5_CFORVEN) +'' - ''+ RTRIM(F.FV_CDESCRI) FORMA_VENTA, '
+	set @strsql1 = @strsql1 + 'C.F5_CCODMON MONEDA, XMEIMP2 TC, '
+	set @strsql1 = @strsql1 + 'AT.AR_CMARCA MARCA, '
+	set @strsql1 = @strsql1 + 'D.F6_CITEM ITEM, AT.AR_CTIPO TIPO_ARTICULO, RTRIM(D.F6_CCODIGO) CODIGO, RTRIM(D.F6_CDESCRI) DESCRIP, '
+	set @strsql1 = @strsql1 + 'D.F6_NCANTID CANT, '
+	
+	set @strsql1 = @strsql1 + 'IIF(C.F5_CTF<>''05'' AND A.A1_CTIPO<>''C'' AND G.C5_CNUMDOC IS NULL AND AT.AR_CTIPO<>''S'' AND C.F5_CTD IN (''FT'', ''BV''), D.F6_NCANTID, d.F6_NSALDAR) SALDAR, '
+	
+	set @strsql1 = @strsql1 + 'IIF(C.F5_CCODMON=''US'', ROUND(D.F6_NPRECIO * XMEIMP2, 2), D.F6_NPRECIO) AS PRECIO_MN, '
+	set @strsql1 = @strsql1 + 'IIF(C.F5_CCODMON=''US'', D.F6_NPRECIO, ROUND(D.F6_NPRECIO / XMEIMP2, 2)) AS PRECIO_US, '
+	set @strsql1 = @strsql1 + 'IIF(C.F5_CCODMON=''US'', ROUND((D.F6_NPRECIO * XMEIMP2) * IIF(D.F6_NCANTID=0,1,D.F6_NCANTID), 2), ROUND(D.F6_NPRECIO * IIF(D.F6_NCANTID=0,1,D.F6_NCANTID), 2)) AS SUBTOT_MN, '
+	set @strsql1 = @strsql1 + 'IIF(C.F5_CCODMON=''US'', ROUND(D.F6_NPRECIO * IIF(D.F6_NCANTID=0,1,D.F6_NCANTID), 2), ROUND((D.F6_NPRECIO / XMEIMP2) * IIF(D.F6_NCANTID=0,1,D.F6_NCANTID), 2)) AS SUBTOT_US, '
+		 
+	set @strsql1 = @strsql1 + 'G.C5_CNUMDOC GUIA, CONVERT(VARCHAR(10),G.C5_DFECDOC,103) GUIA_FECHA, NOTA.F5_CTD NOTA_TD, NOTA.F5_CNUMSER+NOTA.F5_CNUMDOC NOTA_NUM, CONVERT(VARCHAR(10),NOTA.F5_DFECDOC,103) NOTA_FECHA '
+	
+	set @strsql1 = @strsql1 + 'FROM (SELECT * FROM '+@base+'..FT0001ACUC UNION ALL SELECT * FROM '+@base+'..FT0001FACC) C '
+	set @strsql1 = @strsql1 + 'LEFT JOIN (SELECT * FROM '+@base+'..FT0001ACUD UNION ALL SELECT * FROM '+@base+'..FT0001FACD) D ON '
+	set @strsql1 = @strsql1 + '(D.F6_CCODAGE=C.F5_CCODAGE AND D.F6_CTD=C.F5_CTD AND D.F6_CNUMSER=C.F5_CNUMSER AND D.F6_CNUMDOC=C.F5_CNUMDOC) '
+	set @strsql1 = @strsql1 + 'LEFT JOIN '+@concar+'..CTcamb T ON (T.XFECCAM2=C.F5_DFECDOC AND T.XCODMON=''UC'') '
+	set @strsql1 = @strsql1 + 'LEFT JOIN '+@base+'..FT0001FORV F ON F.FV_CCODIGO=C.F5_CFORVEN LEFT JOIN '+@base+'..FT0001VEND V ON (V.VE_CCODIGO=C.F5_CVENDE) '
+	set @strsql1 = @strsql1 + 'LEFT JOIN '+@base+'..FT0001CLIE CL ON (CL.CL_CCODCLI=C.F5_CCODCLI) LEFT JOIN '+@base+'..AL0001TABL TC ON (TC.TG_CCOD=''67'' AND TC.TG_CCLAVE=CL.CL_CTIPCLI) '
+	set @strsql1 = @strsql1 + 'LEFT JOIN '+@base+'..AL0001ALMA A ON (A.A1_CALMA=C.F5_CALMA) '
+	set @strsql1 = @strsql1 + 'LEFT JOIN '+@base+'..AL0001ARTI AT ON (AT.AR_CCODIGO=D.F6_CCODIGO) '
+	set @strsql1 = @strsql1 + 'LEFT JOIN '+@base+'..AL0001MOVC G ON (G.C5_CSITGUI<>''A'' AND G.C5_CRFTDOC=C.F5_CTD AND '
+	set @strsql1 = @strsql1 + 'ltrim(rtrim(dbo.fn_LimpiaEspacios(G.C5_CRFNDOC)))=RTRIM(C.F5_CNUMSER)+C.F5_CNUMDOC) '
+	
+	set @strsql1 = @strsql1 + 'LEFT JOIN (SELECT * FROM '+@base+'..FT0001ACUC UNION ALL SELECT * FROM '+@base+'..FT0001FACC) NOTA ON ('
+	set @strsql1 = @strsql1 + 'NOTA.F5_CTD IN (''NC'',''ND'') AND NOTA.F5_CRFTD=C.F5_CTD AND NOTA.F5_CRFNSER=C.F5_CNUMSER AND NOTA.F5_CRFNDOC=C.F5_CNUMDOC AND NOTA.F5_CESTADO<>''A'' '
+	set @strsql1 = @strsql1 + ') '
+	set @strsql1 = @strsql1 + 'LEFT JOIN '+@base+'..PD0001PENC PD ON PD.F5_CCODAGE=C.F5_CCODAGE AND PD.F5_CNUMPED=C.F5_CNROPED '
+	set @strsql1 = @strsql1 + 'LEFT JOIN '+@base+'..UT0030 UP ON UP.TU_ALIAS=PD.F5_CUSUCRE '
+
+	set @strsql1 = @strsql1 + 'WHERE C.F5_CESTADO<>''A'' '
+
+	SET @strsql1 = @strsql1 + 'AND C.F5_CCODAGE='''+@agencia+''' '
+	
+	IF(@cliente<>'') SET @strsql1 = @strsql1 + 'AND C.F5_CCODCLI='''+@cliente+''' '
+	IF(@vendedor<>'') SET @strsql1 = @strsql1 + 'AND C.F5_CVENDE='''+@vendedor+''' '
+		
+	--set @strsql1 = @strsql1 + 'AND AT.AR_CMARCA=''DUN'' '
+	--set @strsql1 = @strsql1 + 'AND C.F5_CNUMSER+C.F5_CNUMDOC IN (''520 0040364'',''513 0044277'') '
+	
+/*
+	IF(@producto<>'') BEGIN
+	SET @strsql1 = @strsql1 + 'AND D.F6_CTD+D.F6_CNUMSER+D.F6_CNUMDOC IN '
+	SET @strsql1 = @strsql1 + '(SELECT F6_CTD+F6_CNUMSER+F6_CNUMDOC FROM '
+	SET @strsql1 = @strsql1 + '(SELECT * FROM '+@base+'..FT0001ACUD UNION ALL SELECT * FROM '+@base+'..FT0001FACD) T WHERE T.F6_CCODAGE=D.F6_CCODAGE '
+	SET @strsql1 = @strsql1 + 'AND T.F6_CESTADO<>''A'' AND T.F6_CCODIGO='''+@producto+''' '
+	SET @strsql1 = @strsql1 + ') '
+	END 
+	*/
+	
+	/*
+	IF (@pendientes <> '') BEGIN 
+	SET @strsql1 = @strsql1 + 'AND D.F6_CTD+D.F6_CNUMSER+D.F6_CNUMDOC IN '
+	SET @strsql1 = @strsql1 + '(SELECT F6_CTD+F6_CNUMSER+F6_CNUMDOC FROM '
+	SET @strsql1 = @strsql1 + '(SELECT * FROM '+@base+'..FT0001ACUD UNION ALL SELECT * FROM '+@base+'..FT0001FACD) T WHERE T.F6_CCODAGE=D.F6_CCODAGE '
+	SET @strsql1 = @strsql1 + 'AND T.F6_CESTADO<>''A'' AND (T.F6_NSALDAR <> 0 OR G.C5_CNUMDOC IS NULL AND A.A1_CTIPO<>''C'' AND C.F5_CTD IN (''FT'',''BV''))'
+	SET @strsql1 = @strsql1 + ') '
+	END 
+	*/
+/*	
+
+	SET @strsql1 = @strsql1 + 'AND D.F6_CTD+D.F6_CNUMSER+D.F6_CNUMDOC IN '
+	SET @strsql1 = @strsql1 + '(SELECT F6_CTD+F6_CNUMSER+F6_CNUMDOC FROM '
+	SET @strsql1 = @strsql1 + '(SELECT * FROM '+@base+'..FT0001ACUD UNION ALL SELECT * FROM '+@base+'..FT0001FACD) T WHERE T.F6_CCODAGE=D.F6_CCODAGE '
+	SET @strsql1 = @strsql1 + 'AND T.F6_CESTADO<>''A'' AND (T.F6_NSALDAR <> 0 OR G.C5_CNUMDOC IS NULL AND A.A1_CTIPO<>''C'' AND C.F5_CTD IN (''FT'',''BV'') )'
+	SET @strsql1 = @strsql1 + ') '
+*/
+
+/*
+ELSE BEGIN
+		SET @sql = @sql + 'AND F6_CTD+F6_CNUMSER+F6_CNUMDOC IN '
+		SET @sql = @sql + '(SELECT F6_CTD+F6_CNUMSER+F6_CNUMDOC FROM '
+		SET @sql = @sql + '(SELECT * FROM FT0001ACUD UNION ALL SELECT * FROM FT0001FACD) T '
+		SET @sql = @sql + 'LEFT JOIN AL0001ARTI AX ON (AX.AR_CCODIGO=T.F6_CCODIGO) WHERE T.F6_CCODAGE=FD.F6_CCODAGE '
+		SET @sql = @sql + 'AND T.F6_CESTADO<>''''A'''' AND AX.AR_CMARCA='''''+@marca+''''' '
+		SET @sql = @sql + ') '
+END 
+*/
+	
+	set @strsql1 = @strsql1 + 'ORDER BY CONVERT(DATE,C.F5_DFECDOC,103), C.F5_CTD, C.F5_CNUMSER+C.F5_CNUMDOC, D.F6_CITEM, G.C5_CNUMDOC'
+	
+	DECLARE @temporal TABLE 
+	(
+	PENDIENTE CHAR (1),
+	TD CHAR (2),
+	DOCUMENTO CHAR (11),
+	FECHA DATETIME,
+	DIF CHAR (2),
+	PEDIDO CHAR (11),
+	PEDIDO_USUARIO VARCHAR (40),
+	PEDIDO_FECHA DATETIME,
+	ALMACEN VARCHAR (67),
+	ALMACEN2 VARCHAR (67),
+	TIPO_ALMACEN CHAR (1),
+	GLOSA VARCHAR (80),
+	REFERENCIA VARCHAR (27),
+	VENDEDOR VARCHAR (58),
+	RUC VARCHAR (18),
+	CLIENTE VARCHAR (80),
+	TIPO_CLIENTE VARCHAR (60),
+	FORMA_VENTA VARCHAR (56),
+	MONEDA CHAR (2),
+	TC NUMERIC (14, 6),
+	MARCA CHAR (8),
+	ITEM CHAR (4),
+	TIPO_ARTICULO CHAR (1),
+	CODIGO VARCHAR (25),
+	DESCRIP VARCHAR (60),
+	CANT NUMERIC (11, 3),
+	SALDAR NUMERIC (11, 3),
+	PRECIO_MN NUMERIC (33, 15),
+	PRECIO_US NUMERIC (38, 23),
+	SUBTOT_MN NUMERIC (38, 11),
+	SUBTOT_US NUMERIC (38, 14),
+	GUIA CHAR (11),
+	GUIA_FECHA VARCHAR (10),
+	NOTA_TD CHAR (2),
+	NOTA_NUM CHAR (11),
+	NOTA_FECHA VARCHAR (10)
+	)
+	
+	INSERT INTO @temporal
+	EXEC sp_executesql @strsql1 
+	
+	UPDATE @temporal SET GUIA = 'SERVICIO', GUIA_FECHA=CONVERT(VARCHAR(10),FECHA,103) WHERE GUIA IS NULL AND TIPO_ARTICULO='S' AND TD IN ('FT','BV') OR CODIGO='TXT';
+	
+	
+	DECLARE @compara TABLE (
+	PENDIENTE CHAR (1),
+	TD CHAR (2),
+	DOCUMENTO CHAR (11)
+	)
+	INSERT INTO @compara SELECT '', TD, DOCUMENTO FROM @temporal WHERE SALDAR>0 AND FECHA >='20170101' AND FECHA <='20171031' 
+	UPDATE @temporal SET PENDIENTE='S' WHERE DOCUMENTO IN (SELECT DOCUMENTO FROM @compara)
+	
+	IF (@pendientes <> '') BEGIN 
+	 DELETE @temporal WHERE PENDIENTE<>'S'
+	END
+	--SELECT * FROM @compara; 
+	
+	
+	SELECT 
+	PENDIENTE, TD, DOCUMENTO, CONVERT(VARCHAR(10),FECHA,103) FECHA, DIF, PEDIDO, PEDIDO_USUARIO, PEDIDO_FECHA, ALMACEN, ALMACEN2, TIPO_ALMACEN, GLOSA, REFERENCIA, VENDEDOR, RUC, CLIENTE, TIPO_CLIENTE, FORMA_VENTA, MONEDA, TC, MARCA, ITEM, TIPO_ARTICULO, CODIGO, DESCRIP, CANT, SALDAR, PRECIO_MN, PRECIO_US, SUBTOT_MN, SUBTOT_US, GUIA, GUIA_FECHA, NOTA_TD, NOTA_NUM, NOTA_FECHA
+	FROM @temporal 
+	WHERE FECHA >='20170101' AND FECHA <='20171031' 
+	ORDER BY FECHA, TD, DOCUMENTO
+	
+	
+END
+GO
+
