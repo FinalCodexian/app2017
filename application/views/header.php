@@ -18,7 +18,10 @@
   <link rel="stylesheet" href="<?=base_url('tools/select2/dist/css/select2.css');?>">
   <link rel="stylesheet" href="<?=base_url('tools/select2/dist/css/select2-xLuis.css');?>">
   <link rel="stylesheet" href="<?=base_url('tools/pretty-checkbox/dist/pretty-checkbox.css');?>">
-  <link rel="stylesheet" href="<?=base_url('tools/mdi/css/materialdesignicons.css');?>">
+  <link rel="stylesheet" href="<?=base_url('tools/material-icon/material-design-iconic-font.css');?>">
+  <link rel="stylesheet" href="<?=base_url('tools/material-icon/material-design-color-palette.min.css');?>">
+  <!--link rel="stylesheet" href="< ?=base_url('tools/material-icon/animate.min.css');?>"-->
+
 
 
   <script type="text/javascript" src="<?=base_url('tools/jquery/jquery.min.js');?>"></script>
@@ -31,8 +34,9 @@
   <script type="text/javascript" src="<?=base_url('tools/select2/dist/js/i18n/es.js');?>"></script>
   <script type="text/javascript" src="<?=base_url('tools/HoldOn/HoldOn.min.js');?>"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Condensed" />
+
   <style>
-  *, .dropdown, input, textarea {font-family: 'Roboto Condensed', sans-serif }
+  *, .dropdown, input, textarea, select, label {font-family: 'Roboto Condensed', sans-serif }
   </style>
 </head>
 <body>

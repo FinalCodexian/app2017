@@ -6,6 +6,8 @@ $data = array(
 
 <? $this->load->view("header", $data); ?>
 
+
+
 <div id="sidebar"><? $this->load->view("sidebar"); ?></div>
 
 <div id="wrapper">
@@ -13,9 +15,9 @@ $data = array(
 
   <div id="dinamico">
 
-    <div class="ui tiny segment">
+    <div class="ui tiny secondary yellow segment contenedorResult">
 
-      <div class="ui tiny form">
+      <div class="ui tiny form ">
 
         <div class="ui stackable grid">
 
@@ -26,9 +28,16 @@ $data = array(
             <div class="field">
               <select id="cboVendedor" data-placeholder='- Todos los <b>vendedores</b> -'></select>
             </div>
-            <div class="field">
-              <select id="cboProducto" data-placeholder='- Todos los <b>productos</b> -'></select>
+
+            <div class="fields">
+              <div class="ten wide field">
+                <select id="cboProducto" data-placeholder='- Todos los <b>productos</b> -'></select>
+              </div>
+              <div class="six wide right field">
+                <select id="cboMarca" data-placeholder='- Todas las <b>marcas</b> -'></select>
+              </div>
             </div>
+
           </div>
 
           <div class="five wide column field">
@@ -46,21 +55,58 @@ $data = array(
                 </div>
               </div>
             </div>
-            <div class="field">
-              <select id="cboMarca" data-placeholder='- Todas las <b>marcas</b> -'></select>
+
+            <style>
+            .opciones { text-align: center;}
+            .opciones label.header {
+              font-size: 12px; font-weight: bold;
+              text-align: left;
+              border-bottom: 1px solid rgba(94, 94, 94, .6);
+              padding-bottom: 3px; display: block;
+              margin-bottom: 8px
+            }
+            </style>
+
+            <div class="opciones">
+              <label class="header">Opciones segun atenci&oacute;n</label>
+              <div class="pretty p-icon p-round p-pulse">
+                <input type="radio" name="opcion" checked/>
+                <div class="state p-primary">
+                  <i class="icon check"></i>
+                  <label>Todo</label>
+                </div>
+              </div>
+
+              <div class="pretty p-icon p-round p-pulse">
+                <input type="radio" name="opcion" />
+                <div class="state p-primary">
+                  <i class="icon check"></i>
+                  <label>Estandar sin guia</label>
+                </div>
+              </div>
+
+              <div class="pretty p-icon p-round p-pulse">
+                <input type="radio" name="opcion" />
+                <div class="state p-primary">
+                  <i class="icon check"></i>
+                  <label>Diferidas por atender</label>
+                </div>
+              </div>
+
             </div>
+
           </div>
 
           <div class="three wide column">
 
-            <button id="btnEjecutar" class="ui tiny fluid basic teal labeled icon button" style="margin-bottom:4px">
-              <i class="icon mdi mdi-flash mdi-18px"></i>
+            <button id="btnEjecutar" class="ui tiny fluid basic teal  button" style="margin-bottom:4px">
+              <i class="zmdi zmdi-check-all zmdi-hc-fw zmdi-hc-2x"></i><br>
               Buscar ventas
             </button>
 
-            <button class="ui tiny basic fluid green labeled icon button" disabled>
-              <i class="icon mdi mdi-file-excel mdi-18px"></i>
-              Exportar a excel
+            <button class="ui tiny basic fluid green button" disabled>
+              <i class="zmdi zmdi-download zmdi-hc-fw zmdi-hc-2x"></i><br>
+              Descargar a excel
             </button>
 
           </div>
@@ -71,16 +117,45 @@ $data = array(
 
     </div>
 
-    <div class="ui tiny segment" id="resultado" style="margin:6px auto">
+    <div class="ui tiny" id="resultado" style="margin:6px auto">
       #resultado
     </div>
 
   </div>
 
+  <style>
+  .alCielo {
+    display: none;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(253, 255, 154, 0.57);
+    padding: 0 10px;
+    border-radius: 50%
+  }
+  </style>
+  <a href="#" class="alCielo"><i class="zmdi zmdi-chevron-up zmdi-hc-3x"></i></a>
+
+
+  <div id="excedido" style="display:none">
+    <div class="ui icon info message" style="width: 640px; margin:auto">
+      <i class="spy icon"></i>
+      <div class="content">
+        <div class="header">Su reporte tiene demasiados documentos.. <span>0</span> para ser exactos</div>
+        <p><i class="circular info icon"></i> Le recomendamos <u>descargarlo</u> para poder revisarlo</p>
+      </div>
+    </div>
+  </div>
+
+
+
 </div>
 
 </div>
 </div>
+
+
+
 
 <script>
 $(function(){
@@ -193,131 +268,14 @@ $(function(){
       vendedor: "vendedor"
     },
     function(data){
-      var $doc = "";
-      var $detalle = "";
-      var myJSON = JSON.parse(data);
-
-      $.each(myJSON.data, function(i, item){
-
-        $div = $("<div class='ui basic segment resultado'></div>")
-        $tabla = $("<table class='cabecera'></table>");
-
-        $pie = $("<table class='pie'></table>");
-
-        $fila = $("<tr></tr>").appendTo($tabla);
-        $td = $("<td class='documento' colspan=2><label class='ui blue right pointing label'>Documento</label><label class='ui basic label'>"+ item.cabecera.td + " " + item.cabecera.documento + "</label> <label class='ui basic label'><i class='calendar icon'></i>"+ item.cabecera.fecha +"</label></td>").appendTo($fila);
-        //$td = $("<td class='fecha'><i class='calendar icon'></i>"+ item.cabecera.fecha +"</td>").appendTo($fila);
-        $td = $("<td><label class='ui right pointing label'>Cond. Pago</label>"+ item.cabecera.forma_venta +"</td>").appendTo($fila);
-
-        $fila = $("<tr></tr>").appendTo($tabla);
-        $td = $("<td colspan=3><label class='ui right pointing label'>Cliente</label> "+ item.cabecera.ruc + ' - ' + item.cabecera.cliente + "</td>").appendTo($fila);
-
-        $fila = $("<tr></tr>").appendTo($tabla);
-        $td = $("<td colspan=2><label class='ui right pointing label'>Vendedor</label>"+ item.cabecera.vendedor + "</td>").appendTo($fila);
-        if(item.cabecera.almacen.indexOf("NO USAR") > 0){
-          $td = $("<td class='almacen'><label class='ui right pointing label'>Almacen</label>"+ item.cabecera.almacen2 + "</td>").appendTo($fila);
-        }else{
-          $td = $("<td class='almacen'><label class='ui right pointing label'>Almacen</label>"+ item.cabecera.almacen + "</td>").appendTo($fila);
-        }
-
-        $fila = $("<tr></tr>").appendTo($tabla);
-        $td = $("<td colspan=2><label class='ui right pointing label'>Glosa</label> Glosa....</td>").appendTo($fila);
-        $td = $("<td><label class='ui right pointing label'>Pedido</label> Pedido....</td>").appendTo($fila);
-
-
-        // Detalle del documento
-
-
-        $detalle = $("<table class='detalle'></table>");
-        $("<thead></thead>")
-        .append("<tr></tr>")
-        .append("<th>Cantidad</th>")
-        .append("<th>Por saldar</th>")
-        .append("<th>Codigo</th>")
-        .append("<th>Descripcion</th>")
-        .append("<th>Moneda</th>")
-        .append("<th>P. Unitario</th>")
-        .append("<th>Sub Total</th>")
-        .appendTo($detalle);
-
-        $.each(item.detalle, function(di, ditem){
-          $detFila = $("<tr></tr>").appendTo($detalle);
-          $td = $("<td class='cantidad'>"+ parseInt(ditem.cant) + "</td>").appendTo($detFila);
-
-          if(parseInt(ditem.saldar)>0){
-            $td = $("<td class='cantidad'><a class='ui red circular label'>" + ditem.saldar + "</a></td>").appendTo($detFila);
-          }else{
-            $td = $("<td class='cantidad'>0</td>").appendTo($detFila);
-          }
-          $td = $("<td class='codigo'>"+ ditem.codigo + "</td>").appendTo($detFila);
-          $td = $("<td>"+ ditem.descrip +"</td>").appendTo($detFila);
-
-          $td = $("<td class='moneda'>"+ item.cabecera.moneda +"</td>").appendTo($detFila);
-
-          if(item.cabecera.moneda == "US"){
-            $td = $("<td class='precio'>"+ parseFloat(ditem.precio_us).toFixed(2) +"</td>").appendTo($detFila);
-            $td = $("<td class='precio'>"+ parseFloat(ditem.subtot_us).toFixed(2) +"</td>").appendTo($detFila);
-          }
-
-          if(item.cabecera.moneda == "MN"){
-            $td = $("<td class='precio'>"+ parseFloat(ditem.precio_mn).toFixed(2) +"</td>").appendTo($detFila);
-            $td = $("<td class='precio'>"+ parseFloat(ditem.subtot_mn).toFixed(2) +"</td>").appendTo($detFila);
-          }
-
-        });
-
-        // subtotales del detalle
-        $detFila = $("<tr></tr>").appendTo($detalle);
-        $td = $("<td class='totCantidad'>"+ parseFloat(item.tot_cantidad) +"</td>").appendTo($detFila);
-        $td = $("<td class='totVacio'></td>").appendTo($detFila);
-        $td = $("<td class='totVacio'></td>").appendTo($detFila);
-        $td = $("<td class='totVacio'></td>").appendTo($detFila);
-        $td = $("<td class='totVacio'></td>").appendTo($detFila);
-        $td = $("<td class='totVacio'></td>").appendTo($detFila);
-
-        if(item.cabecera.moneda == "US"){
-          $td = $("<td class='totPrecio'>"+ parseFloat(item.tot_US).toFixed(2) +"</td>").appendTo($detFila);
-        }
-        if(item.cabecera.moneda == "MN"){
-          $td = $("<td class='totPrecio'>"+ parseFloat(item.tot_MN).toFixed(2) +"</td>").appendTo($detFila);
-        }
-
-
-        $filaPie = $("<tr></tr>").appendTo($pie);
-        if(item.tot_guias > 0){
-          $detGuias = $("<td><label class='ui right pointing label'>Guias de atencion</label></td>").appendTo($filaPie);
-          $.each(item.guias, function(di, gitem){
-            $td = $("<a class='ui basic blue medium label'>"+ gitem.guia +' ('+ gitem.guia_fecha + ")</a>").appendTo($detGuias);
-          })
-        }else{
-          if(item.cabecera.td == 'NC' || item.cabecera.td == 'ND'){
-            $td = $("<td><label class='ui right pointing label'>Sustento</label>Sustento.....</td>").appendTo($filaPie);
-          }else{
-            if(item.cabecera.tipo_almacen == "C"){
-              $td = $("<td><label class='ui right pointing label'>Nota</label>REGULARIZACION DE CONSIGNACION</td>").appendTo($filaPie);
-            }else{
-              $td = $("<td><label class='ui right pointing label'>Nota</label><label class='ui red label'>SIN GUIA DE ATENCION</label></td>").appendTo($filaPie);
-            }
-          }
-        }
-
-        if(item.tot_notas > 0){
-          $filaPie = $("<tr></tr>").appendTo($pie);
-          $detNotas = $("<td><label class='ui right pointing label'>Notas NC/ND</label></td>").appendTo($filaPie);
-          $.each(item.notas, function(di, nitem){
-            $td = $("<a class='ui basic orange medium label'>"+ nitem.td + ' ' + nitem.nota +' ('+ nitem.nota_fecha + ")</a>").appendTo($detNotas);
-          })
-        }
-
-
-        $div.append($tabla);
-        $div.append($detalle);
-        $div.append($pie);
-        $resultado.append($div);
-      });
-
+      $resp = JSON.parse(data);
+      if($resp.excedido == true){
+        $("#excedido").find("span").html($resp.total);
+        $resultado.html($("#excedido").html());
+      }else{
+        $resultado.html($resp.html);
+      }
       HoldOn.close();
-
     });
   });
 
@@ -326,29 +284,124 @@ $(function(){
 </script>
 
 <style>
-.resultado * { font-size: 12px; }
 
+.datepicker {font-family: 'Roboto Condensed', sans-serif !important}
+.contenedorResult { margin-bottom: 20px !important}
+.resultado * { font-size: 12px; }
+.resultado {margin: 5px auto 40px auto;
+  border-top: 3px solid rgba(108, 108, 108, .1);
+  border-bottom: 3px solid rgba(108, 108, 108, .1);
+  border-radius: 5px;
+  max-width: 950px;
+  transition: all 0.3s
+}
+.resultado:hover{
+  border-top: 3px solid rgba(108, 108, 108, .2);
+  border-bottom: 3px solid rgba(108, 108, 108, .2);
+}
 .resultado table.cabecera {width: 100%; border-collapse: collapse; margin: 3px auto }
 .resultado table.cabecera td {border: 1px solid #ccc; padding: 3px}
-.resultado table.cabecera td.documento { width: 220px}
-.resultado table.cabecera td.fecha { text-align: left;}
-.resultado table.cabecera td.almacen { width: 350px; }
+.resultado table.cabecera td.documento { width: 240px; font-size: 13px; font-weight: bold;}
+
+.resultado label.label ~.nota {
+  color: #333;
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  position: absolute;
+  margin-left: 10px;
+  border: 1px solid rgba(147, 147, 147, 0.57);
+  background-color: yellow
+}
+
+.resultado label.label ~.green {
+  color: green;
+  padding: 3px 6px;
+  border-radius: 3px;
+  margin-right: 4px;
+  display: inline-block;
+  border: 1px solid green
+}
+
+.resultado label.label ~.orange {
+  color: #f2711c;
+  padding: 3px 6px;
+  border-radius: 3px;
+  margin-right: 4px;
+  display: inline-block;
+  border: 1px solid #f2711c
+}
+
+.resultado label.label ~.blue {
+  color: #2185d0;
+  padding: 3px 6px;
+  border-radius: 3px;
+  margin-right: 4px;
+  display: inline-block;
+  border: 1px solid #2185d0
+}
+
+.label.saldar {
+  color: red;
+  padding: 0px 7px;
+  border-radius: 50%;
+  display: inline-block;
+  border: 1px solid red
+}
+
+.resultado label.label ~.red {
+  color: red;
+  padding: 3px 6px;
+  border-radius: 3px;
+  margin-right: 4px;
+  display: inline-block;
+  border: 1px solid red
+}
+
+.resultado label.label {
+  font-size: 11px;
+  color: #5d5d5d;
+  font-weight: normal;
+  background-color: #e8e8e8;
+  padding: 3px 7px;
+  border-radius: 3px;
+  position: relative;
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.resultado label.label:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 7px;
+  left: 100%;
+  width: 0px;
+  height: 0;
+  border-color: transparent transparent transparent #e8e8e8;
+  border-style: solid;
+  border-width: 6px;
+  }​
 
 
-.resultado table.detalle { width: 100%; border-collapse: collapse; margin: 3px auto}
-.resultado table.detalle thead th { border: 1px solid #ccc; background: rgb(241, 241, 241)}
-.resultado table.detalle td { border: 1px solid #ccc; padding: 0 4px}
-.resultado table.detalle td.cantidad { text-align: center; width: 65px}
-.resultado table.detalle td.codigo { text-align: center; width: 100px}
-.resultado table.detalle td.moneda { text-align: center; width: 60px}
-.resultado table.detalle td.precio { text-align: right; width: 90px; padding-right: 7px}
-.resultado table.detalle td.totCantidad { text-align: center; font-weight: bold; background: rgb(241, 241, 241)}
-.resultado table.detalle td.totPrecio { text-align: right;; font-weight: bold; padding-right: 7px; background: rgb(241, 241, 241)}
-.resultado table.detalle td.totVacio { border: 0 none}
+  .resultado table.cabecera td.fecha { text-align: left;}
+  .resultado table.cabecera td.almacen { width: 350px; }
 
 
-.resultado table.pie { width: 100%; border-collapse: collapse; margin: 3px auto}
-.resultado table.pie td { border: 1px solid #ccc; padding: 4px}
-</style>
+  .resultado table.detalle { width: 100%; border-collapse: collapse; margin: 3px auto}
+  .resultado table.detalle thead th { border: 1px solid #ccc; background: rgb(241, 241, 241)}
+  .resultado table.detalle td { border: 1px solid #ccc; padding: 0 4px}
+  .resultado table.detalle td.cantidad { text-align: center; width: 65px}
+  .resultado table.detalle td.codigo { text-align: center; width: 100px}
+  .resultado table.detalle td.moneda { text-align: center; width: 60px}
+  .resultado table.detalle td.precio { text-align: right; width: 90px; padding-right: 7px}
+  .resultado table.detalle td.totCantidad { text-align: center; font-weight: bold; background: rgb(241, 241, 241)}
+  .resultado table.detalle td.totPrecio { text-align: right;; font-weight: bold; padding-right: 7px; background: rgb(241, 241, 241)}
+  .resultado table.detalle td.totVacio { border: 0 none}
 
-<? $this->load->view("footer"); ?>
+
+  .resultado table.pie { width: 100%; border-collapse: collapse; margin: 3px auto}
+  .resultado table.pie td { border: 1px solid #ccc; padding: 4px}
+  </style>
+
+  <? $this->load->view("footer"); ?>

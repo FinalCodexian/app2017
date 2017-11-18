@@ -1,4 +1,4 @@
-<div class="ui wide mini top pointing menu" id="top-menu">
+<div class="ui mini top fixed menu" id="top-menu">
 
   <a class="item mobile-button">
     <div class="hamburger hamburger--vortex is-active">
