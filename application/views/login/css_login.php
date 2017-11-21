@@ -17,6 +17,7 @@
       position: relative;
       top: 7%;
       width: 350px;
+      display: block;
     }
 
     .field {

@@ -39,39 +39,29 @@ class M_login extends CI_Model {
 
 		if (isset($row)):
 
-			//echo $row->anme;
 
-			$session = [
-				"usuarioId" => $datos["usuario"],
-				"usuarioNom" => $row->nombre,
-				"almacenId" => $row->almacen_id,
-				"almacenNom" => $row->almacen_nom,
-				"agenciaId" => $row->agencia_id,
-				"agenciaNom" => $row->agencia_nom,
-				"vendedor" => $row->vendedor,
-				"nivel" => $row->nivel,
-				"base" => $datos["base"],
-				"concar" => $row->concar,
-				"empresa" => $row->empresa
-			];
-			$this->session->set_userdata($session);
+			$this->session->set_userdata(
+				$datos["token"],
+				array(
+					"usuarioId" => $datos["usuario"],
+					"usuarioNom" => $row->nombre,
+					"almacenId" => $row->almacen_id,
+					"almacenNom" => $row->almacen_nom,
+					"agenciaId" => $row->agencia_id,
+					"agenciaNom" => $row->agencia_nom,
+					"vendedor" => $row->vendedor,
+					"nivel" => $row->nivel,
+					"base" => $datos["base"],
+					"concar" => $row->concar,
+					"empresa" => $row->empresa,
+					"codeigniter_version" => CI_VERSION
+				)
+			);
+
 			return true;
 		else:
 			return false;
 		endif;
-
-		die();
-
-		if($q->num_rows()>0){
-			$session = [
-				"userId" => $datos["usuario"],
-				"userName" => 22
-			];
-			$this->session->set_userdata($session);
-			return true;
-		}else{
-			return false;
-		}
 
 	}
 

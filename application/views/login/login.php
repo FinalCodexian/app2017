@@ -70,6 +70,8 @@
   </div>
 
 
+
+
   <script type="text/javascript">
   $(function () {
 
@@ -82,13 +84,15 @@
           type: 'post',
           url: '<?=site_url('login/ingresar');?>',
           data: $formLogin.serialize(),
+          dataType: 'json',
           beforeSend: function () {
             $formLogin.parent().addClass("loading");
             $(".message.negative").slideUp("fast");
           },
           success: function (data) {
-            if (data==="true"){
-              window.location = "<?=site_url("/welcome/inicio");?>";
+            console.log(data);
+            if (data.status===true){
+              window.location = "<?=site_url("/welcome/inicio");?>/"+data.md5;
             }else{
               $(".message.negative").slideDown("fast");
               $formLogin.parent().removeClass("loading");
