@@ -33,6 +33,8 @@
   <script type="text/javascript" src="<?=base_url('tools/select2/dist/js/i18n/es.js');?>"></script>
   <script type="text/javascript" src="<?=base_url('tools/HoldOn/HoldOn.min.js');?>"></script>
   <script type="text/javascript" src="<?=base_url('tools/jQuery-Mask-Plugin/dist/jquery.mask.min.js');?>"></script>
+  <script type="text/javascript" src="<?=base_url('tools/countup.js/dist/countUp.min.js');?>"></script>
+  <script type="text/javascript" src="<?=base_url('tools/highlight.js');?>"></script>
 
   <style>
   *, .dropdown, input, textarea, select, label {font-family: 'Roboto Condensed', sans-serif }

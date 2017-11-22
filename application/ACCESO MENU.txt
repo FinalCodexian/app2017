@@ -1,0 +1,29 @@
+===========================
+ADMINISTRACION POR USUARIOS
+===========================
+
+BUSCAR USUARIO: ___________________
+
+POR EMPRESA (BD): ______________[ v ]
+
+PRIVILEGIOS:
+[ X ] PUEDE CAMBIAR CONTRASEÑA DE ACCESO
+[   ] PUEDE CAMBIAR SUS DATOS GENERALES
+
+
+ACCESOS:
+MENU 				LECTURA		ESCRITURA 	
+------------------------ 	-------		---------
+CONSULTA DE CLIENTE		 [ X ]		  [ X ]
+VENTAS POR CLIENTE 		 [ X ]		  [ X ]
+RANKING DE VENTAS		 [ X ]		  [ X ]
+
+
+RESTRICCIONES BUSQUEDAS:
+(   ) SIN RESTRICCIONES
+( • ) BUSQUEDAS SOLO RELACIONADAS CON SU CODIGO DE USUARIO/VENDEDOR
+(   ) BUSQUEDAS ASIGNADOS POR CODIGO DE USUARIO/VENDEDOR: _______________ [ v ]  // multiselect
+
+
+
+

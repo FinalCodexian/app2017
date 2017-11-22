@@ -14,7 +14,8 @@ html, body {
 
 
   z-index: 100;
-  width: 220px
+  width: 220px;
+
 }
 
 #wrapper { width: 100%; background: #FFF; padding-left: 220px; padding-top: 28px}
