@@ -113,6 +113,8 @@ $data = array(
 
     <div class="ui tiny custom popup">
 
+      <i class="circular red remove link icon" style="position:absolute; right:4px; top: 6px" onclick="javascript:$('#popover').popup('hide'); void(0)"></i>
+
       <div style="text-align:center; margin-bottom:10px">
         <div class="ui tiny statistic">
           <div class="value" id="total_documentos">0</div>
@@ -120,25 +122,32 @@ $data = array(
         </div>
       </div>
 
-      <div class="ui tiny fluid teal vertical menu" id="linkFiltros">
-        <a class="disabled item" data-type='FT'>Facturas<div class="ui grey label" id="cont_FT">0</div></a>
-        <a class="disabled item" data-type='BV'>Boletas de venta<div class="ui grey label" id="cont_BV">0</div></a>
-        <a class="disabled item" data-type='NC'>Notas de Credito<div class="ui grey label" id="cont_NC">0</div></a>
-        <a class="disabled item" data-type='ND'>Notas de Debito<div class="ui grey label" id="cont_ND">0</div></a>
+      <div class="ui tiny fluid teal vertical menu cmdFiltro">
+        <a class="disabled item cmdFiltro" data-type='FT'>Facturas<div class="ui disabled grey label" id="cont_FT">0</div></a>
+        <a class="disabled item cmdFiltro" data-type='BV'>Boletas de venta<div class="ui disabled grey label" id="cont_BV">0</div></a>
+        <a class="disabled item cmdFiltro" data-type='NC'>Notas de Credito<div class="ui disabled grey label" id="cont_NC">0</div></a>
+        <a class="disabled item cmdFiltro" data-type='ND'>Notas de Debito<div class="ui disabled grey label" id="cont_ND">0</div></a>
       </div>
 
-      <div class="ui icon fluid input" style="margin-bottom:15px">
+      <div class="two tiny basic ui buttons">
+        <button class="ui button disabled cmdFiltro" data-type='GS'>
+          Sin Gu&iacute;a de remisi&oacute;n
+          <hr class="ui dividing " />
+          <div class="ui grey label" id="cont_GS">0</div>
+        </button>
+        <button class="ui button disabled cmdFiltro" data-type='R'>
+          Sin Nota de Cr&eacute;dito
+          <hr class="ui dividing " />
+          <div class="ui grey label" id="cont_R">0</div>
+        </button>
+      </div>
+
+      <div class="ui icon fluid input" style="margin-bottom:10px; margin-top:20px">
         <input type="search" placeholder="Filtrar en resultado..." id="Filtro" disabled>
         <i class="inverted orange circular search icon"></i>
       </div>
 
-      <button class="ui tiny labeled icon button disabled" id="relacionNC">
-        <i class="large unhide icon"></i>
-        Documentos sin NC relacionadas (<span id="tot_notasNC">0</span>)
-      </button>
-
     </div>
-
 
     <div class="ui tiny" id="resultado" style="margin:6px auto">
 
@@ -148,126 +157,101 @@ $data = array(
       #menuTemporal { margin: 10px auto; font-size: 11px; display: block; height: 40px}
       #menuTemporal li { float: left; list-style-type: none;}
       #menuTemporal li a { display: inline-block; margin-right: 10px; border:1px solid #ccc; border-radius: 4px; padding: 5px 10px; cursor: pointer;}
-      .temporal { background-color: grey; color: white}
-      #menuTemporal li a.active { background-color: red}
-      </style>
+      .temporal {}
+        .x {}
+          #menuTemporal li a.active { background-color: red}
+          </style>
 
-      <script>
-      $(function(){
-        $("#menuTemporal a").on("click",function(e){
+          <script>
+          $(function(){
 
-          if($(this).hasClass("active")){
-            $(this).removeClass("active");
-          }else{
-            $(this).addClass("active");
-          }
+            $(".cmdFiltro").on("click",function(e){
 
-          $filtro = $(this).data("type");
+              if($(this).hasClass("active")) $(this).removeClass("active"); else $(this).addClass("active");
 
-          var $filtros = [];
-          $("#menuTemporal a").each(function(index){
-            if($(this).hasClass("active")){
-              if ($(this).data('type') == "FT") $filtros.push("[data-type='FT']");
-              if ($(this).data('type') == "BV") $filtros.push("[data-type='BV']");
-              if ($(this).data('type') == "NC") $filtros.push("[NC]");
-              if ($(this).data('type') == "ND") $filtros.push("[ND]");
-              if ($(this).data('type') == "GS") $filtros.push("[data-guias='0']");
-              if ($(this).data('type') == "R") $filtros.push("[data-notas='0']");
-            }
+              $filtro = $(this).data("type");
+
+              $('.resultado').removeClass('temporal');
+              $('.resultado').removeClass('x');
+
+              var $filtros = [];
+              $(".cmdFiltro").each(function(index){
+                if($(this).hasClass("active")){
+                  if ($(this).data('type') == "FT") $(".resultado[data-type='FT']").addClass("temporal");
+                  if ($(this).data('type') == "BV") $(".resultado[data-type='BV']").addClass("temporal");
+                  if ($(this).data('type') == "NC") $(".resultado[data-type='NC']").addClass("temporal");
+                  if ($(this).data('type') == "ND") $(".resultado[data-type='ND']").addClass("temporal");
+
+                  // Sin GS / pendientes
+                  if ($(this).data('type') == "GS"){
+                    $('.resultado').removeClass('temporal');
+                    $('.resultado').removeClass('x');
+
+                    $(".resultado")
+                    .not("[data-type='NC']")
+                    .not("[data-type='ND']")
+                    .not("[data-pendiente!='S']")
+                    .addClass("temporal");
+
+                    if( $(".cmdFiltro[data-type='FT']").hasClass("active") && $(".cmdFiltro[data-type='BV']").hasClass("active") ){
+                    }else{
+                      if( $(".cmdFiltro[data-type='FT']").hasClass("active") ) $(".temporal[data-type!='FT']").removeClass("temporal");
+                      if( $(".cmdFiltro[data-type='BV']").hasClass("active") ) $(".temporal[data-type!='BV']").removeClass("temporal");
+                    }
+                  }
+
+                  // NC relacionada
+                  if ($(this).data('type') == "R"){
+                    $(".resultado").each(function(ind, elem){
+                      if( $(elem).data("notas") != '0' ) $(elem).addClass("x");
+                    });
+                  }
+
+                }
+              })
+
+              $('.resultado').show();
+              if( $(".resultado").length !==  $(".resultado:not(.temporal)").length ){
+                $(".resultado:not(.temporal)").hide();
+              }
+              $(".x").hide();
+
+            })
+
           })
-          $("#time").html( $filtros.join("") );
-
-          $('.resultado').removeClass('temporal');
-
-          $items = $('.resultado').filter($filtros.join(''));
-          $items.addClass('temporal');
+          </script>
 
 
-          $('.resultado').show();
-          if( $(".resultado").length !==  $(".resultado:not(.temporal)").length ){
-            $(".resultado:not(.temporal)").hide();
-          }
+          <div id="datosJSON"></div>
 
+        </div>
 
-        })
-      })
-      </script>
-
-      Filtros: <span id="time"></span>
-      <ul id="menuTemporal">
-        <li><a data-type='FT'>FT</a></li>
-        <li><a data-type='BV'>BV</a></li>
-        <li><a data-type='NC'>NC</a></li>
-        <li><a data-type='ND'>ND</a></li>
-        <li><a data-type='GS'>Sin GS</a></li>
-        <li><a data-type='R'>Sin NC relacionada</a></li>
-      </ul>
-
-      <div class="resultado" data-type="FT" data-guias='1' data-notas='0'>FT - GS-1</div>
-      <div class="resultado" data-type="FT" data-guias='1' data-notas='2'>FT - GS-1 - NC-2</div>
-      <div class="resultado" data-type="BV" data-guias='1' data-notas='0'>BV - GS-1</div>
-      <div class="resultado" data-type="FT" data-guias='0' data-notas='0'>FT</div>
-      <div class="resultado" data-type="BV" data-guias='0' data-notas='1'>BV - NC-1</div>
-      <div class="resultado" data-type="FT" data-guias='0' data-notas='0'>FT</div>
-      <div class="resultado" data-type="BV" data-guias='1' data-notas='0'>BV - GS-1</div>
-      <div class="resultado" data-type="BV" data-guias='1' data-notas='0'>BV - GS-1</div>
-      <div class="resultado" data-type="FT" data-guias='0' data-notas='0'>FT</div>
-      <div class="resultado" data-type="FT" data-guias='0' data-notas='0'>FT</div>
-      <div class="resultado" data-type="NC" data-guias='0' data-notas='0'>NC</div>
-      <div class="resultado" data-type="FT" data-guias='2' data-notas='0'>FT - GS-2</div>
-      <div class="resultado" data-type="NC" data-guias='0' data-notas='0'>NC</div>
-      <div class="resultado" data-type="FT" data-guias='1' data-notas='0'>FT - GS-1</div>
-      <div class="resultado" data-type="ND" data-guias='0' data-notas='0'>ND</div>
-      <div class="resultado" data-type="ND" data-guias='0' data-notas='0'>ND</div>
-
-
-
-
-      <div id="datosJSON"></div>
-
-    </div>
-
-  </div>
-
-  <a href="#" class="alCielo"><i class="zmdi zmdi-chevron-up zmdi-hc-3x"></i></a>
-
-  <div id="excedido" style="display:none">
-    <div class="ui icon info message" style="width: 640px; margin:auto">
-      <i class="spy icon"></i>
-      <div class="content">
-        <div class="header">Su reporte tiene demasiados documentos.. <span>0</span> para ser exactos</div>
-        <p><i class="circular info icon"></i> Le recomendamos <u>descargarlo</u> para poder revisarlo</p>
       </div>
+
+      <a href="#" class="alCielo"><i class="zmdi zmdi-chevron-up zmdi-hc-3x"></i></a>
+
+      <div id="excedido" style="display:none">
+        <div class="ui icon info message" style="width: 640px; margin:auto">
+          <i class="spy icon"></i>
+          <div class="content">
+            <div class="header">Su reporte tiene demasiados documentos.. <span>0</span> para ser exactos</div>
+            <p><i class="circular info icon"></i> Le recomendamos <u>descargarlo</u> para poder revisarlo</p>
+          </div>
+        </div>
+      </div>
+
     </div>
+
   </div>
-
-</div>
-
-</div>
 </div>
 
 <script>
 $(function(){
 
-  $("#relacionNC").on("click",function(){
-    if($(this).hasClass('active')){
-      $(this).removeClass("active");
-      $(this).find("i").addClass("unhide");
-      $(this).find("i").removeClass("hide");
-      $('#datosJSON > [data-notas!="0"]').show();
-    }else{
-      $(this).addClass("active");
-      $(this).find("i").removeClass("unhide");
-      $(this).find("i").addClass("hide");
-      $('#datosJSON > [data-notas!="0"]').hide();
-    }
-  })
-
-
 
   $("#Filtro").on("keyup change",function(){
     $filtro = $.trim($(this).val().toUpperCase());
-
+    $(".cmdFiltro").removeClass("active");
     $(".resultado").hide();
 
     $('.resultado e').removeHighlight();
@@ -283,45 +267,35 @@ $(function(){
 
   });
 
-  $("#linkFiltros a").on("click",function(){
-    if(!$(this).hasClass('disabled')){
-      $('.resultado').hide();
-      $('#datosJSON > [data-td="'+ $(this).attr("data-type") +'"]').show();
-    }
-  })
-
-  $("#test").on("click", function(){
-    $('#datosJSON > [data-td="FT"]').toggle();
-  })
-
-  $("#test2").on("click", function(){
-    $('#datosJSON > [data-td="BV"]').toggle();
-  })
-
-
   var options = { useEasing: false, useGrouping: false, separator: ',', decimal: '.'},
   $total_documentos = new CountUp('total_documentos', 0, 0, 0, .5, options),
   $total_FT = new CountUp('cont_FT', 0, 0, 0, .5, options),
   $total_BV = new CountUp('cont_BV', 0, 0, 0, .5, options),
   $total_NC = new CountUp('cont_NC', 0, 0, 0, .5, options),
   $total_ND = new CountUp('cont_ND', 0, 0, 0, .5, options),
-  $tot_notasNC = new CountUp('tot_notasNC', 0, 0, 0, .5, options);
+  $total_GS = new CountUp('cont_GS', 0, 0, 0, .5, options),
+  $total_R = new CountUp('cont_R', 0, 0, 0, .5, options);
 
   $('#popover').popup({
-    popup : $('.custom.popup'),
-    on: 'hover',
-    inline: true,
-    hoverable: true,
+    popup : $('.custom.popup'), on: 'click', inline: false,
     position: 'top left',
+    closable: false,
     delay: {
-      show: 150,
-      hide: 800
+       show: 0,
+       hide: 800
     }
   }).on("mousemove", function(){
-    $(this).css({'animation':'none'});
+    //  $(this).css({'animation':'none'});
   });
 
-  // $('#popover').popup('show');
+  //$('#popover').popup('show');
+
+
+  $(document).bind('keydown.f3', function(e){
+    e.preventDefault();
+    $('#popover').popup('toggle');
+  });
+
 
   $('.datepicker').mask('00/00/0000', {placeholder: "__/__/____"});
 
@@ -420,7 +394,7 @@ $(function(){
     format: 'DD/MM/YYYY',
     theme: 'triangle-theme',
     onSelect: function(date) {
-      console.log(this.getMoment().format('Do MMMM YYYY'));
+      //console.log(this.getMoment().format('Do MMMM YYYY'));
     }
   });
 
@@ -448,19 +422,23 @@ $(function(){
         $("#popover").hide();
         $('#popover').popup('hide');
 
+        $("#Filtro").val("");
         $("#Filtro").prop("disabled",true);
 
+        $total_documentos.reset();
+        $total_FT.reset();
+        $total_BV.reset();
+        $total_NC.reset();
+        $total_ND.reset();
+        $total_GS.reset();
+        $total_R.reset();
 
-        $("#relacionNC").addClass("disabled");
-        $("#relacionNC").removeClass("active");
-        $("#relacionNC").find("i").addClass("unhide");
-        $("#relacionNC").find("i").removeClass("hide");
-
-
-        $("#cont_FT").parent().addClass("disabled").removeClass("active");
-        $("#cont_BV").parent().addClass("disabled").removeClass("active");
-        $("#cont_NC").parent().addClass("disabled").removeClass("active");
-        $("#cont_ND").parent().addClass("disabled").removeClass("active");
+        $("#cont_FT").addClass("disabled").parent().addClass("disabled").removeClass("active");
+        $("#cont_BV").addClass("disabled").parent().addClass("disabled").removeClass("active");
+        $("#cont_NC").addClass("disabled").parent().addClass("disabled").removeClass("active");
+        $("#cont_ND").addClass("disabled").parent().addClass("disabled").removeClass("active");
+        $("#cont_GS").addClass("disabled").parent().addClass("disabled").removeClass("active");
+        $("#cont_R").addClass("disabled").parent().addClass("disabled").removeClass("active");
       }
     }).done(function($resp){
       if($resp.excedido == true){
@@ -469,54 +447,72 @@ $(function(){
       }else{
         $resultado.html($resp.html);
         $("#popover").show(350, function(){
+
           $('#popover').popup('show');
 
-          $total_documentos.reset();
-          $total_documentos.update($resp.total);
+          $total_documentos.start(function() {
+            $total_documentos.update($resp.total);
+          });
 
           if($resp.total > 0){
             $("#Filtro").prop("disabled",false);
-            $("#cont_control").parent().removeClass("disabled"); //.removeClass("active");
           }
 
-          $total_FT.reset();
           if($resp.totales.FT>0){
-            $("#cont_FT").parent().removeClass("disabled").addClass("active");
-            $total_FT.update($resp.totales.FT);
+            $total_FT.start(function() {
+              $total_FT.update($resp.totales.FT);
+            });
+
+            $("#cont_FT")
+            .removeClass("disabled").addClass("active")
+            .parent().removeClass("disabled");
           }
 
-          $tot_notasNC.reset();
-          if($resp.tot_notasNC>0){
-            $("#relacionNC").removeClass("disabled");
-            $("#relacionNC").removeClass("active");
-            $("#relacionNC").find("i").addClass("unhide");
-            $("#relacionNC").find("i").removeClass("hide");
-            $tot_notasNC.update( $resp.total - $resp.tot_notasNC);
-          }
-
-          $total_FT.reset();
-          if($resp.totales.FT>0){
-            $("#cont_FT").parent().removeClass("disabled").addClass("active");
-            $total_FT.update($resp.totales.FT);
-          }
-
-          $total_BV.reset();
           if($resp.totales.BV>0){
-            $("#cont_BV").parent().removeClass("disabled").addClass("active");
-            $total_BV.update($resp.totales.BV);
+            $("#cont_BV")
+            .removeClass("disabled").addClass("active")
+            .parent().removeClass("disabled");
+            $total_BV.start(function() {
+              $total_BV.update($resp.totales.BV);
+            });
           }
 
-          $total_NC.reset();
           if($resp.totales.NC>0){
-            $("#cont_NC").parent().removeClass("disabled").addClass("active");
-            $total_NC.update($resp.totales.NC);
+            $("#cont_NC")
+            .removeClass("disabled").addClass("active")
+            .parent().removeClass("disabled");
+            $total_NC.start(function() {
+              $total_NC.update($resp.totales.NC);
+            });
           }
 
-          $total_ND.reset();
           if($resp.totales.ND>0){
-            $("#cont_ND").parent().removeClass("disabled").addClass("active");
-            $total_ND.update($resp.totales.ND);
+            $("#cont_ND")
+            .removeClass("disabled").addClass("active")
+            .parent().removeClass("disabled");
+            $total_ND.start(function() {
+              $total_ND.update($resp.totales.ND);
+            });
           }
+
+          if($resp.tot_pendientes>0){
+            $("#cont_GS")
+            .removeClass("disabled").addClass("active")
+            .parent().removeClass("disabled");
+            $total_GS.start(function() {
+              $total_GS.update($resp.tot_pendientes);
+            });
+          }
+
+          if($resp.tot_notasNC>0){
+            $("#cont_R")
+            .removeClass("disabled").addClass("active")
+            .parent().removeClass("disabled");
+            $total_R.start(function() {
+              $total_R.update($resp.tot_notasNC);
+            });
+          }
+
 
         });
       }
@@ -650,7 +646,7 @@ $(function(){
   .resultado table.pie td { border: 1px solid #ccc; padding: 4px}
 
 
-  .highlight { text-decoration: underline !important; color: rgb(15, 79, 2) !important}
+  .highlight { text-decoration: underline !important; color: rgb(15, 79, 2) !important; background-color: rgba(255, 237, 70, 0.5)}
 
 
   #popover {display:snone; position: fixed; bottom: 20px; margin-left: 10px; z-index: 10}

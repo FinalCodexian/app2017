@@ -1,3 +1,13 @@
+<?php
+ini_set('date.timezone', 'America/Lima');
+date_default_timezone_set( 'America/Lima' );
+$sess = $this->uri->segment(3, 0);
+if( !$this->session->userdata($sess) ):
+  redirect(site_url(), "refresh");
+  die();
+endif;
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,6 +45,9 @@
   <script type="text/javascript" src="<?=base_url('tools/jQuery-Mask-Plugin/dist/jquery.mask.min.js');?>"></script>
   <script type="text/javascript" src="<?=base_url('tools/countup.js/dist/countUp.min.js');?>"></script>
   <script type="text/javascript" src="<?=base_url('tools/highlight.js');?>"></script>
+
+  <script type="text/javascript" src="<?=base_url('tools/jquery.hotkeys.js');?>"></script>
+
 
   <style>
   *, .dropdown, input, textarea, select, label {font-family: 'Roboto Condensed', sans-serif }

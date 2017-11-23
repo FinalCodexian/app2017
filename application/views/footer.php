@@ -3,6 +3,12 @@
 
 <script type="text/javascript">
 $(function(){
+
+  $(document).bind('keydown.f1', function(e){
+    e.preventDefault();
+    $(".mobile-button").click();
+  });
+
   $(".mnuOpciones").dropdown();
 
   $(".mobile-button").click(function(e){

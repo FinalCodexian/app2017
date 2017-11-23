@@ -8,9 +8,11 @@ class Ventas extends CI_Controller {
     $itemActual = "";
     $contador = 0;
     $tot_notasNC = 0;
+    $tot_pendientes = 0;
     $final = array();
 
     $params = [
+      "cliente" => $this->input->post("cliente"),
       "vendedor" => $this->input->post("vendedor"),
       "inicio" => $this->input->post("inicio"),
       "final" => $this->input->post("final"),
@@ -97,10 +99,12 @@ class Ventas extends CI_Controller {
               "nota_fecha" => $value["NOTA_FECHA"]
             )),
 
-            'tot_notas' => ($value["NOTA_NUM"]=="" ? 0 : 1)
+            'tot_notas' => ($value["NOTA_NUM"]=="" ? 0 : 1),
+            'pendiente' => ($value["PENDIENTE"]=="S" ? "S": " ")
 
           );
 
+          if( $value["PENDIENTE"]=='S') ++$tot_pendientes;
           if($value["NOTA_TD"]=='NC') ++$tot_notasNC;
 
           ++$contador;
@@ -156,6 +160,7 @@ class Ventas extends CI_Controller {
             $final[$contador-1]['tot_notas'] = ++$final[$contador-1]['tot_notas'];
             if( $value["NOTA_TD"]=='NC') ++$tot_notasNC;
 
+
           endif;
 
         endif;
@@ -173,7 +178,8 @@ class Ventas extends CI_Controller {
           "total" => $contador,
           "mensaje" => "Muy pesado :(",
           "totales" => $mTotales,
-          "tot_notasNC" => $tot_notasNC
+          "tot_notasNC" => $tot_notasNC,
+          "tot_pendientes" => $tot_pendientes
         );
       else:
         $datos = array(
@@ -181,7 +187,8 @@ class Ventas extends CI_Controller {
           "total" => $contador,
           "html" => $this->formatoReporte(["total"=>$contador,"data"=>$final]),
           "totales" => $mTotales,
-          "tot_notasNC" => $tot_notasNC
+          "tot_notasNC" => $tot_notasNC,
+          "tot_pendientes" => $tot_pendientes
         );
       endif;
     else:
@@ -206,7 +213,7 @@ class Ventas extends CI_Controller {
     if($datos["total"]):
 
       foreach ($datos["data"] as $key => $value):
-        $retorno .= "<div class='resultado' data-td='". $value["cabecera"]["td"]  ."' data-notas='". $value["tot_notas"] ."' data-guias='". $value["tot_guias"] ."'>";
+        $retorno .= "<div class='resultado' data-type='". $value["cabecera"]["td"]  ."' data-notas='". $value["tot_notas"] ."' data-guias='". $value["tot_guias"] ."' data-pendiente='".$value["pendiente"]."'>";
 
         $retorno .=  "<table class='cabecera'>";
         $retorno .=  "<tr>";
