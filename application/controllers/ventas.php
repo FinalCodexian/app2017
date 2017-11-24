@@ -3,6 +3,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Ventas extends CI_Controller {
 
+  public function fnVendedorAsignado(){
+    $this->load->model('ventas/m_ventas');
+
+    $params = [
+      'base' =>  $this->input->post("base"),
+      'usuario' =>  $this->input->post("usuario")
+    ];
+
+    $result = $this->m_ventas->mVendedoresAsignados($params);
+
+  }
+
   public function fnVentasxCliente(){
     $docActual = "";
     $itemActual = "";
@@ -14,9 +26,16 @@ class Ventas extends CI_Controller {
     $params = [
       "cliente" => $this->input->post("cliente"),
       "vendedor" => $this->input->post("vendedor"),
+      "marca" => $this->input->post("marca"),
+      "producto" => $this->input->post("producto"),
+      "opcion" => $this->input->post("opcion"),
+
       "inicio" => $this->input->post("inicio"),
       "final" => $this->input->post("final"),
-      "opcion" => $this->input->post("opcion")
+
+      "agencia" => $this->input->post("agencia"),
+      "base" => $this->input->post("base"),
+      "concar" => $this->input->post("concar")
     ];
 
     $this->load->model('ventas/m_ventas');

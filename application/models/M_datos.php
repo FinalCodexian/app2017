@@ -1,11 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+
+
 class M_datos extends CI_Model {
 
   public function listaSimple($datos){
+
     $buscar = $datos["buscar"];
     $opcion = $datos["opcion"];
-    $dbLuis = $this->load->database('default', TRUE);
+    $dbLuis = $this->load->database($datos["base"], TRUE);
     switch($opcion):
       case 'clientes':
       $dbLuis->select('rtrim(CL_CCODCLI) as id, rtrim(CL_CNOMCLI) AS text');

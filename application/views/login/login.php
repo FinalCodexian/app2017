@@ -51,12 +51,12 @@
         <div class="two fields">
           <div class="field">
             <label>Codigo de usuario</label>
-            <input type="text" name="usuario" required title="Ingrese su usuario">
+            <input type="text" name="usuario" required title="Ingrese su usuario" maxlength="5">
           </div>
 
           <div class="field">
             <label>Clave de acceso</label>
-            <input type="password" name="clave" required title="Ingrese su clave">
+            <input type="password" name="clave" required title="Ingrese su clave" maxlength="8">
           </div>
         </div>
 

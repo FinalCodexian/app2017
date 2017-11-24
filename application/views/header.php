@@ -31,22 +31,22 @@ endif;
   <link rel="stylesheet" href="<?=base_url('tools/material-icon/material-design-iconic-font.css');?>">
   <link rel="stylesheet" href="<?=base_url('tools/material-icon/material-design-color-palette.min.css');?>">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Condensed" />
-
-
-  <script type="text/javascript" src="<?=base_url('tools/jquery/jquery.min.js');?>"></script>
-  <script type="text/javascript" src="<?=base_url('tools/semantic/semantic.min.js');?>"></script>
   <link rel="stylesheet" href="<?=base_url('tools/handsontable/dist/pikaday/pikaday.css');?>">
-  <script type="text/javascript" src="<?=base_url('tools/handsontable/dist/moment/moment.js');?>"></script>
-  <script type="text/javascript" src="<?=base_url('tools/handsontable/dist/pikaday/pikaday.js');?>"></script>
-  <script type="text/javascript" src="<?=base_url('tools/handsontable/dist/pikaday/pikaday.jquery.js');?>"></script>
-  <script type="text/javascript" src="<?=base_url('tools/select2/dist/js/select2.full.js');?>"></script>
-  <script type="text/javascript" src="<?=base_url('tools/select2/dist/js/i18n/es.js');?>"></script>
-  <script type="text/javascript" src="<?=base_url('tools/HoldOn/HoldOn.min.js');?>"></script>
-  <script type="text/javascript" src="<?=base_url('tools/jQuery-Mask-Plugin/dist/jquery.mask.min.js');?>"></script>
-  <script type="text/javascript" src="<?=base_url('tools/countup.js/dist/countUp.min.js');?>"></script>
-  <script type="text/javascript" src="<?=base_url('tools/highlight.js');?>"></script>
 
-  <script type="text/javascript" src="<?=base_url('tools/jquery.hotkeys.js');?>"></script>
+  <script src="<?=base_url('tools/jquery/jquery.min.js');?>"></script>
+  <script src="<?=base_url('tools/semantic/semantic.min.js');?>"></script>
+  <script src="<?=base_url('tools/handsontable/dist/moment/moment.js');?>"></script>
+  <script src="<?=base_url('tools/handsontable/dist/pikaday/pikaday.js');?>"></script>
+  <script src="<?=base_url('tools/handsontable/dist/pikaday/pikaday.jquery.js');?>"></script>
+  <script src="<?=base_url('tools/select2/dist/js/select2.full.js');?>"></script>
+  <script src="<?=base_url('tools/select2/dist/js/i18n/es.js');?>"></script>
+  <script src="<?=base_url('tools/HoldOn/HoldOn.min.js');?>"></script>
+  <script src="<?=base_url('tools/jQuery-Mask-Plugin/dist/jquery.mask.min.js');?>"></script>
+  <script src="<?=base_url('tools/countup.js/dist/countUp.min.js');?>"></script>
+  <script src="<?=base_url('tools/highlight.js');?>"></script>
+
+  <script src="<?=base_url('tools/jquery.hotkeys.js');?>"></script>
+  <script src="<?=base_url('tools/sweetalert2/dist/sweetalert2.all.min.js');?>"></script>
 
 
   <style>

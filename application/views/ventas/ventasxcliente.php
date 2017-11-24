@@ -7,8 +7,6 @@ $data = array(
 
 <? $this->load->view("header", $data); ?>
 
-
-
 <div id="sidebar"><? $this->load->view("sidebar"); ?></div>
 
 <div id="wrapper">
@@ -56,17 +54,6 @@ $data = array(
                 </div>
               </div>
             </div>
-
-            <style>
-            .opciones { text-align: center;}
-            .opciones label.header {
-              font-size: 12px; font-weight: bold;
-              text-align: left;
-              border-bottom: 1px solid rgba(94, 94, 94, .6);
-              padding-bottom: 3px; display: block;
-              margin-bottom: 8px
-            }
-            </style>
 
             <div class="opciones">
               <label class="header">Opciones segun atenci&oacute;n</label>
@@ -153,100 +140,169 @@ $data = array(
 
       <i class="circular inverted teal xpulse large link filter icon" id="popover"></i>
 
-      <style>
-      #menuTemporal { margin: 10px auto; font-size: 11px; display: block; height: 40px}
-      #menuTemporal li { float: left; list-style-type: none;}
-      #menuTemporal li a { display: inline-block; margin-right: 10px; border:1px solid #ccc; border-radius: 4px; padding: 5px 10px; cursor: pointer;}
-      .temporal {}
-        .x {}
-          #menuTemporal li a.active { background-color: red}
-          </style>
+      <script>
+      $(function(){
 
-          <script>
-          $(function(){
+        $(".cmdFiltro").on("click",function(e){
 
-            $(".cmdFiltro").on("click",function(e){
+          if($(this).hasClass("active")) $(this).removeClass("active"); else $(this).addClass("active");
 
-              if($(this).hasClass("active")) $(this).removeClass("active"); else $(this).addClass("active");
+          $filtro = $(this).data("type");
 
-              $filtro = $(this).data("type");
+          $('.resultado').removeClass('temporal');
+          $('.resultado').removeClass('x');
 
-              $('.resultado').removeClass('temporal');
-              $('.resultado').removeClass('x');
+          var $filtros = [];
+          $(".cmdFiltro").each(function(index){
+            if($(this).hasClass("active")){
+              if ($(this).data('type') == "FT") $(".resultado[data-type='FT']").addClass("temporal");
+              if ($(this).data('type') == "BV") $(".resultado[data-type='BV']").addClass("temporal");
+              if ($(this).data('type') == "NC") $(".resultado[data-type='NC']").addClass("temporal");
+              if ($(this).data('type') == "ND") $(".resultado[data-type='ND']").addClass("temporal");
 
-              var $filtros = [];
-              $(".cmdFiltro").each(function(index){
-                if($(this).hasClass("active")){
-                  if ($(this).data('type') == "FT") $(".resultado[data-type='FT']").addClass("temporal");
-                  if ($(this).data('type') == "BV") $(".resultado[data-type='BV']").addClass("temporal");
-                  if ($(this).data('type') == "NC") $(".resultado[data-type='NC']").addClass("temporal");
-                  if ($(this).data('type') == "ND") $(".resultado[data-type='ND']").addClass("temporal");
+              // Sin GS / pendientes
+              if ($(this).data('type') == "GS"){
+                $('.resultado').removeClass('temporal');
+                $('.resultado').removeClass('x');
 
-                  // Sin GS / pendientes
-                  if ($(this).data('type') == "GS"){
-                    $('.resultado').removeClass('temporal');
-                    $('.resultado').removeClass('x');
+                $(".resultado")
+                .not("[data-type='NC']")
+                .not("[data-type='ND']")
+                .not("[data-pendiente!='S']")
+                .addClass("temporal");
 
-                    $(".resultado")
-                    .not("[data-type='NC']")
-                    .not("[data-type='ND']")
-                    .not("[data-pendiente!='S']")
-                    .addClass("temporal");
-
-                    if( $(".cmdFiltro[data-type='FT']").hasClass("active") && $(".cmdFiltro[data-type='BV']").hasClass("active") ){
-                    }else{
-                      if( $(".cmdFiltro[data-type='FT']").hasClass("active") ) $(".temporal[data-type!='FT']").removeClass("temporal");
-                      if( $(".cmdFiltro[data-type='BV']").hasClass("active") ) $(".temporal[data-type!='BV']").removeClass("temporal");
-                    }
-                  }
-
-                  // NC relacionada
-                  if ($(this).data('type') == "R"){
-                    $(".resultado").each(function(ind, elem){
-                      if( $(elem).data("notas") != '0' ) $(elem).addClass("x");
-                    });
-                  }
-
+                if( $(".cmdFiltro[data-type='FT']").hasClass("active") && $(".cmdFiltro[data-type='BV']").hasClass("active") ){
+                }else{
+                  if( $(".cmdFiltro[data-type='FT']").hasClass("active") ) $(".temporal[data-type!='FT']").removeClass("temporal");
+                  if( $(".cmdFiltro[data-type='BV']").hasClass("active") ) $(".temporal[data-type!='BV']").removeClass("temporal");
                 }
-              })
-
-              $('.resultado').show();
-              if( $(".resultado").length !==  $(".resultado:not(.temporal)").length ){
-                $(".resultado:not(.temporal)").hide();
               }
-              $(".x").hide();
 
-            })
+              // NC relacionada
+              if ($(this).data('type') == "R"){
+                $(".resultado").each(function(ind, elem){
+                  if( $(elem).data("notas") != '0' ) $(elem).addClass("x");
+                });
+              }
 
+            }
           })
-          </script>
+
+          $('.resultado').show();
+          if( $(".resultado").length !==  $(".resultado:not(.temporal)").length ){
+            $(".resultado:not(.temporal)").hide();
+          }
+          $(".x").hide();
+
+        })
+
+      })
+      </script>
 
 
-          <div id="datosJSON"></div>
+      <div id="datosJSON"></div>
 
-        </div>
+      <button id="traer">JSON
+      </button>
 
-      </div>
+      <script>
+      $(function(){
+        $("#traer").on("click", function(){
 
-      <a href="#" class="alCielo"><i class="zmdi zmdi-chevron-up zmdi-hc-3x"></i></a>
+          $.ajax({
+            method: "POST",
+            url: "<?=site_url('ventas/fnVendedorAsignado')?>",
+            cache: false,
+            dataType: 'json',
+            data: {
+              usuario: "<?=$this->session->userdata($sess)['vendedor'];?>",
+              base: "<?=$this->session->userdata($sess)['base'];?>"
+            }
+          }).done(function($resp){
+            console.log($resp);
+          })
 
-      <div id="excedido" style="display:none">
-        <div class="ui icon info message" style="width: 640px; margin:auto">
-          <i class="spy icon"></i>
-          <div class="content">
-            <div class="header">Su reporte tiene demasiados documentos.. <span>0</span> para ser exactos</div>
-            <p><i class="circular info icon"></i> Le recomendamos <u>descargarlo</u> para poder revisarlo</p>
-          </div>
-        </div>
-      </div>
+        })
+      })
+      </script>
 
     </div>
 
   </div>
+
+  <a href="#" class="alCielo"><i class="zmdi zmdi-chevron-up zmdi-hc-3x"></i></a>
+
+  <div id="excedido" style="display:none">
+    <div class="ui icon info message" style="width: 640px; margin:auto">
+      <i class="spy icon"></i>
+      <div class="content">
+        <div class="header">Su reporte tiene demasiados documentos.. <span>0</span> para ser exactos</div>
+        <p><i class="circular info icon"></i> Le recomendamos <u>descargarlo</u> para poder revisarlo</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div>
 </div>
 
 <script>
 $(function(){
+
+  $.fn.select2.defaults.set('theme', 'xLuis')
+  $.fn.select2.defaults.set('language', 'es');
+  $.fn.select2.defaults.set('allowClear', 'true');
+  $.fn.select2.defaults.set('width', '100%');
+
+
+
+  if("<?=$this->session->userdata($sess)['nivel'];?>" !== "OP"){
+
+    $('#cboVendedor').select2({
+      minimumInputLength: 3,
+
+      ajax: {
+        url: '<?=site_url('datos/fnListaSimple');?>',
+        data: function(params){ return { q: params.term, opcion: 'vendedores', base: "<?=$this->session->userdata($sess)['base'];?>" }; },
+        dataType: 'json',
+        delay: 850
+      },
+
+      escapeMarkup: function (markup) { return markup; },
+      templateResult: formatRepo
+    });
+
+  }else{
+
+
+
+    $.ajax({
+      method: 'POST',
+      url: '<?=site_url('ventas/fnVendedorAsignado');?>',
+      data: {
+        usuario: "<?=$this->session->userdata($sess)['vendedor'];?>",
+        base: "<?=$this->session->userdata($sess)['base'];?>"
+      },
+      cache: false,
+      dataType: 'json',
+      delay: 850
+    }); 
+
+
+
+    $("#cboVendedor").select2({
+      data: [{
+        id: "<?=$this->session->userdata($sess)['vendedor'];?>",
+        text: "<?=$this->session->userdata($sess)['usuarioNom'];?>"
+      }],
+      escapeMarkup: function (markup) { return markup; },
+      templateResult: formatRepo,
+      allowClear: false
+    });
+
+  }
+
 
 
   $("#Filtro").on("keyup change",function(){
@@ -281,8 +337,8 @@ $(function(){
     position: 'top left',
     closable: false,
     delay: {
-       show: 0,
-       hide: 800
+      show: 0,
+      hide: 800
     }
   }).on("mousemove", function(){
     //  $(this).css({'animation':'none'});
@@ -299,10 +355,6 @@ $(function(){
 
   $('.datepicker').mask('00/00/0000', {placeholder: "__/__/____"});
 
-  $.fn.select2.defaults.set('theme', 'xLuis')
-  $.fn.select2.defaults.set('language', 'es');
-  $.fn.select2.defaults.set('allowClear', 'true');
-  $.fn.select2.defaults.set('width', '100%');
 
   $('.combo').select2({
     minimumResultsForSearch: Infinity,
@@ -314,7 +366,7 @@ $(function(){
     minimumInputLength: 3,
     ajax: {
       url: '<?=site_url('datos/fnListaSimple');?>',
-      data: function(params){ return { q: params.term, opcion: 'marcas' }; },
+      data: function(params){ return { q: params.term, opcion: 'marcas', base: "<?=$this->session->userdata($sess)['base'];?>" }; },
       dataType: 'json',
       delay: 850
     },
@@ -322,13 +374,16 @@ $(function(){
     templateResult: formatRepo2
   });
 
+
+
   $('#cboCliente').select2({
     minimumInputLength: 3,
     ajax: {
       url: '<?=site_url('datos/fnListaSimple');?>',
       data: function(params){ return {
         q: params.term,
-        vendedor: "<?=$this->session->userdata('vendedor');?>",
+        vendedor: "<?=$this->session->userdata($sess)['vendedor'];?>",
+        base: "<?=$this->session->userdata($sess)['base'];?>",
         opcion: "clientes"
       }},
       dataType: 'json',
@@ -338,35 +393,12 @@ $(function(){
     templateResult: formatRepo
   });
 
-  $('#cboVendedor').select2({
-    minimumInputLength: 3,
-    ajax: {
-      url: '<?=site_url('datos/fnListaSimple');?>',
-      data: function(params){ return { q: params.term, opcion: "vendedores" }; },
-      dataType: 'json',
-      delay: 850
-    },
-    escapeMarkup: function (markup) { return markup; },
-    templateResult: formatRepo
-  });
-
-  if("<?=$this->session->userdata($sess)['vendedor'];?>" !== ""){
-    $("#cboVendedor")
-    .select2("destroy")
-    .select2({
-      data: [{
-        id: "<?=$this->session->userdata($sess)['vendedor'];?>",
-        text: "<?=$this->session->userdata($sess)['usuarioNom'];?>"
-      }],
-      disabled: true
-    });
-  }
 
   $('#cboProducto').select2({
     minimumInputLength: 3,
     ajax: {
       url: '<?=site_url('datos/fnListaSimple');?>',
-      data: function(params){ return { q: params.term, opcion: "productos" }; },
+      data: function(params){ return { q: params.term, opcion: "productos", base: "<?=$this->session->userdata($sess)['base'];?>" }; },
       dataType: 'json',
       delay: 850
     },
@@ -414,7 +446,11 @@ $(function(){
         marca: $("#cboMarca").val(),
         inicio: $("#fecInicio").val(),
         final: $("#fecFinal").val(),
-        opcion: $("[name='opcion']:checked").val()
+        opcion: $("[name='opcion']:checked").val(),
+
+        agencia: "<?=$this->session->userdata($sess)["agenciaId"];?>",
+        base: "<?=$this->session->userdata($sess)["base"];?>",
+        concar: "<?=$this->session->userdata($sess)["concar"];?>"
       },
       beforeSend: function(){
         HoldOn.open({ theme:"sk-bounce" });
@@ -660,6 +696,22 @@ $(function(){
     0% { -webkit-box-shadow: 0 0 0 0 rgba(241, 174, 0, 0.72) }
     70% { -webkit-box-shadow: 0 0 0 10px rgba(121, 121, 121, 0) }
     100% { -webkit-box-shadow: 0 0 0 0 rgba(121, 121, 121, 0) }
+  }
+
+  .opciones { text-align: center;}
+  .opciones label.header {
+    font-size: 12px; font-weight: bold;
+    text-align: left;
+    border-bottom: 1px solid rgba(94, 94, 94, .6);
+    padding-bottom: 3px; display: block;
+    margin-bottom: 8px
+  }
+
+  .temporal {
+
+  }
+  .x {
+
   }
   </style>
 

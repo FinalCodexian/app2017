@@ -19,7 +19,7 @@ class M_login extends CI_Model {
 		$dbLuis->select("TU_ALIAS alias, rtrim(TU_NOMUSU) nombre");
 		$dbLuis->select("TU_NROALM almacen_id, RTRIM(A.A1_CDESCRI) almacen_nom");
 		$dbLuis->select("TU_CCODAGE agencia_id, RTRIM(F.AG_CDESCRI) agencia_nom");
-		$dbLuis->select("V.VE_CCODIGO vendedor,TU_TELEFONO telefono,TU_CORREO email");
+		$dbLuis->select("rtrim(V.VE_CCODIGO) vendedor,TU_TELEFONO telefono,TU_CORREO email");
 		$dbLuis->select("TU_IMPRES nivel, C.AC_CNOMCIA empresa, C.AC_CRUTCON concar");
 		$dbLuis->from('UT0030');
 		$dbLuis->join("FT0001AGEN F", 'F.AG_CCODAGE=TU_CCODAGE', 'left');
@@ -30,38 +30,18 @@ class M_login extends CI_Model {
 		$dbLuis->where("TU_ALIAS", $datos["usuario"]);
 		$dbLuis->where("TU_PASSWO", $this->EncriptaSoftcom($datos["clave"]));
 		$q = $dbLuis->get();
-
+		
 		/*
 		Campo= TU_IMPRES
-		MS = Master
-		SU = Supervisor
-		AD = Administrador
-		OP = Operario / Usuario / Vendedor
+		MS = Master - acceso total
+		SU = Supervisor - Administra TODO
+		AD = Administrador - Administrada una o varias agencias / ciudad
+		OP = Usuario / Asistente / Vendedor
 		*/
 
 		$row = $q->row();
-
+		$resp = "";
 		if (isset($row)):
-
-			if($row->nivel == 'SU'):
-
-				$dbDefault = $this->load->database('default', TRUE);
-
-				$dbDefault->select('VENDEDOR');
-				$dbDefault->from('USUARIO_VENDEDOR');
-				$dbDefault->where("USUARIO", $datos["usuario"]);
-				$dbDefault->where("BASE", $datos["base"]);
-				$dbDefault->where("ESTADO", "V");
-				$det = $dbDefault->get();
-				if($det->num_rows()>0):
-					$this->session->set_userdata(
-						$datos["token"],
-						$det->result_array()
-					);
-				endif;
-
-			endif;
-
 
 			$this->session->set_userdata(
 				$datos["token"],
@@ -77,7 +57,6 @@ class M_login extends CI_Model {
 					"base" => $datos["base"],
 					"concar" => $row->concar,
 					"empresa" => $row->empresa,
-					"lista_vendedor" => ()
 					"codeigniter_version" => CI_VERSION
 				)
 			);

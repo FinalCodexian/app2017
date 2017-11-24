@@ -37,7 +37,7 @@ public function ingresar(){
 public function logout(){
   $sess = $this->uri->segment(3, 0);
   $this->session->unset_userdata($sess);
-  $this->session->sess_destroy();
+  //$this->session->sess_destroy();
   $this->load->view('login/login');
 }
 

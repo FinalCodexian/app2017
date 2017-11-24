@@ -6,7 +6,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'PCLUIS',
+	'hostname' => 'SDLIMA',
 	'username' => 'sa',
 	'password' => 'samepw$1702',
 	'database' => 'XLUIS',
@@ -28,7 +28,7 @@ $db['default'] = array(
 
 $db['JCHS2017'] = array(
 	'dsn'	=> '',
-	'hostname' => 'PCLUIS',
+	'hostname' => 'SDLIMA',
 	'username' => 'sa',
 	'password' => 'samepw$1702',
 	'database' => 'JCHS2017',
@@ -50,7 +50,7 @@ $db['JCHS2017'] = array(
 
 $db['CARS2017'] = array(
 	'dsn'	=> '',
-	'hostname' => 'PCLUIS',
+	'hostname' => 'SDLIMA',
 	'username' => 'sa',
 	'password' => 'samepw$1702',
 	'database' => 'CARS2017',

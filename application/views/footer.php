@@ -4,6 +4,8 @@
 <script type="text/javascript">
 $(function(){
 
+//   swal('Hello world!','', 'success')
+
   $(document).bind('keydown.f1', function(e){
     e.preventDefault();
     $(".mobile-button").click();
