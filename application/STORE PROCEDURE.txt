@@ -1,23 +1,4 @@
-CREATE FUNCTION fn_LimpiaEspacios 
-(
-    @InputStr varchar(8000)
-)
-RETURNS varchar(8000)
-AS
-BEGIN
-declare @ResultStr varchar(8000)
-set @ResultStr = @InputStr
-while charindex(' ', @ResultStr) > 0
-    set @ResultStr = replace(@InputStr, ' ', '')
-
-return @ResultStr
-END
-GO
-
-
-
-
-CREATE PROCEDURE VTA_VTAXCLIENTE (
+ALTER PROCEDURE VTA_VTAXCLIENTE (
 	@base AS NVARCHAR (20),
 	@concar AS NVARCHAR(20),
 	@agencia AS NVARCHAR(20),
@@ -25,8 +6,8 @@ CREATE PROCEDURE VTA_VTAXCLIENTE (
 	@cliente AS NVARCHAR(50) = '',
 	@marca AS NVARCHAR(50) = '',
 	@producto AS NVARCHAR(50) = '',
-	@fecInicio AS VARCHAR(10) = '',
-	@fecFinal AS VARCHAR(10) = '',
+	@inicio AS VARCHAR(10) = '',
+	@final AS VARCHAR(10) = '',
 	@pendientes AS VARCHAR(1) = ''
 )
 AS BEGIN 
@@ -65,8 +46,13 @@ AS BEGIN
 	set @strsql1 = @strsql1 + 'LEFT JOIN '+@base+'..FT0001CLIE CL ON (CL.CL_CCODCLI=C.F5_CCODCLI) LEFT JOIN '+@base+'..AL0001TABL TC ON (TC.TG_CCOD=''67'' AND TC.TG_CCLAVE=CL.CL_CTIPCLI) '
 	set @strsql1 = @strsql1 + 'LEFT JOIN '+@base+'..AL0001ALMA A ON (A.A1_CALMA=C.F5_CALMA) '
 	set @strsql1 = @strsql1 + 'LEFT JOIN '+@base+'..AL0001ARTI AT ON (AT.AR_CCODIGO=D.F6_CCODIGO) '
-	set @strsql1 = @strsql1 + 'LEFT JOIN '+@base+'..AL0001MOVC G ON (G.C5_CSITGUI<>''A'' AND G.C5_CRFTDOC=C.F5_CTD AND '
-	set @strsql1 = @strsql1 + 'ltrim(rtrim(dbo.fn_LimpiaEspacios(G.C5_CRFNDOC)))=RTRIM(C.F5_CNUMSER)+C.F5_CNUMDOC) '
+	
+	-- set @strsql1 = @strsql1 + 'LEFT JOIN '+@base+'..AL0001MOVC G ON (G.C5_CSITGUI<>''A'' AND G.C5_CRFTDOC=C.F5_CTD AND '
+	-- set @strsql1 = @strsql1 + 'ltrim(rtrim(dbo.fn_LimpiaEspacios(G.C5_CRFNDOC)))=RTRIM(C.F5_CNUMSER)+C.F5_CNUMDOC) '
+	
+	set @strsql1 = @strsql1 + 'LEFT JOIN '+@base+'..AL0001MOVC G ON (G.C5_CTD=''GS'' AND G.C5_CSITGUI<>''A'' AND G.C5_CRFTDOC=C.F5_CTD AND C.F5_CCODCLI=G.C5_CCODCLI '
+	set @strsql1 = @strsql1 + 'AND G.C5_CRFNDOC = CASE RTRIM(C.F5_CTF) WHEN ''05'' THEN C.F5_CNUMSER+C.F5_CNUMDOC WHEN '''' THEN RTRIM(C.F5_CNUMSER)+C.F5_CNUMDOC END) '
+
 	
 	set @strsql1 = @strsql1 + 'LEFT JOIN (SELECT * FROM '+@base+'..FT0001ACUC UNION ALL SELECT * FROM '+@base+'..FT0001FACC) NOTA ON ('
 	set @strsql1 = @strsql1 + 'NOTA.F5_CTD IN (''NC'',''ND'') AND NOTA.F5_CRFTD=C.F5_CTD AND NOTA.F5_CRFNSER=C.F5_CNUMSER AND NOTA.F5_CRFNDOC=C.F5_CNUMDOC AND NOTA.F5_CESTADO<>''A'' '
@@ -80,7 +66,9 @@ AS BEGIN
 	
 	IF(@cliente<>'') SET @strsql1 = @strsql1 + 'AND C.F5_CCODCLI='''+@cliente+''' '
 	IF(@vendedor<>'') SET @strsql1 = @strsql1 + 'AND C.F5_CVENDE='''+@vendedor+''' '
-		
+	
+	set @strsql1 = @strsql1 + 'AND convert(date,C.F5_DFECDOC,103) BETWEEN convert(DATE,'''+@inicio+''',103) AND convert(DATE,'''+@final +''',103) '
+	
 	--set @strsql1 = @strsql1 + 'AND AT.AR_CMARCA=''DUN'' '
 	--set @strsql1 = @strsql1 + 'AND C.F5_CNUMSER+C.F5_CNUMDOC IN (''520 0040364'',''513 0044277'') '
 	
@@ -176,20 +164,24 @@ END
 	TD CHAR (2),
 	DOCUMENTO CHAR (11)
 	)
-	INSERT INTO @compara SELECT '', TD, DOCUMENTO FROM @temporal WHERE SALDAR>0 AND FECHA >='20170101' AND FECHA <='20171031' 
+	INSERT INTO @compara SELECT '', TD, DOCUMENTO FROM @temporal WHERE SALDAR>0 
+	
 	UPDATE @temporal SET PENDIENTE='S' WHERE DOCUMENTO IN (SELECT DOCUMENTO FROM @compara)
 	
 	IF (@pendientes <> '') BEGIN 
 	 DELETE @temporal WHERE PENDIENTE<>'S'
 	END
+	
 	--SELECT * FROM @compara; 
 	
 	
 	SELECT 
 	PENDIENTE, TD, DOCUMENTO, CONVERT(VARCHAR(10),FECHA,103) FECHA, DIF, PEDIDO, PEDIDO_USUARIO, PEDIDO_FECHA, ALMACEN, ALMACEN2, TIPO_ALMACEN, GLOSA, REFERENCIA, VENDEDOR, RUC, CLIENTE, TIPO_CLIENTE, FORMA_VENTA, MONEDA, TC, MARCA, ITEM, TIPO_ARTICULO, CODIGO, DESCRIP, CANT, SALDAR, PRECIO_MN, PRECIO_US, SUBTOT_MN, SUBTOT_US, GUIA, GUIA_FECHA, NOTA_TD, NOTA_NUM, NOTA_FECHA
 	FROM @temporal 
-	WHERE FECHA >='20170101' AND FECHA <='20171031' 
-	ORDER BY FECHA, TD, DOCUMENTO
+	WHERE 1=1
+	--AND convert(DATE,FECHA,103) >= convert(DATE,@inicio,103) 
+	--AND convert(DATE,FECHA,103) <= convert(DATE,@final,103)
+	ORDER BY convert(DATE,FECHA,103) ASC, TD, DOCUMENTO
 	
 	
 END
