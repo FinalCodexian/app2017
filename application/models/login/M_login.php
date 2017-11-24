@@ -34,13 +34,33 @@ class M_login extends CI_Model {
 		/*
 		Campo= TU_IMPRES
 		MS = Master
-		SU = Supervisor / Administrador
-		OP = Operario / Usuario
+		SU = Supervisor
+		AD = Administrador
+		OP = Operario / Usuario / Vendedor
 		*/
 
 		$row = $q->row();
 
 		if (isset($row)):
+
+			if($row->nivel == 'SU'):
+
+				$dbDefault = $this->load->database('default', TRUE);
+
+				$dbDefault->select('VENDEDOR');
+				$dbDefault->from('USUARIO_VENDEDOR');
+				$dbDefault->where("USUARIO", $datos["usuario"]);
+				$dbDefault->where("BASE", $datos["base"]);
+				$dbDefault->where("ESTADO", "V");
+				$det = $dbDefault->get();
+				if($det->num_rows()>0):
+					$this->session->set_userdata(
+						$datos["token"],
+						$det->result_array()
+					);
+				endif;
+
+			endif;
 
 
 			$this->session->set_userdata(
@@ -57,6 +77,7 @@ class M_login extends CI_Model {
 					"base" => $datos["base"],
 					"concar" => $row->concar,
 					"empresa" => $row->empresa,
+					"lista_vendedor" => ()
 					"codeigniter_version" => CI_VERSION
 				)
 			);
