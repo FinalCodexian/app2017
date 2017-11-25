@@ -215,7 +215,7 @@ $data = array(
             cache: false,
             dataType: 'json',
             data: {
-              usuario: "<?=$this->session->userdata($sess)['vendedor'];?>",
+              usuario: "<?=$this->session->userdata($sess)['usuarioId'];?>",
               base: "<?=$this->session->userdata($sess)['base'];?>"
             }
           }).done(function($resp){
@@ -275,31 +275,28 @@ $(function(){
 
   }else{
 
-
-
     $.ajax({
       method: 'POST',
       url: '<?=site_url('ventas/fnVendedorAsignado');?>',
       data: {
-        usuario: "<?=$this->session->userdata($sess)['vendedor'];?>",
+        usuario: "<?=$this->session->userdata($sess)['usuarioId'];?>",
         base: "<?=$this->session->userdata($sess)['base'];?>"
       },
       cache: false,
       dataType: 'json',
       delay: 850
-    }); 
+    }).done(function(response){
 
+      $("#cboVendedor").select2({
+        data: response.results,
+        escapeMarkup: function (markup) { return markup; },
+        templateResult: formatRepo,
+        allowClear: false
+      });
 
+      $('#cboVendedor').val('<?=$this->session->userdata($sess)['usuarioId'];?>').trigger('change');
 
-    $("#cboVendedor").select2({
-      data: [{
-        id: "<?=$this->session->userdata($sess)['vendedor'];?>",
-        text: "<?=$this->session->userdata($sess)['usuarioNom'];?>"
-      }],
-      escapeMarkup: function (markup) { return markup; },
-      templateResult: formatRepo,
-      allowClear: false
-    });
+    })
 
   }
 
