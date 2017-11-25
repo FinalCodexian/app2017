@@ -199,32 +199,7 @@ $data = array(
       })
       </script>
 
-
       <div id="datosJSON"></div>
-
-      <button id="traer">JSON
-      </button>
-
-      <script>
-      $(function(){
-        $("#traer").on("click", function(){
-
-          $.ajax({
-            method: "POST",
-            url: "<?=site_url('ventas/fnVendedorAsignado')?>",
-            cache: false,
-            dataType: 'json',
-            data: {
-              usuario: "<?=$this->session->userdata($sess)['usuarioId'];?>",
-              base: "<?=$this->session->userdata($sess)['base'];?>"
-            }
-          }).done(function($resp){
-            console.log($resp);
-          })
-
-        })
-      })
-      </script>
 
     </div>
 

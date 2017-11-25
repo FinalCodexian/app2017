@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>JCH - Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+
   <link rel="shortcut icon" href="<?=base_url('images/favicon.ico');?>">
 
   <link rel="stylesheet" type="text/css" href="<?=base_url('/tools/semantic/semantic.min.css')?>">
