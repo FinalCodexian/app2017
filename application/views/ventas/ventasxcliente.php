@@ -84,10 +84,10 @@ $data = array(
               Buscar ventas
             </button>
 
-            <button class="ui tiny basic fluid green button" disabled>
+            <!--button class="ui tiny basic fluid green button" disabled>
               <i class="zmdi zmdi-download zmdi-hc-fw zmdi-hc-2x"></i><br>
               Descargar a excel
-            </button>
+            </button-->
 
           </div>
 
