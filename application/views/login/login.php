@@ -46,7 +46,6 @@
           <option value="">Seleccione su empresa</option>
           <option value="JCHS2017">JCH COMERCIAL SA</option>
           <option value="CARS2017">EVOLUTION CAR SERVICE</option>
-          <option value="SOFTCOMTOP">TOP GARAGE SAC</option>
         </select>
       </div>
 
