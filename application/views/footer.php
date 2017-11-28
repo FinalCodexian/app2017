@@ -42,30 +42,3 @@ $(function(){
 })
 
 </script>
-
-
-
-
-
-
-
-<style>
-#info {
-  display: none;
-  border-radius: 6px;
-  opacity: 0.3;
-  right: 0;
-  bottom: 0; position: fixed; width: 400px; background: rgb(232, 232, 232); margin: 7px; font-size: 11px; padding: 10px;
-  z-index: 999; overflow-y: auto; max-height: 300px;
-  color: rgb(27, 66, 131);
-  transition: all .2s
-}
-#info:hover {  opacity: .9; }
-</style>
-<div id="info">
-  <pre>
-    <?php
-    print_r($this->session->userdata());
-    ?>
-  </pre>
-</div>

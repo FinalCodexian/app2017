@@ -84,10 +84,67 @@ $data = array(
               Buscar ventas
             </button>
 
-            <!--button class="ui tiny basic fluid green button" disabled>
+            <button id="excel" class="ui tiny basic fluid green button">
               <i class="zmdi zmdi-download zmdi-hc-fw zmdi-hc-2x"></i><br>
               Descargar a excel
-            </button-->
+            </button>
+
+
+            <script type="text/javascript">
+            $(function(){
+              $("#excel").on("click",function(){
+
+                // var $columnas = [], datos = hot.getColHeader();
+                // $.each(datos, function(k, v){
+                //   $columnas.push({
+                //     item:k,
+                //     title: hot.getColHeader(k),
+                //     type: hot.getDataType(0,k,0,k),
+                //     ancho: hot.getCellMeta(0,k).ancho,
+                //     className: hot.getCellMeta(0,k).className
+                //   });
+                // });
+
+
+                $.ajax({
+                  method: "POST",
+                  url: "<?=site_url('ventas/fnVentasxCliente')?>",
+                  cache: false,
+                  //dataType: 'json',
+                  data: {
+                    vendedor: $("#cboVendedor").val(),
+                    cliente: $("#cboCliente").val(),
+                    producto: $("#cboProducto").val(),
+                    marca: $("#cboMarca").val(),
+                    inicio: $("#fecInicio").val(),
+                    final: $("#fecFinal").val(),
+                    opcion: $("[name='opcion']:checked").val(),
+
+                    agencia: "<?=$this->session->userdata($sess)["agenciaId"];?>",
+                    base: "<?=$this->session->userdata($sess)["base"];?>",
+                    concar: "<?=$this->session->userdata($sess)["concar"];?>",
+
+                    excel: 1
+                  },
+                  beforeSend: function(){
+                    HoldOn.open({ theme:"sk-bounce" });
+                  }
+                })
+                .done(function($resp){
+//                  console.log($resp);
+
+                  $('<form method=post target=_new action="<?=site_url('excel/ventas_excel/venta_x_clientes');?>"><textarea name=contenido>' + $resp + '</textarea></form>').appendTo('body').submit().remove();
+
+                  HoldOn.close();
+
+                })
+
+
+              })
+
+            });
+            </script>
+            <div id="x">x</div>
 
           </div>
 
@@ -140,65 +197,6 @@ $data = array(
 
       <i class="circular inverted teal xpulse large link filter icon" id="popover"></i>
 
-      <script>
-      $(function(){
-
-        $(".cmdFiltro").on("click",function(e){
-
-          if($(this).hasClass("active")) $(this).removeClass("active"); else $(this).addClass("active");
-
-          $filtro = $(this).data("type");
-
-          $('.resultado').removeClass('temporal');
-          $('.resultado').removeClass('x');
-
-          var $filtros = [];
-          $(".cmdFiltro").each(function(index){
-            if($(this).hasClass("active")){
-              if ($(this).data('type') == "FT") $(".resultado[data-type='FT']").addClass("temporal");
-              if ($(this).data('type') == "BV") $(".resultado[data-type='BV']").addClass("temporal");
-              if ($(this).data('type') == "NC") $(".resultado[data-type='NC']").addClass("temporal");
-              if ($(this).data('type') == "ND") $(".resultado[data-type='ND']").addClass("temporal");
-
-              // Sin GS / pendientes
-              if ($(this).data('type') == "GS"){
-                $('.resultado').removeClass('temporal');
-                $('.resultado').removeClass('x');
-
-                $(".resultado")
-                .not("[data-type='NC']")
-                .not("[data-type='ND']")
-                .not("[data-pendiente!='S']")
-                .addClass("temporal");
-
-                if( $(".cmdFiltro[data-type='FT']").hasClass("active") && $(".cmdFiltro[data-type='BV']").hasClass("active") ){
-                }else{
-                  if( $(".cmdFiltro[data-type='FT']").hasClass("active") ) $(".temporal[data-type!='FT']").removeClass("temporal");
-                  if( $(".cmdFiltro[data-type='BV']").hasClass("active") ) $(".temporal[data-type!='BV']").removeClass("temporal");
-                }
-              }
-
-              // NC relacionada
-              if ($(this).data('type') == "R"){
-                $(".resultado").each(function(ind, elem){
-                  if( $(elem).data("notas") != '0' ) $(elem).addClass("x");
-                });
-              }
-
-            }
-          })
-
-          $('.resultado').show();
-          if( $(".resultado").length !==  $(".resultado:not(.temporal)").length ){
-            $(".resultado:not(.temporal)").hide();
-          }
-          $(".x").hide();
-
-        })
-
-      })
-      </script>
-
       <div id="datosJSON"></div>
 
     </div>
@@ -231,12 +229,67 @@ $(function(){
   $.fn.select2.defaults.set('width', '100%');
 
 
+  $(".cmdFiltro").on("click",function(e){
+
+    if($(this).hasClass("active")) $(this).removeClass("active"); else $(this).addClass("active");
+
+    $filtro = $(this).data("type");
+
+    $('.resultado').removeClass('temporal');
+    $('.resultado').removeClass('x');
+
+    var $filtros = [];
+    $(".cmdFiltro").each(function(index){
+      if($(this).hasClass("active")){
+        if ($(this).data('type') == "FT") $(".resultado[data-type='FT']").addClass("temporal");
+        if ($(this).data('type') == "BV") $(".resultado[data-type='BV']").addClass("temporal");
+        if ($(this).data('type') == "NC") $(".resultado[data-type='NC']").addClass("temporal");
+        if ($(this).data('type') == "ND") $(".resultado[data-type='ND']").addClass("temporal");
+
+        // Sin GS / pendientes
+        if ($(this).data('type') == "GS"){
+          $('.resultado').removeClass('temporal');
+          $('.resultado').removeClass('x');
+
+          $(".resultado")
+          .not("[data-type='NC']")
+          .not("[data-type='ND']")
+          .not("[data-pendiente!='S']")
+          .addClass("temporal");
+
+          if( $(".cmdFiltro[data-type='FT']").hasClass("active") && $(".cmdFiltro[data-type='BV']").hasClass("active") ){
+          }else{
+            if( $(".cmdFiltro[data-type='FT']").hasClass("active") ) $(".temporal[data-type!='FT']").removeClass("temporal");
+            if( $(".cmdFiltro[data-type='BV']").hasClass("active") ) $(".temporal[data-type!='BV']").removeClass("temporal");
+          }
+        }
+
+        // NC relacionada
+        if ($(this).data('type') == "R"){
+          $(".resultado").each(function(ind, elem){
+            if( $(elem).data("notas") != '0' ) $(elem).addClass("x");
+          });
+        }
+
+      }
+    })
+
+    $('.resultado').show();
+    if( $(".resultado").length !==  $(".resultado:not(.temporal)").length ){
+      $(".resultado:not(.temporal)").hide();
+    }
+    $(".x").hide();
+
+  })
+
+
+
+
 
   if("<?=$this->session->userdata($sess)['nivel'];?>" !== "OP"){
 
     $('#cboVendedor').select2({
       minimumInputLength: 3,
-
       ajax: {
         url: '<?=site_url('datos/fnListaSimple');?>',
         data: function(params){ return { q: params.term, opcion: 'vendedores', base: "<?=$this->session->userdata($sess)['base'];?>" }; },
@@ -269,7 +322,7 @@ $(function(){
         allowClear: false
       });
 
-      $('#cboVendedor').val('<?=$this->session->userdata($sess)['usuarioId'];?>').trigger('change');
+      $('#cboVendedor').val($('#cboVendedor option:first-child').val()).trigger('change');
 
     })
 
