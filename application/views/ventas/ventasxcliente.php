@@ -84,15 +84,21 @@ $data = array(
               Buscar ventas
             </button>
 
-            <button id="excel" class="ui tiny basic fluid green button">
+            <!-- <button id="excel" class="ui tiny basic fluid green button">
               <i class="zmdi zmdi-download zmdi-hc-fw zmdi-hc-2x"></i><br>
               Descargar a excel
-            </button>
+            </button> -->
 
+            <!-- <form action="< ?=site_url('excel/ventas_excel/venta_x_clientes');?>" method="post">
+              <textarea name="contenido" rows="8" cols="80">
+                textarea.....
+              </textarea>
+              <button type="submit" name="button">Enviar</button>
+            </form> -->
 
             <script type="text/javascript">
             $(function(){
-              $("#excel").on("click",function(){
+              $("#excelx").on("click",function(){
 
                 // var $columnas = [], datos = hot.getColHeader();
                 // $.each(datos, function(k, v){
@@ -131,12 +137,10 @@ $data = array(
                   }
                 })
                 .done(function($resp){
-//                  console.log($resp);
-
-                  $('<form method=post target=_new action="<?=site_url('excel/ventas_excel/venta_x_clientes');?>"><textarea name=contenido>' + $resp + '</textarea></form>').appendTo('body').submit().remove();
-
+                  //console.log($resp);
+                  //$('<form method=post target=_new action="< ?=site_url('excel/ventas_excel/venta_x_clientes');?>"><textarea name=contenido>' + $resp + '</textarea></form>').appendTo('body').submit().remove();
+                  $("[name=contenido]").val($resp);
                   HoldOn.close();
-
                 })
 
 
@@ -144,7 +148,7 @@ $data = array(
 
             });
             </script>
-            <div id="x">x</div>
+            <!-- <div id="x">x</div> -->
 
           </div>
 
