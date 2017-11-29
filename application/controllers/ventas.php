@@ -94,10 +94,10 @@ class Ventas extends CI_Controller {
                 "descrip" => $value["DESCRIP"],
                 "cant" => $value["CANT"],
                 "saldar" => $value["SALDAR"],
-                "precio_mn" => $value["PRECIO_MN"],
-                "precio_us" => $value["PRECIO_US"],
-                "subtot_mn" => $value["SUBTOT_MN"],
-                "subtot_us" => $value["SUBTOT_US"]
+                "precio_mn" => (($value["TD"]=='NC' && $value["PRECIO_MN"]>0) ? ($value["PRECIO_MN"] * -1) : $value["PRECIO_MN"]),
+                "precio_us" => (($value["TD"]=='NC' && $value["PRECIO_US"]>0) ? ($value["PRECIO_US"] * -1) : $value["PRECIO_US"]),
+                "subtot_mn" => (($value["TD"]=='NC' && $value["SUBTOT_MN"]>0) ? ($value["SUBTOT_MN"] * -1) : $value["SUBTOT_MN"]),
+                "subtot_us" => (($value["TD"]=='NC' && $value["SUBTOT_US"]>0) ? ($value["SUBTOT_US"] * -1) : $value["SUBTOT_US"]),
               )
             ),
 
@@ -137,11 +137,13 @@ class Ventas extends CI_Controller {
               "descrip" => $value["DESCRIP"],
               "cant" => $value["CANT"],
               "saldar" => $value["SALDAR"],
-              "precio_mn" => $value["PRECIO_MN"],
-              "precio_us" => $value["PRECIO_US"],
-              "subtot_mn" => $value["SUBTOT_MN"],
-              "subtot_us" => $value["SUBTOT_US"]
+              "precio_mn" => (($value["TD"]=='NC' && $value["PRECIO_MN"]>0) ? ($value["PRECIO_MN"] * -1) : $value["PRECIO_MN"]),
+              "precio_us" => (($value["TD"]=='NC' && $value["PRECIO_US"]>0) ? ($value["PRECIO_US"] * -1) : $value["PRECIO_US"]),
+              "subtot_mn" => (($value["TD"]=='NC' && $value["SUBTOT_MN"]>0) ? ($value["SUBTOT_MN"] * -1) : $value["SUBTOT_MN"]),
+              "subtot_us" => (($value["TD"]=='NC' && $value["SUBTOT_US"]>0) ? ($value["SUBTOT_US"] * -1) : $value["SUBTOT_US"]),
             ));
+
+
             $final[$contador-1]['tot_cantidad'] = $final[$contador-1]['tot_cantidad'] + $value["CANT"];
             $final[$contador-1]['tot_MN'] = $final[$contador-1]['tot_MN'] + $value["SUBTOT_MN"];
             $final[$contador-1]['tot_US'] = $final[$contador-1]['tot_US'] + $value["SUBTOT_US"];
@@ -309,7 +311,7 @@ class Ventas extends CI_Controller {
           $retorno .=  "<td><e>" . $det["descrip"] ."</e></td>";
 
           if($det["codigo"]=='TXT'){
-            $retorno .= "<td></td><td></td><td></td>"; 
+            $retorno .= "<td></td><td></td><td></td>";
           }else{
             $retorno .=  "<td class='moneda'>". $value["cabecera"]["moneda"] ."</td>";
             if($value["cabecera"]["moneda"] == "US"){
