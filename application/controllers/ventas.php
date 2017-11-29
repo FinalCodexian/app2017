@@ -293,27 +293,33 @@ class Ventas extends CI_Controller {
 
         foreach ($value["detalle"] as $det):
           $retorno .=  "<tr>";
-          $retorno .=  "<td class='cantidad'>" . intval($det["cant"]) . "</td>";
-
-          if(intval($det["saldar"])!==0){
-            $retorno .=  "<td class='cantidad'><a class='label saldar'>" . intval($det["saldar"]) . "</a></td>";
-          }else{
-            $retorno .=  "<td class='cantidad'>0</td>";
+          if($det["codigo"]=='TXT'){
+            $retorno .= "<td></td><td></td>";
+          }else {
+            $retorno .=  "<td class='cantidad'>" . intval($det["cant"]) . "</td>";
+            if(intval($det["saldar"])!==0){
+              $retorno .=  "<td class='cantidad'><a class='label saldar'>" . intval($det["saldar"]) . "</a></td>";
+            }else{
+              $retorno .=  "<td class='cantidad'>0</td>";
+            }
           }
 
           $retorno .=  "<td class='codigo'><e>" . $det["codigo"] . "</e></td>";
 
           $retorno .=  "<td><e>" . $det["descrip"] ."</e></td>";
-          $retorno .=  "<td class='moneda'>". $value["cabecera"]["moneda"] ."</td>";
 
-          if($value["cabecera"]["moneda"] == "US"){
-            $retorno .=  "<td class='precio'>". number_format($det["precio_us"], 2) ."</td>";
-            $retorno .=  "<td class='precio'>". number_format($det["subtot_us"], 2) ."</td>";
-          }
-
-          if($value["cabecera"]["moneda"] == "MN"){
-            $retorno .=  "<td class='precio'>". number_format($det["precio_mn"], 2) ."</td>";
-            $retorno .=  "<td class='precio'>". number_format($det["subtot_mn"], 2) ."</td>";
+          if($det["codigo"]=='TXT'){
+            $retorno .= "<td></td><td></td><td></td>"; 
+          }else{
+            $retorno .=  "<td class='moneda'>". $value["cabecera"]["moneda"] ."</td>";
+            if($value["cabecera"]["moneda"] == "US"){
+              $retorno .=  "<td class='precio'>". number_format($det["precio_us"], 2) ."</td>";
+              $retorno .=  "<td class='precio'>". number_format($det["subtot_us"], 2) ."</td>";
+            }
+            if($value["cabecera"]["moneda"] == "MN"){
+              $retorno .=  "<td class='precio'>". number_format($det["precio_mn"], 2) ."</td>";
+              $retorno .=  "<td class='precio'>". number_format($det["subtot_mn"], 2) ."</td>";
+            }
           }
 
           $retorno .=  "</tr>";
