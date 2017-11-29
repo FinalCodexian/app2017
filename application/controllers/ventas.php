@@ -102,8 +102,8 @@ class Ventas extends CI_Controller {
             ),
 
             'tot_cantidad' => ($value["CODIGO"]=="" ? 0 : $value["CANT"]),
-            'tot_MN' => ($value["DOCUMENTO"]=="" ? 0 : $value["SUBTOT_MN"]),
-            'tot_US' => ($value["DOCUMENTO"]=="" ? 0 : $value["SUBTOT_US"]),
+            'tot_MN' => ($value["DOCUMENTO"]=="" ? 0 : (($value["TD"]=='NC' && $value["SUBTOT_MN"]>0) ? ($value["SUBTOT_MN"] * -1) : $value["SUBTOT_MN"])),
+            'tot_US' => ($value["DOCUMENTO"]=="" ? 0 : (($value["TD"]=='NC' && $value["SUBTOT_US"]>0) ? ($value["SUBTOT_US"] * -1) : $value["SUBTOT_US"])),
 
             'guias' => array(array(
               "guia" => $value["GUIA"],
@@ -145,8 +145,8 @@ class Ventas extends CI_Controller {
 
 
             $final[$contador-1]['tot_cantidad'] = $final[$contador-1]['tot_cantidad'] + $value["CANT"];
-            $final[$contador-1]['tot_MN'] = $final[$contador-1]['tot_MN'] + $value["SUBTOT_MN"];
-            $final[$contador-1]['tot_US'] = $final[$contador-1]['tot_US'] + $value["SUBTOT_US"];
+            $final[$contador-1]['tot_MN'] = $final[$contador-1]['tot_MN'] + (($value["TD"]=='NC' && $value["SUBTOT_MN"]>0) ? ($value["SUBTOT_MN"] * -1) : $value["SUBTOT_MN"]);
+            $final[$contador-1]['tot_US'] = $final[$contador-1]['tot_US'] + (($value["TD"]=='NC' && $value["SUBTOT_US"]>0) ? ($value["SUBTOT_US"] * -1) : $value["SUBTOT_US"]);
 
           endif;
 
