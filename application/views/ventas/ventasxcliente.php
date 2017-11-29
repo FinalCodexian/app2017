@@ -84,39 +84,23 @@ $data = array(
               Buscar ventas
             </button>
 
-            <!-- <button id="excel" class="ui tiny basic fluid green button">
+            <button id="excel" class="ui tiny basic fluid green button">
               <i class="zmdi zmdi-download zmdi-hc-fw zmdi-hc-2x"></i><br>
               Descargar a excel
-            </button> -->
+            </button>
 
-            <!-- <form action="< ?=site_url('excel/ventas_excel/venta_x_clientes');?>" method="post">
-              <textarea name="contenido" rows="8" cols="80">
-                textarea.....
-              </textarea>
-              <button type="submit" name="button">Enviar</button>
-            </form> -->
+            <form style="display:none" id="formExcel" enctype='application/json' action="<?=site_url('excel/ventas_excel/venta_x_clientes');?>" method="post" target="_blank">
+              <textarea name="contenido" rows="8" cols="80"></textarea>
+            </form>
 
             <script type="text/javascript">
             $(function(){
-              $("#excelx").on("click",function(){
-
-                // var $columnas = [], datos = hot.getColHeader();
-                // $.each(datos, function(k, v){
-                //   $columnas.push({
-                //     item:k,
-                //     title: hot.getColHeader(k),
-                //     type: hot.getDataType(0,k,0,k),
-                //     ancho: hot.getCellMeta(0,k).ancho,
-                //     className: hot.getCellMeta(0,k).className
-                //   });
-                // });
-
+              $("#excel").on("click",function(){
 
                 $.ajax({
                   method: "POST",
                   url: "<?=site_url('ventas/fnVentasxCliente')?>",
                   cache: false,
-                  //dataType: 'json',
                   data: {
                     vendedor: $("#cboVendedor").val(),
                     cliente: $("#cboCliente").val(),
@@ -137,9 +121,9 @@ $data = array(
                   }
                 })
                 .done(function($resp){
-                  //console.log($resp);
-                  //$('<form method=post target=_new action="< ?=site_url('excel/ventas_excel/venta_x_clientes');?>"><textarea name=contenido>' + $resp + '</textarea></form>').appendTo('body').submit().remove();
+                  console.log($resp);
                   $("[name=contenido]").val($resp);
+                  $("#formExcel").submit();
                   HoldOn.close();
                 })
 
@@ -148,7 +132,6 @@ $data = array(
 
             });
             </script>
-            <!-- <div id="x">x</div> -->
 
           </div>
 
