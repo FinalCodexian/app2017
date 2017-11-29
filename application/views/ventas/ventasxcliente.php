@@ -84,10 +84,10 @@ $data = array(
               Buscar ventas
             </button>
 
-            <!-- <button id="excel" class="ui tiny basic fluid green button">
+            <button id="excel" class="ui tiny basic fluid green button">
               <i class="zmdi zmdi-download zmdi-hc-fw zmdi-hc-2x"></i><br>
               Descargar a excel
-            </button> -->
+            </button>
 
             <form style="display:none" id="formExcel" enctype='application/json' action="<?=site_url('excel/ventas_excel/venta_x_clientes');?>" method="post" target="_blank">
               <textarea name="contenido" rows="8" cols="80"></textarea>
@@ -121,7 +121,7 @@ $data = array(
                   }
                 })
                 .done(function($resp){
-                  console.log($resp);
+                  // console.log($resp);
                   $("[name=contenido]").val($resp);
                   $("#formExcel").submit();
                   HoldOn.close();
@@ -676,7 +676,7 @@ $(function(){
 
   .resultado table.cabecera td.fecha { text-align: left;}
   .resultado table.cabecera td.almacen { width: 350px; }
-
+  .resultado em.comentario { color: rgba(152, 152, 152, 0.8)}
 
   .resultado table.detalle { width: 100%; border-collapse: collapse; margin: 3px auto}
   .resultado table.detalle thead th { border: 1px solid #ccc; background: rgb(241, 241, 241)}

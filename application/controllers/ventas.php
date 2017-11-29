@@ -245,7 +245,7 @@ class Ventas extends CI_Controller {
         $retorno .=  "</tr>";
 
         $retorno .=  "<tr>";
-        $retorno .=  "<td colspan=3><label class='label'>Cliente</label> <e>" . $value["cabecera"]["ruc"] . ' - ' . $value["cabecera"]["cliente"] . "</e></td>";
+        $retorno .=  "<td colspan=3><label class='label'>Cliente</label> <a href='#'><e>" . $value["cabecera"]["ruc"] . '</a> - ' . $value["cabecera"]["cliente"] . "</e></td>";
         $retorno .=  "</tr>";
 
         $retorno .=  "<tr>";
@@ -265,7 +265,17 @@ class Ventas extends CI_Controller {
 
         $retorno .=  "<tr>";
         $retorno .=  "<td colspan=2><label class='label'>Glosa</label><e>". $value["cabecera"]["glosa"] ."</e></td>";
-        $retorno .=  "<td><label class='label'>Pedido</label> <e>". $value["cabecera"]["pedido"] ."</e></td>";
+
+        if (trim($value["cabecera"]["pedido"])<>'') {
+          $pedido = explode(' ',$value["cabecera"]["pedido_usuario"]);
+          $fecha_pedido = substr($value["cabecera"]["pedido_fecha"], 8, 2)
+          . '/' . substr($value["cabecera"]["pedido_fecha"], 5, 2)
+          . ' - ' . substr($value["cabecera"]["pedido_fecha"], 11, 8);
+          $retorno .=  "<td><label class='label'>Pedido</label> <a href='#'><e>". $value["cabecera"]["pedido"] ."</e></a> (". $fecha_pedido .") - ". $pedido[0] ." ". $pedido[1] ."</td>";
+        }else{
+          $retorno .=  "<td><label class='label'>Pedido</label> <em class='comentario'>Sin pedido</em></td>";
+        }
+
         $retorno .=  "</tr>";
 
         $retorno .=  "</table>";
@@ -346,7 +356,10 @@ class Ventas extends CI_Controller {
             if($value["cabecera"]["tipo_almacen"] == "C"){
               $retorno .=  "<tr><td><label class='label'>Nota</label><a class='green label'> REGULARIZACION DE CONSIGNACION</a></td></tr>";
             }else{
-              $retorno .=  "<tr><td><label class='label'>Aviso</label><a class='red label'> SIN GUIA DE ATENCION</a></td></tr>";
+
+              if(trim($value["pendiente"]) <> ""){
+                $retorno .=  "<tr><td><label class='label'>Aviso</label><a class='red label'> SIN GUIA DE ATENCION</a></td></tr>";
+              }
             }
           }
         endif;
