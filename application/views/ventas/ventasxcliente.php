@@ -84,10 +84,10 @@ $data = array(
               Buscar ventas
             </button>
 
-            <button id="excel" class="ui tiny basic fluid green button">
+            <!-- <button id="excel" class="ui tiny basic fluid green button">
               <i class="zmdi zmdi-download zmdi-hc-fw zmdi-hc-2x"></i><br>
               Descargar a excel
-            </button>
+            </button> -->
 
             <form style="display:none" id="formExcel" enctype='application/json' action="<?=site_url('excel/ventas_excel/venta_x_clientes');?>" method="post" target="_blank">
               <textarea name="contenido" rows="8" cols="80"></textarea>
