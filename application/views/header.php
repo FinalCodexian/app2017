@@ -17,6 +17,7 @@ endif;
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="-1">
+  <meta http-equiv="refresh" content="<?=$this->config->item('sess_expiration');?>" />
   <link rel='icon' type='image/png' href='<?=base_url("images/favicon.ico");?>'>
 
   <title>JCH - <?=$titulo?></title>
@@ -32,6 +33,7 @@ endif;
   <link rel="stylesheet" href="<?=base_url('tools/material-icon/material-design-color-palette.min.css');?>">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Condensed" />
   <link rel="stylesheet" href="<?=base_url('tools/handsontable/dist/pikaday/pikaday.css');?>">
+  <link rel="stylesheet" href="<?=base_url('tools/jbox/jBox.css');?>">
 
   <script src="<?=base_url('tools/jquery/jquery.min.js');?>"></script>
   <script src="<?=base_url('tools/semantic/semantic.min.js');?>"></script>
@@ -44,10 +46,8 @@ endif;
   <script src="<?=base_url('tools/jQuery-Mask-Plugin/dist/jquery.mask.min.js');?>"></script>
   <script src="<?=base_url('tools/countup.js/dist/countUp.min.js');?>"></script>
   <script src="<?=base_url('tools/highlight.js');?>"></script>
-
   <script src="<?=base_url('tools/jquery.hotkeys.js');?>"></script>
-  <script src="<?=base_url('tools/sweetalert2/dist/sweetalert2.all.min.js');?>"></script>
-
+  <script src="<?=base_url('tools/jbox/jBox.min.js');?>"></script>
 
   <style>
   *, .dropdown, input, textarea, select, label {font-family: 'Roboto Condensed', sans-serif }

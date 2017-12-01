@@ -121,12 +121,10 @@ $data = array(
                   }
                 })
                 .done(function($resp){
-                  // console.log($resp);
                   $("[name=contenido]").val($resp);
                   $("#formExcel").submit();
                   HoldOn.close();
                 })
-
 
               })
 
@@ -209,6 +207,9 @@ $data = array(
 
 <script>
 $(function(){
+
+
+
 
   $.fn.select2.defaults.set('theme', 'xLuis')
   $.fn.select2.defaults.set('language', 'es');
@@ -494,6 +495,17 @@ $(function(){
         $resultado.html($("#excedido").html());
       }else{
         $resultado.html($resp.html);
+
+        new jBox('Modal', {
+          attach: '.xpop',
+          width: 640,
+          height: 480,
+          ajax: {
+            reload: 'strict'
+          }
+        });
+
+
         $("#popover").show(350, function(){
 
           $('#popover').popup('show');
@@ -679,7 +691,7 @@ $(function(){
   .resultado em.comentario { color: rgba(152, 152, 152, 0.8)}
 
   .resultado table.detalle { width: 100%; border-collapse: collapse; margin: 3px auto}
-  .resultado table.detalle thead th { border: 1px solid #ccc; background: rgb(241, 241, 241)}
+  .resultado table.detalle thead th { border: 1px solid #ccc; background: rgb(241, 241, 241); text-align: center;}
   .resultado table.detalle td { border: 1px solid #ccc; padding: 0 4px}
   .resultado table.detalle td.cantidad { text-align: center; width: 65px}
   .resultado table.detalle td.codigo { text-align: center; width: 100px}

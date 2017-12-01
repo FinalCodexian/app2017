@@ -3,6 +3,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Ventas extends CI_Controller {
 
+  public function info(){
+    $this->load->model('ventas/m_info');
+    $params = [
+      'base' =>  $this->uri->segment(3),
+      'opcion' =>  $this->uri->segment(4),
+      'dato' =>  $this->uri->segment(5),
+    ];
+
+    $data['data'] = $this->m_info->info($params);
+    $this->load->view('ventas/guia', $data);
+  }
+
+
   public function fnVendedorAsignado(){
     $this->load->model('ventas/m_ventas');
 
@@ -143,7 +156,6 @@ class Ventas extends CI_Controller {
               "subtot_us" => (($value["TD"]=='NC' && $value["SUBTOT_US"]>0) ? ($value["SUBTOT_US"] * -1) : $value["SUBTOT_US"]),
             ));
 
-
             $final[$contador-1]['tot_cantidad'] = $final[$contador-1]['tot_cantidad'] + $value["CANT"];
             $final[$contador-1]['tot_MN'] = $final[$contador-1]['tot_MN'] + (($value["TD"]=='NC' && $value["SUBTOT_MN"]>0) ? ($value["SUBTOT_MN"] * -1) : $value["SUBTOT_MN"]);
             $final[$contador-1]['tot_US'] = $final[$contador-1]['tot_US'] + (($value["TD"]=='NC' && $value["SUBTOT_US"]>0) ? ($value["SUBTOT_US"] * -1) : $value["SUBTOT_US"]);
@@ -247,7 +259,7 @@ class Ventas extends CI_Controller {
         $retorno .=  "</tr>";
 
         $retorno .=  "<tr>";
-        $retorno .=  "<td colspan=3><label class='label'>Cliente</label> <a href='#'><e>" . $value["cabecera"]["ruc"] . '</a> - ' . $value["cabecera"]["cliente"] . "</e></td>";
+        $retorno .=  "<td colspan=3><label class='label'>Cliente</label> <a href='javascript:void(0)'><e>" . $value["cabecera"]["ruc"] . '</a> - ' . $value["cabecera"]["cliente"] . "</e></td>";
         $retorno .=  "</tr>";
 
         $retorno .=  "<tr>";
@@ -273,7 +285,9 @@ class Ventas extends CI_Controller {
           $fecha_pedido = substr($value["cabecera"]["pedido_fecha"], 8, 2)
           . '/' . substr($value["cabecera"]["pedido_fecha"], 5, 2)
           . ' - ' . substr($value["cabecera"]["pedido_fecha"], 11, 8);
-          $retorno .=  "<td><label class='label'>Pedido</label> <a href='#'><e>". $value["cabecera"]["pedido"] ."</e></a> (". $fecha_pedido .") - ". $pedido[0] ." ". $pedido[1] ."</td>";
+
+          $url = base_url("ventas/info/".trim($this->input->post("base"))."/pedido/".trim($value["cabecera"]["pedido"]));
+          $retorno .=  "<td><label class='label'>Pedido</label> <a href='javascript:void(0)' data-url='".$url."'><e>". $value["cabecera"]["pedido"] ."</e></a> (". $fecha_pedido .") - ". $pedido[0] ." ". $pedido[1] ."</td>";
         }else{
           $retorno .=  "<td><label class='label'>Pedido</label> <em class='comentario'>Sin pedido</em></td>";
         }
@@ -349,7 +363,9 @@ class Ventas extends CI_Controller {
           $tx =  "<td><label class='label'>Gu&iacute;as de atenci&oacute;n</label>";
           foreach($value["guias"] as $gitem){
             if(trim($gitem["guia"]) !== "SERVICIO"):
-              $tx .=  "<a href='#' class='blue label'><e>" . $gitem["guia"] . ' (' . $gitem["guia_fecha"] . ")</e></a> ";
+
+              $url = base_url("ventas/info/".trim($this->input->post("base"))."/guia/".trim($gitem["guia"]));
+              $tx .=  "<a data-url='".$url."' href='javascript:void(0)' class='xpop blue label'><e>" . $gitem["guia"] . ' (' . $gitem["guia_fecha"] . ")</e></a> ";
               ++$g;
             endif;
           }
@@ -379,7 +395,7 @@ class Ventas extends CI_Controller {
           $retorno .=  "<tr>";
           $retorno .=  "<td><label class='label'>Notas NC/ND</label>";
           foreach($value["notas"] as $nitem){
-            $retorno .=  "<a href='#' class='orange label'><e>" . $nitem["td"] . ' ' . $nitem["nota"] . ' (' . $nitem["nota_fecha"] . ")</e></a> ";
+            $retorno .=  "<a href='javascript:void(0)' class='orange label'><e>" . $nitem["td"] . ' ' . $nitem["nota"] . ' (' . $nitem["nota_fecha"] . ")</e></a> ";
           }
           $retorno .=  "</tr>";
         }
