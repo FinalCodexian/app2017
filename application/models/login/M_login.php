@@ -20,7 +20,7 @@ class M_login extends CI_Model {
 		$dbLuis->select("TU_NROALM almacen_id, RTRIM(A.A1_CDESCRI) almacen_nom");
 		$dbLuis->select("TU_CCODAGE agencia_id, RTRIM(F.AG_CDESCRI) agencia_nom");
 		$dbLuis->select("rtrim(V.VE_CCODIGO) vendedor,TU_TELEFONO telefono,TU_CORREO email");
-		$dbLuis->select("TU_IMPRES nivel, C.AC_CNOMCIA empresa, C.AC_CRUTCON concar");
+		$dbLuis->select("RTRIM(TU_IMPRES) nivel, C.AC_CNOMCIA empresa, C.AC_CRUTCON concar");
 		$dbLuis->from('UT0030');
 		$dbLuis->join("FT0001AGEN F", 'F.AG_CCODAGE=TU_CCODAGE', 'left');
 		$dbLuis->join("AL0001ALMA A", 'A.A1_CALMA=TU_NROALM', 'left');
@@ -30,7 +30,7 @@ class M_login extends CI_Model {
 		$dbLuis->where("TU_ALIAS", $datos["usuario"]);
 		$dbLuis->where("TU_PASSWO", $this->EncriptaSoftcom($datos["clave"]));
 		$q = $dbLuis->get();
-		
+
 		/*
 		Campo= TU_IMPRES
 		MS = Master - acceso total

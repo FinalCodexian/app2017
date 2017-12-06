@@ -319,7 +319,7 @@ $(function(){
 
 
 
-  if("<?=$this->session->userdata($sess)['nivel'];?>" !== "OP"){
+  if("<?=$this->session->userdata($sess)['nivel'];?>" !== "OP" && "<?=$this->session->userdata($sess)['nivel'];?>" !== ""){
 
     $('#cboVendedor').select2({
       minimumInputLength: 3,
@@ -361,7 +361,15 @@ $(function(){
 
   }
 
-
+  if("<?=$this->session->userdata($sess)['nivel'];?>" == ""){
+    $(".contenedorResult").addClass('disabled');
+    $('#cboCliente').prop("disabled", true);
+    $('#cboVendedor').prop("disabled", true);
+    $('#cboProducto').prop("disabled", true);
+    $('#cboMarca').prop("disabled", true);
+    $('.datepicker').prop("disabled", true);
+    $('[name=opcion]').prop("disabled", true);
+  }
 
   $("#Filtro").on("keyup change",function(){
     $filtro = $.trim($(this).val().toUpperCase());
@@ -626,6 +634,10 @@ $(function(){
 
   });
 
+  if("<?=$this->session->userdata($sess)['nivel'];?>" == ""){
+    $("#btnEjecutar").prop('disabled', true);
+    $("#excel").prop('disabled', true);
+  }
 
 })
 </script>

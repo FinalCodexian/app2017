@@ -31,7 +31,7 @@ class Exporta_pdf extends CI_Controller{
       $params["data"] = $datos;
       $html = $this->load->view('_pdf/formato_factura', $params, true);
       $this->load->library('pdfgenerator');
-      $filename = 'report_'.time();
+      $filename = 'Documento_' . $td .'_' . $serie . $numero ;
       $this->pdfgenerator->generate($html, $filename, true, 'A4', 'portrait');
     }
 
