@@ -12,7 +12,52 @@ $data = array(
 <div id="wrapper">
   <div id="header"><? $this->load->view("menu_top", $data); ?></div>
 
+  <style>
+  .xInfoBox {
+    display: none; background: rgb(22, 35, 51); margin-top: -5px; padding: 30px; margin-bottom: 10px;
+    box-shadow: 0 0 10px black;
+  }
+  </style>
+
+  <div class="xInfoBox">
+
+    <h3 class="ui inverted header">
+      <i class="plug icon"></i>
+      <div class="content">
+        Plug-ins
+        <div class="sub header">Check out our plug-in marketplace</div>
+      </div>
+    </h3>
+
+
+    <div class="ui inverted small relaxed divided list">
+      <div class="item">
+        <i class="large inverted github middle aligned icon"></i>
+        <div class="content">
+          <a class="header">Semantic-Org/Semantic-UI</a>
+          <div class="description">Updated 10 mins ago</div>
+        </div>
+      </div>
+      <div class="item">
+        <i class="large inverted github middle aligned icon"></i>
+        <div class="content">
+          <a class="header">Semantic-Org/Semantic-UI-Docs</a>
+          <div class="description">Updated 22 mins ago</div>
+        </div>
+      </div>
+      <div class="item">
+        <i class="large inverted github middle aligned icon"></i>
+        <div class="content">
+          <a class="header">Semantic-Org/Semantic-UI-Meteor</a>
+          <div class="description">Updated 34 mins ago</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
   <div id="dinamico">
+
 
     <div class="ui tiny secondary yellow segment contenedorResult">
 

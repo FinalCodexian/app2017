@@ -10,7 +10,6 @@ class Ventas extends CI_Controller {
       'opcion' =>  $this->uri->segment(4),
       'dato' =>  $this->uri->segment(5),
     ];
-
     $data['data'] = $this->m_info->info($params);
     $this->load->view('ventas/guia', $data);
   }
@@ -241,7 +240,7 @@ class Ventas extends CI_Controller {
 
 
   public function formatoReporte($datos){
-
+    $this->load->library('encrypt');
     $retorno = "";
 
     if($datos["total"]):
@@ -251,7 +250,41 @@ class Ventas extends CI_Controller {
 
         $retorno .=  "<table class='cabecera'>";
         $retorno .=  "<tr>";
-        $retorno .=  "<td class='documento'><label class='label'>Documento</label><e>" . $value["cabecera"]["td"] . " " . $value["cabecera"]["documento"] . "</e>";
+
+        $retorno .=  "<td class='documento'><label class='label'>Documento</label><e>";
+
+        if( substr($value["cabecera"]["documento"],0,1) =='F' || substr($value["cabecera"]["documento"],0,1) =='B' ):
+          if($value["cabecera"]["td"] == 'FT' ||  $value["cabecera"]["td"]=='BV'):
+
+
+            $xbase = trim($this->input->post("base"));
+            $xtd = $value["cabecera"]["td"];
+            $xserie = substr($value["cabecera"]["documento"], 0, 4);
+            $xnum  = substr($value["cabecera"]["documento"], 4, 7);
+
+            // $url = base_url("exporta_pdf/generar/".trim($this->input->post("base"))."/".$value["cabecera"]["td"].'/'.$xserie.'/'.$xnum);
+
+            $key = $this->config->item('encryption_key');
+            $enc_num = $this->encrypt->encode($xnum, $key);
+
+            $enc_num = strtr($enc_num,array('+' => '.', '=' => '-', '/' => '~'));
+            $full = $xbase . "/" . $xtd . "/" . $xserie . "/" . $enc_num;
+            $secure = base_url("exporta_pdf/generar/".$full);
+
+
+            $retorno .= "<a target='_blank' href='".$secure."'>" . $value["cabecera"]["td"] . " " . $value["cabecera"]["documento"] . "</a>";
+
+            // $retorno .= "<a target='_blank' href='$url'>" . $value["cabecera"]["td"] . " " . $value["cabecera"]["documento"] . "</a>";
+
+          else:
+            $retorno .= $value["cabecera"]["td"] . " " . $value["cabecera"]["documento"];
+          endif;
+        else:
+          $retorno .= $value["cabecera"]["td"] . " " . $value["cabecera"]["documento"];
+        endif;
+
+        $retorno .= "</e>";
+
         if($value["cabecera"]["diferida"]=='S') $retorno .=  "<a class='label nota'>&bull; DIFERIDA</a>";
         $retorno .=  "</td>";
         $retorno .=  "<td class='fecha'><label class='label'>Fec. Emisi&oacute;n</label><e>" . $value["cabecera"]["fecha"] . "</e></td>";

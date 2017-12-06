@@ -12,8 +12,6 @@ $data = array(
   <div id="header"><? $this->load->view("menu_top", $data); ?></div>
 
   <div id="dinamico">
-    
-
 
   </div>
 
