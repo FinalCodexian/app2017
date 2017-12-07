@@ -10,5 +10,10 @@ class Menu extends CI_Controller {
 	public function vtaClientes(){
 		$this->load->view('ventas/ventasxcliente');
 	}
-	
+
+	public function adminUsuarios(){
+		$this->load->view('admin/usuarios');
+	}
+
+
 }

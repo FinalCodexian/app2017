@@ -35,6 +35,10 @@ endif;
   <link rel="stylesheet" href="<?=base_url('tools/handsontable/dist/pikaday/pikaday.css');?>">
   <link rel="stylesheet" href="<?=base_url('tools/jbox/jBox.css');?>">
 
+  <link rel="stylesheet" href="<?=base_url('tools\datatables\jquery.dataTables.min.css');?>">
+
+
+
   <script src="<?=base_url('tools/jquery/jquery.min.js');?>"></script>
   <script src="<?=base_url('tools/semantic/semantic.min.js');?>"></script>
   <script src="<?=base_url('tools/handsontable/dist/moment/moment.js');?>"></script>
@@ -48,6 +52,9 @@ endif;
   <script src="<?=base_url('tools/highlight.js');?>"></script>
   <script src="<?=base_url('tools/jquery.hotkeys.js');?>"></script>
   <script src="<?=base_url('tools/jbox/jBox.min.js');?>"></script>
+
+  <script src="<?=base_url('tools\datatables\jquery.dataTables.min.js');?>"></script>
+
 
   <style>
   *, .dropdown, input, textarea, select, label {font-family: 'Roboto Condensed', sans-serif }

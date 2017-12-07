@@ -10,6 +10,16 @@ class M_datos extends CI_Model {
     $opcion = $datos["opcion"];
     $dbLuis = $this->load->database($datos["base"], TRUE);
     switch($opcion):
+
+      case 'usuarios':
+      $dbLuis->select('RTRIM(TU_ALIAS) CODIGO, RTRIM(TU_NOMUSU) USUARIO, TU_CCODAGE AGENCIA_COD, RTRIM(A.AG_CDESCRI) AGENCIA');
+      $dbLuis->from('UT0030');
+      $dbLuis->join('FT0001AGEN A','A.AG_CCODAGE=TU_CCODAGE','left');
+      $dbLuis->like('TU_NOMUSU', $buscar, 'both');
+      $dbLuis->or_like('TU_ALIAS', $buscar, 'both');
+      $dbLuis->order_by('TU_NOMUSU', 'ASC');
+      break;
+
       case 'clientes':
       $dbLuis->select('rtrim(CL_CCODCLI) as id, rtrim(CL_CNOMCLI) AS text');
       $dbLuis->from('FT0001CLIE');

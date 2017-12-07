@@ -33,6 +33,22 @@ $sess = $this->uri->segment(3, 0);
 
 </div>
 
+
+<?
+if($this->session->userdata($sess)["usuarioId"]=='LMVN'){
+  ?>
+  <div class="item">
+    <div class="header">
+      Administraci&oacute;n
+    </div>
+    <div class="menu">
+      <a class="item" href="<?=base_url("menu/adminUsuarios/".$sess);?>"><i class="users icon"></i>Usuarios</a>
+    </div>
+  </div>
+  <?
+}
+?>
+
 <?php
 // armar menu desde base de datos
 $dbLuis = $this->load->database('default', TRUE);
@@ -51,7 +67,6 @@ $dbLuis->order_by("padre.orden", "asc");
 $dbLuis->order_by("hijo.orden", "asc");
 
 $q = $dbLuis->get();
-// echo $dbLuis->last_query();
 $menuActual = "";
 $active = "";
 
