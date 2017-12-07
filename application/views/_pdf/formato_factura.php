@@ -268,18 +268,22 @@ table.barra td { padding: 5px}
         'FECHA' => substr($cabecera["FECHA"],6,4).'-'.substr($cabecera["FECHA"],3,2).'-'.substr($cabecera["FECHA"],0,2),
         'TIPO_ADQUIRIENTE' => $cabecera["TCLIENTE"],
         'RUC_ADQUIRIENTE' => $cabecera["RUC"],
-        'HASH' =>  $cabecera["HASH"],
-        'FIRMA' =>  $cabecera["FIRMA"],
+        'HASH' => $cabecera["HASH"],
+        'FIRMA' => $cabecera["FIRMA"]
       );
       $bar = (object) $arr_bar;
 
-      $pdf417 = new PDF417();
-      $barcode = $pdf417->encode(implode($arr_bar, '|') . '|');
-      $renderer = new ImageRenderer(['format' => 'data-url']);
-      $img = $renderer->render($barcode);
-
+      try {
+        $pdf417 = new PDF417();
+        $barcode = $pdf417->encode(implode($arr_bar, '|') . '|');
+        $renderer = new ImageRenderer(['format' => 'data-url']);
+        $img = $renderer->render($barcode);
+        $imgEncode = $img->encoded;
+      } catch (Exception $e) {
+        $imgEncode ='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+      }
       ?>
-      <img src="<?=$img->encoded;?>" width="250px" height="80px" />
+      <img src="<?=$imgEncode;?>" width="250px" height="80px" />
     </td>
   </tr>
   <tr>
