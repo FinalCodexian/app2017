@@ -218,7 +218,7 @@ class Ventas extends CI_Controller {
           "excedido" => FALSE,
           "total" => $contador,
           "html" => (trim($this->input->post("excel")=="") ? $this->formatoReporte(["total"=>$contador,"data"=>$final]) : ''),
-          // "data" => $final,
+          "data" => $final,
           "totales" => $mTotales,
           "tot_notasNC" => $tot_notasNC,
           "tot_pendientes" => $tot_pendientes
