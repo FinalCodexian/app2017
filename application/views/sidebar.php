@@ -37,6 +37,9 @@ $sess = $this->uri->segment(3, 0);
 <?
 if($this->session->userdata($sess)["usuarioId"]=='LMVN'){
   ?>
+
+  <a class="item active" href="<?=base_url("menu/stockNeumaticos/".$sess);?>"><i class="code icon"></i>Stock Neumaticos</a>
+
   <div class="item">
     <div class="header">
       Administraci&oacute;n

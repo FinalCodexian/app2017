@@ -218,7 +218,7 @@ class Ventas extends CI_Controller {
           "excedido" => FALSE,
           "total" => $contador,
           "html" => (trim($this->input->post("excel")=="") ? $this->formatoReporte(["total"=>$contador,"data"=>$final]) : ''),
-          "data" => $final,
+          // "data" => $final,
           "totales" => $mTotales,
           "tot_notasNC" => $tot_notasNC,
           "tot_pendientes" => $tot_pendientes
@@ -314,13 +314,24 @@ class Ventas extends CI_Controller {
         $retorno .=  "<td colspan=2><label class='label'>Glosa</label><e>". $value["cabecera"]["glosa"] ."</e></td>";
 
         if (trim($value["cabecera"]["pedido"])<>'') {
-          $pedido = explode(' ',$value["cabecera"]["pedido_usuario"]);
-          $fecha_pedido = substr($value["cabecera"]["pedido_fecha"], 8, 2)
-          . '/' . substr($value["cabecera"]["pedido_fecha"], 5, 2)
-          . ' - ' . substr($value["cabecera"]["pedido_fecha"], 11, 8);
 
-          $url = base_url("ventas/info/".trim($this->input->post("base"))."/pedido/".trim($value["cabecera"]["pedido"]));
-          $retorno .=  "<td><label class='label'>Pedido</label> <a href='javascript:void(0)' data-url='".$url."'><e>". $value["cabecera"]["pedido"] ."</e></a> (". $fecha_pedido .") - ". $pedido[0] ." ". $pedido[1] ."</td>";
+          if($value["cabecera"]["pedido_usuario"]<>""){
+            $pedido = explode(' ',$value["cabecera"]["pedido_usuario"]);
+          }else{
+            $pedido = array("","");
+          }
+
+          if(substr($value["cabecera"]["pedido_fecha"], 11, 8)<>'00:00:00'){
+            $fecha_pedido = substr($value["cabecera"]["pedido_fecha"], 8, 2)
+            . '/' . substr($value["cabecera"]["pedido_fecha"], 5, 2)
+            . ' - ' . substr($value["cabecera"]["pedido_fecha"], 11, 8);
+            $fecha_pedido = "(" . $fecha_pedido .") - ";
+          }else{
+            $fecha_pedido = "";
+          }
+
+          // $url = base_url("ventas/info/".trim($this->input->post("base"))."/pedido/".trim($value["cabecera"]["pedido"]));
+          $retorno .=  "<td><label class='label'>Pedido</label> <a href='javascript:void(0)'><e>". $value["cabecera"]["pedido"] ."</e></a> ". $fecha_pedido . $pedido[0] ." ". $pedido[1] ."</td>";
         }else{
           $retorno .=  "<td><label class='label'>Pedido</label> <em class='comentario'>Sin pedido</em></td>";
         }

@@ -1,6 +1,6 @@
 <?php
 $data = array(
-  "titulo"=>"Administracion de Usuarios"
+  "titulo"=>"Stock: Neumaticos"
 );
 ?>
 
@@ -14,10 +14,9 @@ $data = array(
   <div id="dinamico">
 
   <style media="screen">
-  .xBusqueda { height: calc(100vh - 60px); position: fixed; width: 350px; padding: 10px; overflow-y: auto; border-right: 2px solid rgba(150, 150, 150, 0.2);}
+  .xBusqueda { height: calc(100vh - 60px); width: 100%; padding: 10px; overflow-y: auto; }
   .xBusqueda .secc1 { }
   .xBusqueda .secc2 { margin-top: 10px; display: block;}
-  .xForm { background: green; margin-left: 355px}
   .dataTables_scrollBody { font-size: 12px}
   </style>
 
@@ -40,12 +39,6 @@ $data = array(
 
     <div class="secc2">
       <table id="example" class="display compact dataTables_scrollBody" cellspacing="0" width="100%">
-        <thead>
-          <tr>
-            <th>Usuario</th>
-            <th>Agencia</th>
-          </tr>
-        </thead>
       </table>
     </div>
   </div>
@@ -59,20 +52,9 @@ $data = array(
       language: { url: '<?=base_url("/tools/datatables/Spanish.json");?>' },
       data:[],
       columns: [
-        { "data": "CODIGO",  "width": "25%", "className": "dt-center" },
-        { "data": "USUARIO" }
+        {title: "Codigo", data: "CODIGO", width: "40", className: "dt-center" },
+        {title: "Usuario", data: "USUARIO" }
       ],
-
-      columnDefs: [
-        {
-          targets: 0,
-          render: function ( data, type, row, meta ) {
-            if(type === 'display') data = '<a class=xxx href=javascript:void() data-usuario='+data+'>' + data + '</a>';
-            return data;
-          }
-        }
-      ],
-      rowCallback: function (row, data) {},
       scrollY: $ajuste,
       scrollCollapse: true,
       paging: false,
@@ -108,9 +90,6 @@ $data = array(
   })
   </script>
 
-  <div class="xForm">
-    xForm
-  </div>
 </div>
 
 </div>
