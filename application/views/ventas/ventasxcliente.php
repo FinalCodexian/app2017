@@ -378,7 +378,7 @@ $(function(){
 
     case '<?=$this->session->userdata($sess)['nivel'];?>'=='OP':
 
-    var $filtro_Vendedor = FALSE;
+    var $filtro_Vendedor = false;
 
     if("<?=$this->session->userdata($sess)['vendedor'];?>"==''){
       alert("sin codigo de vendedor")
