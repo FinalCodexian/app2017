@@ -2,6 +2,8 @@
 $data = array(
   "titulo"=>"Stock: Neumaticos"
 );
+
+echo $ip = $_SERVER['REMOTE_ADDR'];
 ?>
 
 <? $this->load->view("header", $data); ?>
