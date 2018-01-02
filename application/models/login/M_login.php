@@ -11,33 +11,10 @@ class M_login extends CI_Model {
 		return $cDecrip;
 	}
 
-	public function Empresas(){
-		$dbLuis = $this->load->database("default", TRUE);
-		$res = $dbLuis
-		->select("RUC_EMPRESA, EMPRESA, ABREVIACION, DIRECCION")
-		->from("T_EMPRESAS")
-		->where("ESTADO","S")
-		->order_by("ORDEN")
-		->get();
-		return ($res->num_rows()>0) ? array('items'=>$res->result_array()) : FALSE;
-	}
-
-	public function Bases($data){
-		$empresa = $data["ruc"];
-		$dbLuis = $this->load->database("default", TRUE);
-		$res = $dbLuis
-		->select("PERIODO, BASE, ESCRITURA")
-		->from("T_BASES")
-		->where("COD_EMPRESA", $empresa)
-		->order_by("PERIODO", 'desc')
-		->get();
-		return ($res->num_rows()>0) ? array('items'=>$res->result_array()) : FALSE;
-	}
-
-
 	public function login($datos){
 
 		$dbLuis = $this->load->database($datos["base"], TRUE);
+
 
 		$dbLuis->select("TU_ALIAS alias, rtrim(TU_NOMUSU) nombre");
 		$dbLuis->select("TU_NROALM almacen_id, RTRIM(A.A1_CDESCRI) almacen_nom");
@@ -65,17 +42,6 @@ class M_login extends CI_Model {
 		$row = $q->row();
 		$resp = "";
 		if (isset($row)):
-
-			$log = $this->load->database("default", TRUE);
-			$logAcceso = array(
-				'USUARIO' => $datos["usuario"],
-				'EMPRESA' => $row->empresa,
-				'BASE' => $datos["base"],
-				'IP' => $_SERVER['HTTP_HOST']
-
-			);
-			$log->insert('LOG_ACCESO', $logAcceso);
-
 
 			$this->session->set_userdata(
 				$datos["token"],

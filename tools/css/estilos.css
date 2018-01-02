@@ -10,15 +10,13 @@ html, body {
 
   left: 0;
   overflow-x: hidden;
-  overflow-y: hidden;
   position: fixed;
+
 
   z-index: 100;
   width: 220px;
-  animation: all 0.4s
-}
 
-#sidebar:hover {overflow-y: auto;}
+}
 
 #wrapper { width: 100%; background: #FFF; padding-left: 220px; padding-top: 28px}
 

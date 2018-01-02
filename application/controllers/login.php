@@ -3,28 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends CI_Controller {
 
-public function __construct(){
+public function __construct()
+{
   parent::__construct();
   $this->load->model('login/m_login');
 }
-
-public function empresas(){
-  $empresas = $this->m_login->Empresas();
-  $dataRet = array();
-  if($empresas <> FALSE) foreach ($empresas["items"] as $item) $dataRet[] = $item;
-  $datos = array("total" => count($empresas["items"]),"items" => $dataRet);
-  echo json_encode($datos);
-}
-
-public function bases(){
-  $data["ruc"] = $this->input->post('empresa');
-  $empresas = $this->m_login->Bases($data);
-  $dataRet = array();
-  if($empresas <> FALSE) foreach ($empresas["items"] as $item) $dataRet[] = $item;
-  $datos = array("total" => count($empresas["items"]),"items" => $dataRet);
-  echo json_encode($datos);
-}
-
 
 public function ingresar(){
 
@@ -33,7 +16,7 @@ public function ingresar(){
   $datos = [
     "usuario" => strtoupper($this->input->post("usuario")),
     "clave" => strtoupper($this->input->post("clave")),
-    "base" => $this->input->post("base"),
+    "base" => $this->input->post("empresa"),
     "empresa_nom" => $this->input->post("empresa_nom"),
     "token" => $token
   ];

@@ -15,9 +15,6 @@ function DesencriptaSoftcom($CCLAVE){
     return $cDecrip; 
 }
 
-
-echo DesencriptaSoftcom(">==:7"); 
-
 function ellipsis($text, $max=100, $append='&hellip;') {
        if (strlen($text) <= $max) return $text;
        $out = substr($text,0,$max);

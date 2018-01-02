@@ -12,7 +12,7 @@
   $sess = $this->uri->segment(3, 0);
   ?>
 
-  <a class="item active xhelp" style="color:rgb(28, 80, 119)">
+  <a class="item active" style="color:rgb(28, 80, 119)">
     <?=$titulo;?>&nbsp;&nbsp;&nbsp;&nbsp;
     <i class="icon small info circular"></i>
   </a>
