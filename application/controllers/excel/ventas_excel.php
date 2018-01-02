@@ -93,9 +93,15 @@ class Ventas_excel extends CI_Controller {
 
       ["titulo" => "MONEDA","ancho" => 7, "align" => "C"],
       ["titulo" => "PRECIO","ancho" => 10, "tipo" => "precio"],
+
+      ["titulo" => "SUBTOTAL","ancho" => 10, "tipo" => "precio"], // calculado valor/1.18
+
       ["titulo" => "TOTAL","ancho" => 10, "tipo" => "precio"],
       ["titulo" => "TC","ancho" => 7, "tipo" => "precio"],
       ["titulo" => "PRECIO_US","ancho" => 10, "tipo" => "precio"],
+
+      ["titulo" => "SUBTOT_US","ancho" => 10, "tipo" => "precio"], // calculado valor/1.18
+
       ["titulo" => "TOTAL_US","ancho" => 10, "tipo" => "precio"],
 
     );
@@ -138,12 +144,18 @@ class Ventas_excel extends CI_Controller {
             case 13: $valor = $row->cabecera->moneda; break;
 
             case 14: $valor = ($row->cabecera->moneda=='MN' ? $det->precio_mn : $det->precio_us); break;
-            case 15: $valor = ($row->cabecera->moneda=='MN' ? $det->subtot_mn : $det->subtot_us); break;
 
-            case 16: $valor = $row->cabecera->tc; break;
+            case 15: $valor = ($row->cabecera->moneda=='MN' ? round($det->subtot_mn/1.18, 3) : round($det->subtot_us/1.18, 3)); break;
 
-            case 17: $valor = $det->precio_us; break;
-            case 18: $valor = $det->subtot_us; break;
+            case 16: $valor = ($row->cabecera->moneda=='MN' ? $det->subtot_mn : $det->subtot_us); break;
+
+            case 17: $valor = $row->cabecera->tc; break;
+
+            case 18: $valor = $det->precio_us; break;
+
+            case 19: $valor = round($det->subtot_us/1.18,3); break;
+
+            case 20: $valor = $det->subtot_us; break;
 
             default: $valor = " "; break;
           }
