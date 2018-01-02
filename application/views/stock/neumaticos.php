@@ -2,8 +2,6 @@
 $data = array(
   "titulo"=>"Stock: Neumaticos"
 );
-
-echo $ip = $_SERVER['REMOTE_ADDR'];
 ?>
 
 <? $this->load->view("header", $data); ?>
@@ -23,6 +21,10 @@ echo $ip = $_SERVER['REMOTE_ADDR'];
   </style>
 
   <div class="xBusqueda">
+    <?php
+    $ip = $_SERVER['REMOTE_ADDR'];
+    echo "mi ip publico: " . $ip;
+    ?>
 
     <h4 class="ui header">
       <i class="settings icon"></i>
