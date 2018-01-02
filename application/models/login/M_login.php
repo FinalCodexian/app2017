@@ -71,7 +71,7 @@ class M_login extends CI_Model {
 				'USUARIO' => $datos["usuario"],
 				'EMPRESA' => $row->empresa,
 				'BASE' => $datos["base"],
-				'IP' => $_SERVER['HTTP_HOST']
+				'IP' => $_SERVER['REMOTE_ADDR']
 
 			);
 			$log->insert('LOG_ACCESO', $logAcceso);
