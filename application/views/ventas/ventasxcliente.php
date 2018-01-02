@@ -3,9 +3,31 @@ $sess = $this->uri->segment(3, 0);
 $data = array(
   "titulo"=>"Ventas por cliente"
 );
-?>
 
-<? $this->load->view("header", $data); ?>
+$changelog = [
+  [
+    "fecha" => "06 de diciembre del 2017",
+    "detalle" => [
+      "<strong>Exportación del formato PDF:</strong> Requiere darle clic en el número del DOCUMENTO para su descarga o visualización (Tener en cuenta el paso para permitir ventanas emergentes líneas abajo)",
+      "<strong>Consulta de la GUIA DE REMISION asociada al documento consultado:</strong> Requiere darle  clic en el número de la GS y se mostrara la información detallada"
+    ]
+  ],
+
+  [
+    "fecha" => "29 de noviembre del 2017",
+    "detalle" => [
+      "<strong>Exportación a Excel:</strong> Opción para descargar según opciones de búsqueda, es decir, lo mismo que se mostrará en pantalla en formato resumen. Esto porque es lo más urgente por el reporte para fin de mes para el resumen de ventas"
+    ]
+  ],
+
+  [
+    "publicacion" => "27 de noviembre del 2017",
+  ]
+];
+
+$this->load->view("header", $data);
+
+?>
 
 <div id="sidebar"><? $this->load->view("sidebar"); ?></div>
 
@@ -14,50 +36,110 @@ $data = array(
 
   <style>
   .xInfoBox {
-    display: none; background: rgb(22, 35, 51); margin-top: -5px; padding: 30px; margin-bottom: 10px;
-    box-shadow: 0 0 10px black;
+    display:none; background: rgb(22, 35, 51); margin-top: -5px; padding: 20px; margin-bottom: 10px;
+    box-shadow: 0 0 10px black; font-size: 13px
   }
+  .xInfoBox ul { margin: 0; padding: 5px; margin-left: 16px}
+  .xInfoBox .informacion { color: rgba(255, 255, 255, 0.65); font-size: 12px; text-align: justify; padding-right: 15px}
+
+  .xInfoBox ul.lista { padding: 0; font-size: 12px}
+
+  .xInfoBox ul.lista li strong {font-weight: normal; color: white}
+
+  .xInfoBox ul li { color: rgba(255, 255, 255, 0.65); padding: 3px; text-align: justify; line-height: 15px}
+  .xInfoBox ul li strong { font-weight: normal; color: rgba(255, 255, 255, 1)}
+  .xInfoBox h4 {margin-bottom: 4px !important}
+  .xInfoBox h4 .content { font-size: 16px; font-weight: normal; }
+  .xInfoBox h4 .content > .sub { font-size: 12px !important; font-weight: normal;}
   </style>
 
   <div class="xInfoBox">
 
-    <h3 class="ui inverted header">
-      <i class="plug icon"></i>
-      <div class="content">
-        Plug-ins
-        <div class="sub header">Check out our plug-in marketplace</div>
-      </div>
-    </h3>
+    <div class="ui internally celled grid">
+      <div class="row">
+        <div class="ten wide column">
 
+          <h4 class="ui inverted header">
+            <i class="info circular icon"></i>
+            <div class="content">
+              Módulo: <?=$data["titulo"];?>
+              <div class="sub header">Información general</div>
+            </div>
+          </h4>
 
-    <div class="ui inverted small relaxed divided list">
-      <div class="item">
-        <i class="large inverted github middle aligned icon"></i>
-        <div class="content">
-          <a class="header">Semantic-Org/Semantic-UI</a>
-          <div class="description">Updated 10 mins ago</div>
+          <p class="informacion">
+            Reporte que muestra las ventas realizadas asociadas con el código del usuario actual (vendedor)
+            y/o los códigos de vendedor asociados al usuario en sesión.<br>
+            Para realizar una búsqueda se pueden utilizar los filtros disponibles:
+            <ul class="lista">
+              <li><strong>Filtro Clientes</strong>: Busca clientes por RUC o razón social</li>
+              <li><strong>Filtro Vendedor</strong>: Según las opciones, únicamente se mostrará el código de vendedor del usuario en sesión.
+                Si fuera el caso, se listarán los vendedores asociados al usuario en sesión (requiere aprobación de administración)</li>
+              <li><strong>Filtro Productos</strong>: Busca productos por código o descripción</li>
+              <li><strong>Filtro Marca</strong>: Busca la marca relacionada con los productos</li>
+              <li><strong>Filtro Rango de fechas</strong>: Por defecto se muestra el rango del día actual</li>
+              <li><strong>Filtro segun atencion</strong>: Si la opción "Sin guía de atención" está seleccionada,
+                mostrará las Facturas o Boletas de venta (estándar o diferidas) que tienen en su detalle pendientes por entregar</li>
+            </ul>
+          </p>
         </div>
-      </div>
-      <div class="item">
-        <i class="large inverted github middle aligned icon"></i>
-        <div class="content">
-          <a class="header">Semantic-Org/Semantic-UI-Docs</a>
-          <div class="description">Updated 22 mins ago</div>
-        </div>
-      </div>
-      <div class="item">
-        <i class="large inverted github middle aligned icon"></i>
-        <div class="content">
-          <a class="header">Semantic-Org/Semantic-UI-Meteor</a>
-          <div class="description">Updated 34 mins ago</div>
+
+        <div class="six wide column">
+          <h4 class="ui inverted header">
+            <i class="history icon"></i>
+            <div class="content">
+              Registro de cambios
+              <div class="sub header">Nuevas características del módulo</div>
+            </div>
+          </h4>
+
+          <div class="ui inverted small list">
+            <?php
+            $i = 0;
+            foreach ($changelog as $valor) {
+              ?>
+              <div class="item">
+                <i class="inverted <?=count($changelog) !== ($i + 1) ? 'angle right' : 'birthday' ;?> top aligned icon"></i>
+                <div class="content">
+
+                  <?php
+                  if(count($changelog) !== ($i + 1)){
+                    echo '<div class="description">Actualización: <a>'. $valor["fecha"] . '</a></div>';
+                  }else{
+                    echo '<div class="description">Publicación: <a>'. $valor["publicacion"] . '</a></div>';
+                  }
+                  ++$i;
+
+                  if(isset($valor["detalle"])):
+                    echo "<ul>";
+                    foreach ($valor["detalle"] as $det):
+                      echo "<li>" . $det . "</li>";
+                    endforeach;
+                    echo "</ul>";
+                  endif;
+                  ?>
+                </div>
+              </div>
+              <?php
+            }
+            ?>
+          </div>
+
         </div>
       </div>
     </div>
 
+
+
+
+
+
+
   </div>
 
-  <div id="dinamico">
 
+
+  <div id="dinamico">
 
     <div class="ui tiny secondary yellow segment contenedorResult">
 
@@ -253,13 +335,142 @@ $data = array(
 <script>
 $(function(){
 
-
-
-
+  // Configuraciones
   $.fn.select2.defaults.set('theme', 'xLuis')
   $.fn.select2.defaults.set('language', 'es');
   $.fn.select2.defaults.set('allowClear', 'true');
   $.fn.select2.defaults.set('width', '100%');
+
+  var options = { useEasing: false, useGrouping: false, separator: ',', decimal: '.'},
+  $total_documentos = new CountUp('total_documentos', 0, 0, 0, .5, options),
+  $total_FT = new CountUp('cont_FT', 0, 0, 0, .5, options),
+  $total_BV = new CountUp('cont_BV', 0, 0, 0, .5, options),
+  $total_NC = new CountUp('cont_NC', 0, 0, 0, .5, options),
+  $total_ND = new CountUp('cont_ND', 0, 0, 0, .5, options),
+  $total_GS = new CountUp('cont_GS', 0, 0, 0, .5, options),
+  $total_R = new CountUp('cont_R', 0, 0, 0, .5, options);
+
+  $('#popover').popup({
+    popup : $('.custom.popup'), on: 'click', inline: false,
+    position: 'top left',
+    closable: false,
+    delay: {
+      show: 0,
+      hide: 800
+    }
+  });
+
+  $(document).bind('keydown.f3', function(e){
+    e.preventDefault();
+    $('#popover').popup('toggle');
+  });
+
+  $('.datepicker').mask('00/00/0000', {placeholder: "__/__/____"});
+
+
+
+  // Control de opciones por sesiones y nivel de acceso
+
+  switch (true) {
+    case '<?=$this->session->userdata($sess)['nivel'];?>'=='':
+    deshabilita();
+    break;
+
+    case '<?=$this->session->userdata($sess)['nivel'];?>'=='OP':
+
+    var $filtro_Vendedor = FALSE;
+
+    if("<?=$this->session->userdata($sess)['vendedor'];?>"==''){
+      alert("sin codigo de vendedor")
+    }
+
+    $.ajax({
+      method: 'POST',
+      url: '<?=site_url('ventas/fnVendedorAsignado');?>',
+      data: {
+        usuario: "<?=$this->session->userdata($sess)['usuarioId'];?>",
+        base: "<?=$this->session->userdata($sess)['base'];?>"
+      },
+      cache: false,
+      dataType: 'json',
+      delay: 850
+    }).done(function(response){
+
+      $("#cboVendedor").select2({
+        data: response.results,
+        escapeMarkup: function (markup) { return markup; },
+        templateResult: formatRepo,
+        allowClear: false
+      });
+
+      $('#cboVendedor').val($('#cboVendedor option:first-child').val()).trigger('change');
+
+    })
+    break;
+
+    // default:
+
+  }
+
+  if("<?=$this->session->userdata($sess)['nivel'];?>" !== "OP" && "<?=$this->session->userdata($sess)['nivel'];?>" !== ""){
+
+    $('#cboVendedor').select2({
+      minimumInputLength: 3,
+      ajax: {
+        url: '<?=site_url('datos/fnListaSimple');?>',
+        data: function(params){ return { q: params.term, opcion: 'vendedores', base: "<?=$this->session->userdata($sess)['base'];?>" }; },
+        dataType: 'json',
+        delay: 850
+      },
+
+      escapeMarkup: function (markup) { return markup; },
+      templateResult: formatRepo
+    });
+
+
+
+  }else{
+
+    // $.ajax({
+    //   method: 'POST',
+    //   url: '< ?=site_url('ventas/fnVendedorAsignado');?>',
+    //   data: {
+    //     usuario: "< ?=$this->session->userdata($sess)['usuarioId'];?>",
+    //     base: "< ?=$this->session->userdata($sess)['base'];?>"
+    //   },
+    //   cache: false,
+    //   dataType: 'json',
+    //   delay: 850
+    // }).done(function(response){
+    //
+    //   $("#cboVendedor").select2({
+    //     data: response.results,
+    //     escapeMarkup: function (markup) { return markup; },
+    //     templateResult: formatRepo,
+    //     allowClear: false
+    //   });
+    //
+    //   $('#cboVendedor').val($('#cboVendedor option:first-child').val()).trigger('change');
+
+    // })
+
+  }
+
+  // if("< ?=$this->session->userdata($sess)['nivel'];?>" == ""){
+  function deshabilita(){
+    $(".contenedorResult").addClass('disabled');
+    $('#cboCliente').prop("disabled", true);
+    $('#cboVendedor').prop("disabled", true);
+    $('#cboProducto').prop("disabled", true);
+    $('#cboMarca').prop("disabled", true);
+    $('.datepicker').prop("disabled", true);
+    $('[name=opcion]').prop("disabled", true);
+  }
+
+
+
+
+
 
 
   $(".cmdFiltro").on("click",function(e){
@@ -317,60 +528,6 @@ $(function(){
 
 
 
-
-
-  if("<?=$this->session->userdata($sess)['nivel'];?>" !== "OP" && "<?=$this->session->userdata($sess)['nivel'];?>" !== ""){
-
-    $('#cboVendedor').select2({
-      minimumInputLength: 3,
-      ajax: {
-        url: '<?=site_url('datos/fnListaSimple');?>',
-        data: function(params){ return { q: params.term, opcion: 'vendedores', base: "<?=$this->session->userdata($sess)['base'];?>" }; },
-        dataType: 'json',
-        delay: 850
-      },
-
-      escapeMarkup: function (markup) { return markup; },
-      templateResult: formatRepo
-    });
-
-  }else{
-
-    $.ajax({
-      method: 'POST',
-      url: '<?=site_url('ventas/fnVendedorAsignado');?>',
-      data: {
-        usuario: "<?=$this->session->userdata($sess)['usuarioId'];?>",
-        base: "<?=$this->session->userdata($sess)['base'];?>"
-      },
-      cache: false,
-      dataType: 'json',
-      delay: 850
-    }).done(function(response){
-
-      $("#cboVendedor").select2({
-        data: response.results,
-        escapeMarkup: function (markup) { return markup; },
-        templateResult: formatRepo,
-        allowClear: false
-      });
-
-      $('#cboVendedor').val($('#cboVendedor option:first-child').val()).trigger('change');
-
-    })
-
-  }
-
-  if("<?=$this->session->userdata($sess)['nivel'];?>" == ""){
-    $(".contenedorResult").addClass('disabled');
-    $('#cboCliente').prop("disabled", true);
-    $('#cboVendedor').prop("disabled", true);
-    $('#cboProducto').prop("disabled", true);
-    $('#cboMarca').prop("disabled", true);
-    $('.datepicker').prop("disabled", true);
-    $('[name=opcion]').prop("disabled", true);
-  }
-
   $("#Filtro").on("keyup change",function(){
     $filtro = $.trim($(this).val().toUpperCase());
     $(".cmdFiltro").removeClass("active");
@@ -389,37 +546,6 @@ $(function(){
 
   });
 
-  var options = { useEasing: false, useGrouping: false, separator: ',', decimal: '.'},
-  $total_documentos = new CountUp('total_documentos', 0, 0, 0, .5, options),
-  $total_FT = new CountUp('cont_FT', 0, 0, 0, .5, options),
-  $total_BV = new CountUp('cont_BV', 0, 0, 0, .5, options),
-  $total_NC = new CountUp('cont_NC', 0, 0, 0, .5, options),
-  $total_ND = new CountUp('cont_ND', 0, 0, 0, .5, options),
-  $total_GS = new CountUp('cont_GS', 0, 0, 0, .5, options),
-  $total_R = new CountUp('cont_R', 0, 0, 0, .5, options);
-
-  $('#popover').popup({
-    popup : $('.custom.popup'), on: 'click', inline: false,
-    position: 'top left',
-    closable: false,
-    delay: {
-      show: 0,
-      hide: 800
-    }
-  }).on("mousemove", function(){
-    //  $(this).css({'animation':'none'});
-  });
-
-  //$('#popover').popup('show');
-
-
-  $(document).bind('keydown.f3', function(e){
-    e.preventDefault();
-    $('#popover').popup('toggle');
-  });
-
-
-  $('.datepicker').mask('00/00/0000', {placeholder: "__/__/____"});
 
 
   $('.combo').select2({
