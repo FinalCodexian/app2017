@@ -4,12 +4,17 @@
 <script type="text/javascript">
 $(function(){
 
-//   swal('Hello world!','', 'success')
+  //   swal('Hello world!','', 'success')
 
   $(document).bind('keydown.f1', function(e){
     e.preventDefault();
-    $(".mobile-button").click();
+    $(".xInfoBox").stop().slideToggle();
   });
+
+  $(".xhelp").on("click", function(e){
+    e.preventDefault();
+    $(".xInfoBox").stop().slideToggle();
+  })
 
   $(".mnuOpciones").dropdown();
 
@@ -19,14 +24,18 @@ $(function(){
       // Cerrar menu
       $(".hamburger").removeClass("is-active");
       $("#wrapper").stop().animate({ paddingLeft: 0}, 150, function(){
+        $('#example').DataTable().columns.adjust().draw();
         $("#sidebar").stop().animate({"width": "0"}, 100);
       });
+
     }else{
       // Abrir menu
       $(".hamburger").addClass("is-active");
       $("#sidebar").stop().animate({width: 220}, 150, function(){
         $("#wrapper").stop().animate({ paddingLeft: 220}, 100)
-        $("#top-menu").stop().animate({"width": "100%",marginLeft: 0}, 100);
+        $("#top-menu").stop().animate({"width": "100%",marginLeft: 0}, 100, function(){
+          $('#example').DataTable().columns.adjust().draw();
+        });
       });
     }
   });
