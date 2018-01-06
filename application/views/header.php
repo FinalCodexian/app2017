@@ -54,6 +54,7 @@ endif;
   <script src="<?=base_url('tools/jbox/jBox.min.js');?>"></script>
 
   <script src="<?=base_url('tools\datatables\jquery.dataTables.min.js');?>"></script>
+  <script src="<?=base_url('tools\jquery.number.min.js');?>"></script>
 
 
   <style>

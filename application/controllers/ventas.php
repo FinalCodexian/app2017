@@ -3,6 +3,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Ventas extends CI_Controller {
 
+  public function ranking(){
+    $this->load->model('ventas/m_ranking');
+    $data['base'] = $this->input->post('base');
+    $data['concar'] = $this->input->post('concar');
+    $data['agencia'] = $this->input->post('agencia');
+    $data['inicio'] = $this->input->post('inicio');
+    $data['final'] = $this->input->post('final');
+
+    $result =  $this->m_ranking->datos($data);
+    $dataRet = array();
+    $total = 0;
+    $cant = 0;
+    if($result <> FALSE):
+      foreach ($result as $item):
+        $dataRet[] = $item;
+        $obj = (object) $item;
+        $cant +=  $obj->CANTID;
+        $total +=  $obj->TOTAL;
+      endforeach;
+    endif;
+    $datos = array(
+      "total_count" => count($result),
+      "results" => $dataRet,
+      "total" => $total,
+      "cantidad" => $cant
+    );
+    echo json_encode($datos);
+  }
+
+
   public function info(){
     $this->load->model('ventas/m_info');
     $params = [
@@ -17,14 +47,11 @@ class Ventas extends CI_Controller {
 
   public function fnVendedorAsignado(){
     $this->load->model('ventas/m_ventas');
-
     $params = [
       'base' =>  $this->input->post("base"),
       'usuario' =>  $this->input->post("usuario")
     ];
-
     $result = $this->m_ventas->mVendedoresAsignados($params);
-
   }
 
   public function fnVentasxCliente(){

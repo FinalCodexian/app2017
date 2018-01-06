@@ -6,6 +6,13 @@ $data = array(
 
 $changelog = [
   [
+    "fecha" => "02 de enero del 2018",
+    "detalle" => [
+      "<strong>Exportación a Excel:</strong> Muestra los subtotales (sin IGV) en el archivo de exportación."
+    ]
+  ],
+
+  [
     "fecha" => "06 de diciembre del 2017",
     "detalle" => [
       "<strong>Exportación del formato PDF:</strong> Requiere darle clic en el número del DOCUMENTO para su descarga o visualización (Tener en cuenta el paso para permitir ventanas emergentes líneas abajo)",
@@ -27,31 +34,13 @@ $changelog = [
 
 $this->load->view("header", $data);
 
+$this->load->view("ventas/estilos.php");
 ?>
 
 <div id="sidebar"><? $this->load->view("sidebar"); ?></div>
 
 <div id="wrapper">
   <div id="header"><? $this->load->view("menu_top", $data); ?></div>
-
-  <style>
-  .xInfoBox {
-    display:none; background: rgb(22, 35, 51); margin-top: -5px; padding: 20px; margin-bottom: 10px;
-    box-shadow: 0 0 10px black; font-size: 13px
-  }
-  .xInfoBox ul { margin: 0; padding: 5px; margin-left: 16px}
-  .xInfoBox .informacion { color: rgba(255, 255, 255, 0.65); font-size: 12px; text-align: justify; padding-right: 15px}
-
-  .xInfoBox ul.lista { padding: 0; font-size: 12px}
-
-  .xInfoBox ul.lista li strong {font-weight: normal; color: white}
-
-  .xInfoBox ul li { color: rgba(255, 255, 255, 0.65); padding: 3px; text-align: justify; line-height: 15px}
-  .xInfoBox ul li strong { font-weight: normal; color: rgba(255, 255, 255, 1)}
-  .xInfoBox h4 {margin-bottom: 4px !important}
-  .xInfoBox h4 .content { font-size: 16px; font-weight: normal; }
-  .xInfoBox h4 .content > .sub { font-size: 12px !important; font-weight: normal;}
-  </style>
 
   <div class="xInfoBox">
 
@@ -75,261 +64,259 @@ $this->load->view("header", $data);
               <li><strong>Filtro Clientes</strong>: Busca clientes por RUC o razón social</li>
               <li><strong>Filtro Vendedor</strong>: Según las opciones, únicamente se mostrará el código de vendedor del usuario en sesión.
                 Si fuera el caso, se listarán los vendedores asociados al usuario en sesión (requiere aprobación de administración)</li>
-              <li><strong>Filtro Productos</strong>: Busca productos por código o descripción</li>
-              <li><strong>Filtro Marca</strong>: Busca la marca relacionada con los productos</li>
-              <li><strong>Filtro Rango de fechas</strong>: Por defecto se muestra el rango del día actual</li>
-              <li><strong>Filtro segun atencion</strong>: Si la opción "Sin guía de atención" está seleccionada,
-                mostrará las Facturas o Boletas de venta (estándar o diferidas) que tienen en su detalle pendientes por entregar</li>
-            </ul>
-          </p>
-        </div>
-
-        <div class="six wide column">
-          <h4 class="ui inverted header">
-            <i class="history icon"></i>
-            <div class="content">
-              Registro de cambios
-              <div class="sub header">Nuevas características del módulo</div>
+                <li><strong>Filtro Productos</strong>: Busca productos por código o descripción</li>
+                <li><strong>Filtro Marca</strong>: Busca la marca relacionada con los productos</li>
+                <li><strong>Filtro Rango de fechas</strong>: Por defecto se muestra el rango del día actual</li>
+                <li><strong>Filtro segun atencion</strong>: Si la opción "Sin guía de atención" está seleccionada,
+                  mostrará las Facturas o Boletas de venta (estándar o diferidas) que tienen en su detalle pendientes por entregar</li>
+                </ul>
+              </p>
             </div>
-          </h4>
 
-          <div class="ui inverted small list">
-            <?php
-            $i = 0;
-            foreach ($changelog as $valor) {
-              ?>
-              <div class="item">
-                <i class="inverted <?=count($changelog) !== ($i + 1) ? 'angle right' : 'birthday' ;?> top aligned icon"></i>
+            <div class="six wide column">
+              <h4 class="ui inverted header">
+                <i class="history icon"></i>
                 <div class="content">
+                  Registro de cambios
+                  <div class="sub header">Nuevas características del módulo</div>
+                </div>
+              </h4>
 
-                  <?php
-                  if(count($changelog) !== ($i + 1)){
-                    echo '<div class="description">Actualización: <a>'. $valor["fecha"] . '</a></div>';
-                  }else{
-                    echo '<div class="description">Publicación: <a>'. $valor["publicacion"] . '</a></div>';
-                  }
-                  ++$i;
-
-                  if(isset($valor["detalle"])):
-                    echo "<ul>";
-                    foreach ($valor["detalle"] as $det):
-                      echo "<li>" . $det . "</li>";
-                    endforeach;
-                    echo "</ul>";
-                  endif;
+              <div class="ui inverted small list">
+                <?php
+                $i = 0;
+                foreach ($changelog as $valor) {
                   ?>
-                </div>
+                  <div class="item">
+                    <i class="inverted <?=count($changelog) !== ($i + 1) ? 'angle right' : 'birthday' ;?> top aligned icon"></i>
+                    <div class="content">
+
+                      <?php
+                      if(count($changelog) !== ($i + 1)){
+                        echo '<div class="description">Actualización: <a>'. $valor["fecha"] . '</a></div>';
+                      }else{
+                        echo '<div class="description">Publicación: <a>'. $valor["publicacion"] . '</a></div>';
+                      }
+                      ++$i;
+
+                      if(isset($valor["detalle"])):
+                        echo "<ul>";
+                        foreach ($valor["detalle"] as $det):
+                          echo "<li>" . $det . "</li>";
+                        endforeach;
+                        echo "</ul>";
+                      endif;
+                      ?>
+                    </div>
+                  </div>
+                  <?php
+                }
+                ?>
               </div>
-              <?php
-            }
-            ?>
+
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+      </div>
+
+      <div id="dinamico">
+
+        <div class="ui tiny secondary yellow segment contenedorResult">
+
+          <div class="ui tiny form ">
+
+            <div class="ui stackable grid">
+
+              <div class="eight wide column">
+                <div class="inline field">
+                  <select id="cboCliente" data-placeholder='- Todos los <b>clientes</b> -'></select>
+                </div>
+                <div class="field">
+                  <select id="cboVendedor" data-placeholder='- Todos los <b>vendedores</b> -'></select>
+                </div>
+
+                <div class="fields">
+                  <div class="eleven wide field">
+                    <select id="cboProducto" data-placeholder='- Todos los <b>productos</b> -'></select>
+                  </div>
+                  <div class="five wide right field">
+                    <select id="cboMarca" data-placeholder='- Todas las <b>marcas</b> -'></select>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="five wide column field">
+                <div class="two fields">
+                  <div class="field">
+                    <label>Fecha inicio</label>
+                    <div class="ui icon input">
+                      <input id="fecInicio" type="text" class="datepicker" value="<?=date("d/m/Y");?>"><i class="calendar icon"></i>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label>Fecha final</label>
+                    <div class="ui icon input">
+                      <input id="fecFinal" type="text" class="datepicker" value="<?=date("d/m/Y");?>"><i class="calendar icon"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="opciones">
+                  <label class="header">Opciones segun atenci&oacute;n</label>
+                  <div class="pretty p-icon p-round p-pulse">
+                    <input value="" type="radio" name="opcion" checked/>
+                    <div class="state p-primary">
+                      <i class="icon check"></i>
+                      <label>Todo</label>
+                    </div>
+                  </div>
+
+                  <div class="pretty p-icon p-round p-pulse">
+                    <input value="S" type="radio" name="opcion" />
+                    <div class="state p-primary">
+                      <i class="icon check"></i>
+                      <label>Sin gu&iacute;a de atenci&oacute;n</label>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="three wide column">
+
+                <button id="btnEjecutar" class="ui tiny fluid basic teal  button" style="margin-bottom:4px">
+                  <i class="zmdi zmdi-check-all zmdi-hc-fw zmdi-hc-2x"></i><br>
+                  Buscar ventas
+                </button>
+
+                <button id="excel" class="ui tiny basic fluid green button">
+                  <i class="zmdi zmdi-download zmdi-hc-fw zmdi-hc-2x"></i><br>
+                  Descargar a excel
+                </button>
+
+                <form style="display:none" id="formExcel" enctype='application/json' action="<?=site_url('excel/ventas_excel/venta_x_clientes');?>" method="post" target="_blank">
+                  <textarea name="contenido" rows="8" cols="80"></textarea>
+                </form>
+
+                <script type="text/javascript">
+                $(function(){
+                  $("#excel").on("click",function(){
+
+                    $.ajax({
+                      method: "POST",
+                      url: "<?=site_url('ventas/fnVentasxCliente')?>",
+                      cache: false,
+                      data: {
+                        vendedor: $("#cboVendedor").val(),
+                        cliente: $("#cboCliente").val(),
+                        producto: $("#cboProducto").val(),
+                        marca: $("#cboMarca").val(),
+                        inicio: $("#fecInicio").val(),
+                        final: $("#fecFinal").val(),
+                        opcion: $("[name='opcion']:checked").val(),
+
+                        agencia: "<?=$this->session->userdata($sess)["agenciaId"];?>",
+                        base: "<?=$this->session->userdata($sess)["base"];?>",
+                        concar: "<?=$this->session->userdata($sess)["concar"];?>",
+
+                        excel: 1
+                      },
+                      beforeSend: function(){
+                        HoldOn.open({ theme:"sk-bounce" });
+                      }
+                    })
+                    .done(function($resp){
+                      $("[name=contenido]").val($resp);
+                      $("#formExcel").submit();
+                      HoldOn.close();
+                    })
+
+                  })
+
+                });
+                </script>
+
+              </div>
+
+            </div>
+
           </div>
 
         </div>
-      </div>
-    </div>
 
 
+        <div class="ui tiny custom popup">
 
+          <i class="circular red remove link icon" style="position:absolute; right:4px; top: 6px" onclick="javascript:$('#popover').popup('hide'); void(0)"></i>
 
-
-
-
-  </div>
-
-
-
-  <div id="dinamico">
-
-    <div class="ui tiny secondary yellow segment contenedorResult">
-
-      <div class="ui tiny form ">
-
-        <div class="ui stackable grid">
-
-          <div class="eight wide column">
-            <div class="inline field">
-              <select id="cboCliente" data-placeholder='- Todos los <b>clientes</b> -'></select>
+          <div style="text-align:center; margin-bottom:10px">
+            <div class="ui tiny statistic">
+              <div class="value" id="total_documentos">0</div>
+              <div class="label">Documentos</div>
             </div>
-            <div class="field">
-              <select id="cboVendedor" data-placeholder='- Todos los <b>vendedores</b> -'></select>
-            </div>
-
-            <div class="fields">
-              <div class="eleven wide field">
-                <select id="cboProducto" data-placeholder='- Todos los <b>productos</b> -'></select>
-              </div>
-              <div class="five wide right field">
-                <select id="cboMarca" data-placeholder='- Todas las <b>marcas</b> -'></select>
-              </div>
-            </div>
-
           </div>
 
-          <div class="five wide column field">
-            <div class="two fields">
-              <div class="field">
-                <label>Fecha inicio</label>
-                <div class="ui icon input">
-                  <input id="fecInicio" type="text" class="datepicker" value="<?=date("d/m/Y");?>"><i class="calendar icon"></i>
-                </div>
-              </div>
-              <div class="field">
-                <label>Fecha final</label>
-                <div class="ui icon input">
-                  <input id="fecFinal" type="text" class="datepicker" value="<?=date("d/m/Y");?>"><i class="calendar icon"></i>
-                </div>
-              </div>
-            </div>
-
-            <div class="opciones">
-              <label class="header">Opciones segun atenci&oacute;n</label>
-              <div class="pretty p-icon p-round p-pulse">
-                <input value="" type="radio" name="opcion" checked/>
-                <div class="state p-primary">
-                  <i class="icon check"></i>
-                  <label>Todo</label>
-                </div>
-              </div>
-
-              <div class="pretty p-icon p-round p-pulse">
-                <input value="S" type="radio" name="opcion" />
-                <div class="state p-primary">
-                  <i class="icon check"></i>
-                  <label>Sin gu&iacute;a de atenci&oacute;n</label>
-                </div>
-              </div>
-
-            </div>
-
+          <div class="ui tiny fluid teal vertical menu cmdFiltro">
+            <a class="disabled item cmdFiltro" data-type='FT'>Facturas<div class="ui disabled grey label" id="cont_FT">0</div></a>
+            <a class="disabled item cmdFiltro" data-type='BV'>Boletas de venta<div class="ui disabled grey label" id="cont_BV">0</div></a>
+            <a class="disabled item cmdFiltro" data-type='NC'>Notas de Credito<div class="ui disabled grey label" id="cont_NC">0</div></a>
+            <a class="disabled item cmdFiltro" data-type='ND'>Notas de Debito<div class="ui disabled grey label" id="cont_ND">0</div></a>
           </div>
 
-          <div class="three wide column">
-
-            <button id="btnEjecutar" class="ui tiny fluid basic teal  button" style="margin-bottom:4px">
-              <i class="zmdi zmdi-check-all zmdi-hc-fw zmdi-hc-2x"></i><br>
-              Buscar ventas
+          <div class="two tiny basic ui buttons">
+            <button class="ui button disabled cmdFiltro" data-type='GS'>
+              Sin Gu&iacute;a de remisi&oacute;n
+              <hr class="ui dividing " />
+              <div class="ui grey label" id="cont_GS">0</div>
             </button>
-
-            <button id="excel" class="ui tiny basic fluid green button">
-              <i class="zmdi zmdi-download zmdi-hc-fw zmdi-hc-2x"></i><br>
-              Descargar a excel
+            <button class="ui button disabled cmdFiltro" data-type='R'>
+              Sin Nota de Cr&eacute;dito
+              <hr class="ui dividing " />
+              <div class="ui grey label" id="cont_R">0</div>
             </button>
+          </div>
 
-            <form style="display:none" id="formExcel" enctype='application/json' action="<?=site_url('excel/ventas_excel/venta_x_clientes');?>" method="post" target="_blank">
-              <textarea name="contenido" rows="8" cols="80"></textarea>
-            </form>
-
-            <script type="text/javascript">
-            $(function(){
-              $("#excel").on("click",function(){
-
-                $.ajax({
-                  method: "POST",
-                  url: "<?=site_url('ventas/fnVentasxCliente')?>",
-                  cache: false,
-                  data: {
-                    vendedor: $("#cboVendedor").val(),
-                    cliente: $("#cboCliente").val(),
-                    producto: $("#cboProducto").val(),
-                    marca: $("#cboMarca").val(),
-                    inicio: $("#fecInicio").val(),
-                    final: $("#fecFinal").val(),
-                    opcion: $("[name='opcion']:checked").val(),
-
-                    agencia: "<?=$this->session->userdata($sess)["agenciaId"];?>",
-                    base: "<?=$this->session->userdata($sess)["base"];?>",
-                    concar: "<?=$this->session->userdata($sess)["concar"];?>",
-
-                    excel: 1
-                  },
-                  beforeSend: function(){
-                    HoldOn.open({ theme:"sk-bounce" });
-                  }
-                })
-                .done(function($resp){
-                  $("[name=contenido]").val($resp);
-                  $("#formExcel").submit();
-                  HoldOn.close();
-                })
-
-              })
-
-            });
-            </script>
-
+          <div class="ui icon fluid input" style="margin-bottom:10px; margin-top:20px">
+            <input type="search" placeholder="Filtrar en resultado..." id="Filtro" disabled>
+            <i class="inverted orange circular search icon"></i>
           </div>
 
         </div>
 
+        <div class="ui tiny" id="resultado" style="margin:6px auto">
+
+          <i class="circular inverted teal xpulse large link filter icon" id="popover"></i>
+
+          <div id="datosJSON"></div>
+
+        </div>
+
       </div>
 
-    </div>
+      <a href="#" class="alCielo"><i class="zmdi zmdi-chevron-up zmdi-hc-3x"></i></a>
 
-
-    <div class="ui tiny custom popup">
-
-      <i class="circular red remove link icon" style="position:absolute; right:4px; top: 6px" onclick="javascript:$('#popover').popup('hide'); void(0)"></i>
-
-      <div style="text-align:center; margin-bottom:10px">
-        <div class="ui tiny statistic">
-          <div class="value" id="total_documentos">0</div>
-          <div class="label">Documentos</div>
+      <div id="excedido" style="display:none">
+        <div class="ui icon info message" style="width: 640px; margin:auto">
+          <i class="spy icon"></i>
+          <div class="content">
+            <div class="header">Su reporte tiene demasiados documentos.. <span>0</span> para ser exactos</div>
+            <p><i class="circular info icon"></i> Le recomendamos <u>descargarlo</u> para poder revisarlo</p>
+          </div>
         </div>
       </div>
 
-      <div class="ui tiny fluid teal vertical menu cmdFiltro">
-        <a class="disabled item cmdFiltro" data-type='FT'>Facturas<div class="ui disabled grey label" id="cont_FT">0</div></a>
-        <a class="disabled item cmdFiltro" data-type='BV'>Boletas de venta<div class="ui disabled grey label" id="cont_BV">0</div></a>
-        <a class="disabled item cmdFiltro" data-type='NC'>Notas de Credito<div class="ui disabled grey label" id="cont_NC">0</div></a>
-        <a class="disabled item cmdFiltro" data-type='ND'>Notas de Debito<div class="ui disabled grey label" id="cont_ND">0</div></a>
-      </div>
-
-      <div class="two tiny basic ui buttons">
-        <button class="ui button disabled cmdFiltro" data-type='GS'>
-          Sin Gu&iacute;a de remisi&oacute;n
-          <hr class="ui dividing " />
-          <div class="ui grey label" id="cont_GS">0</div>
-        </button>
-        <button class="ui button disabled cmdFiltro" data-type='R'>
-          Sin Nota de Cr&eacute;dito
-          <hr class="ui dividing " />
-          <div class="ui grey label" id="cont_R">0</div>
-        </button>
-      </div>
-
-      <div class="ui icon fluid input" style="margin-bottom:10px; margin-top:20px">
-        <input type="search" placeholder="Filtrar en resultado..." id="Filtro" disabled>
-        <i class="inverted orange circular search icon"></i>
-      </div>
-
-    </div>
-
-    <div class="ui tiny" id="resultado" style="margin:6px auto">
-
-      <i class="circular inverted teal xpulse large link filter icon" id="popover"></i>
-
-      <div id="datosJSON"></div>
-
     </div>
 
   </div>
-
-  <a href="#" class="alCielo"><i class="zmdi zmdi-chevron-up zmdi-hc-3x"></i></a>
-
-  <div id="excedido" style="display:none">
-    <div class="ui icon info message" style="width: 640px; margin:auto">
-      <i class="spy icon"></i>
-      <div class="content">
-        <div class="header">Su reporte tiene demasiados documentos.. <span>0</span> para ser exactos</div>
-        <p><i class="circular info icon"></i> Le recomendamos <u>descargarlo</u> para poder revisarlo</p>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-</div>
 </div>
 
 <script>
@@ -915,11 +902,10 @@ $(function(){
   }
 
   .temporal {
-
   }
   .x {
-
   }
+
   </style>
 
   <? $this->load->view("footer"); ?>
