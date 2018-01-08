@@ -5,6 +5,14 @@ $data = array(
 );
 
 $changelog = [
+
+  [
+    "fecha" => "08 de enero del 2018",
+    "detalle" => [
+      "Número de ORDEN DE COMPRA"
+    ]
+  ],
+
   [
     "fecha" => "02 de enero del 2018",
     "detalle" => [

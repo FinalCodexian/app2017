@@ -17,6 +17,12 @@
     <i class="icon small info circular"></i>
   </a>
   <div class="right menu">
+
+    <!-- <div class="item icon">
+      <i class="settings icon"></i>
+    </div> -->
+
+
     <div class="item">
       <strong>Empresa:</strong>&nbsp;<?=$this->session->userdata($sess)["empresa"];?>
     </div>

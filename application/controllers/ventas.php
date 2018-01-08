@@ -104,6 +104,8 @@ class Ventas extends CI_Controller {
 
           $final[$contador] = array(
             "cabecera" => array(
+              "num_orden" => $value["NUM_ORDEN"],
+
               "diferida" => ($value["DIF"]=='05' ? 'S' : 'N'),
               "td" => $value["TD"],
               "documento" => $value["DOCUMENTO"],
@@ -318,9 +320,19 @@ class Ventas extends CI_Controller {
         $retorno .=  "<td><label class='label'>Cond. Pago</label><e>" . $value["cabecera"]["forma_venta"] . "</e></td>";
         $retorno .=  "</tr>";
 
-        $retorno .=  "<tr>";
-        $retorno .=  "<td colspan=3><label class='label'>Cliente</label> <a href='javascript:void(0)'><e>" . $value["cabecera"]["ruc"] . '</a> - ' . $value["cabecera"]["cliente"] . "</e></td>";
-        $retorno .=  "</tr>";
+
+
+        if($value["cabecera"]["num_orden"]==''):
+          $retorno .=  "<tr>";
+          $retorno .=  "<td colspan=3><label class='label'>Cliente</label> <a href='javascript:void(0)'><e>" . $value["cabecera"]["ruc"] . '</a> - ' . $value["cabecera"]["cliente"] . "</e></td>";
+          $retorno .=  "</tr>";
+        else:
+          $retorno .=  "<tr>";
+          $retorno .=  "<td colspan=2><label class='label'>Cliente</label> <a href='javascript:void(0)'><e>" . $value["cabecera"]["ruc"] . '</a> - ' . $value["cabecera"]["cliente"] . "</e></td>";
+          $retorno .=  "<td colspan=2><label class='label'>Orden de Compra</label> <e>" . $value["cabecera"]["num_orden"] . "</e></td>";
+          $retorno .=  "</tr>";
+        endif;
+
 
         $retorno .=  "<tr>";
         $retorno .=  "<td colspan=2><label class='label'>Vendedor</label><e>" . $value["cabecera"]["vendedor"] . "</e></td>";
