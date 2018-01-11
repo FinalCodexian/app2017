@@ -18,9 +18,10 @@
   </a>
   <div class="right menu">
 
-    <!-- <div class="item icon">
-      <i class="settings icon"></i>
-    </div> -->
+    <div class="item icon">
+      <i class="alarm outline icon"></i>
+      
+    </div>
 
 
     <div class="item">

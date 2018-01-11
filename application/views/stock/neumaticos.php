@@ -20,6 +20,16 @@ $this->load->view("header", $data);
   .dataTables_scrollBody { font-size: 12px}
   </style>
 
+  <input type="text" name="" value="" id="x">
+  <script type="text/javascript">
+
+  $(function(){
+    $('#x').pickadate({
+      format: 'dd/mm/yyyy'
+    });
+  })
+  </script>
+
 
   <div class="xBusqueda">
 

@@ -35,7 +35,9 @@ endif;
   <link rel="stylesheet" href="<?=base_url('tools/handsontable/dist/pikaday/pikaday.css');?>">
   <link rel="stylesheet" href="<?=base_url('tools/jbox/jBox.css');?>">
 
-  <link rel="stylesheet" href="<?=base_url('tools\datatables\jquery.dataTables.min.css');?>">
+  <link rel="stylesheet" href="<?=base_url('tools/datatables/jquery.dataTables.min.css');?>">
+  <link rel="stylesheet" href="<?=base_url('tools/pickadate/lib/themes/default.css');?>">
+  <link rel="stylesheet" href="<?=base_url('tools/pickadate/lib/themes/classic.date.css');?>">
 
 
 
@@ -53,8 +55,13 @@ endif;
   <script src="<?=base_url('tools/jquery.hotkeys.js');?>"></script>
   <script src="<?=base_url('tools/jbox/jBox.min.js');?>"></script>
 
-  <script src="<?=base_url('tools\datatables\jquery.dataTables.min.js');?>"></script>
-  <script src="<?=base_url('tools\jquery.number.min.js');?>"></script>
+  <script src="<?=base_url('tools/datatables/jquery.dataTables.min.js');?>"></script>
+  <script src="<?=base_url('tools/jquery.number.min.js');?>"></script>
+
+  <script src="<?=base_url('tools/pickadate/lib/picker.js');?>"></script>
+  <script src="<?=base_url('tools/pickadate/lib/picker.date.js');?>"></script>
+  <script src="<?=base_url('tools/pickadate/lib/translations/es_ES.js');?>"></script>
+
 
 
   <style>

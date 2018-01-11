@@ -45,7 +45,7 @@ $this->load->view("ventas/estilos.php");
             </button>
           </div>
 
-          <div class="three wide column" style="padding-bottom:0px">
+          <!-- <div class="three wide column" style="padding-bottom:0px">
             <button id="excel" class="ui tiny basic fluid green button">
               <i class="zmdi zmdi-download zmdi-hc-fw zmdi-hc-2x"></i><br>
               Descargar Excel
@@ -53,7 +53,7 @@ $this->load->view("ventas/estilos.php");
             <form style="display:none" id="formExcel" enctype='application/json' action="< ?=site_url('excel/ventas_excel/venta_x_clientes');?>" method="post" target="_blank">
               <textarea name="contenido" rows="8" cols="80"></textarea>
             </form>
-          </div>
+          </div> -->
 
 
         </div>
