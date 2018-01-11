@@ -57,6 +57,8 @@ endif;
 
   <script src="<?=base_url('tools/datatables/jquery.dataTables.min.js');?>"></script>
   <script src="<?=base_url('tools/jquery.number.min.js');?>"></script>
+  <script src="<?=base_url('tools/jquery.touchSwipe.min.js');?>"></script>
+  <script src="<?=base_url('tools/jquery.mobile.min.js');?>"></script>
 
   <script src="<?=base_url('tools/pickadate/lib/picker.js');?>"></script>
   <script src="<?=base_url('tools/pickadate/lib/picker.date.js');?>"></script>
