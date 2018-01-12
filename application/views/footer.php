@@ -2,20 +2,18 @@
 
 </body>
 </html>
-
 <script type="text/javascript">
 $(function(){
-
-  // swal('Hello world!','', 'success')
 
   if(jQuery.browser.mobile){
 
 
-    $(document).swipe({
-      swipeStatus:function(event, phase, direction, distance, duration, fingers)
-      {
+    $(document).swipe( {
+
+      swipeStatus:function(event, phase, direction, distance, duration, fingers){
         if (phase=="move" && direction =="right") {
           // Abrir menu
+          console.log('Abrir Menu');
           $(".hamburger").addClass("is-active");
           $("#sidebar").stop().animate({width: 220}, 150, function(){
             $("#wrapper").stop().animate({ paddingLeft: 220}, 100)
@@ -23,24 +21,32 @@ $(function(){
               $('#example').DataTable().columns.adjust().draw();
             });
           });
-          return false;
         }
+
         if (phase=="move" && direction =="left") {
           // Cerrar menu
+          console.log('Cerrar Menu');
           $(".container").addClass("open-sidebar");
           $(".hamburger").removeClass("is-active");
           $("#wrapper").stop().animate({ paddingLeft: 0}, 150, function(){
             $('#example').DataTable().columns.adjust().draw();
             $("#sidebar").stop().animate({"width": "0"}, 100);
           });
-
-          return false;
         }
-      }
+
+      },
+
+      //  Default is 75px, set to 0 for demo so any distance triggers swipe
+      threshold:0
     });
-    console.log('You are using a mobile device!');
+
   }
-  
+
+
+  // swal('Hello world!','', 'success')
+
+
+
 
 
   $(document).bind('keydown.f1', function(e){

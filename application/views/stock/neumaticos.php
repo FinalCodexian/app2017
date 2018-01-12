@@ -44,7 +44,7 @@ $this->load->view("header", $data);
 
     <style media="screen">
     table.tempo {
-      border-collapse: separate; width: 100%
+      border-collapse: separate; width: 100%; font-size: 12px
     }
     table.tempo td { border: 1px solid #ccc}
     </style>
