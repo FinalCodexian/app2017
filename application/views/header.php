@@ -63,7 +63,7 @@ endif;
   <script src="<?=base_url('tools/pickadate/lib/translations/es_ES.js');?>"></script>
 
 
-
+  
   <style>
   *, .dropdown, input, textarea, select, label {font-family: 'Roboto Condensed', sans-serif }
   .alCielo {

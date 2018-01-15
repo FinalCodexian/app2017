@@ -1,11 +1,31 @@
 
-
 </body>
 </html>
+
+
+<!-- <link rel="stylesheet" href="< ?=base_url('tools/swiper.css');?>" /> -->
+<script src="<?=base_url('tools/jquery.touchSwipe.min.js');?>"></script>
+
+
 <script type="text/javascript">
 $(function(){
 
   // swal('Hello world!','', 'success')
+
+  //Enable swiping...
+  $(document).swipe( {
+    swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+      console.log("You swiped " + direction );
+      // Cerrar menu
+      $(".hamburger").removeClass("is-active");
+      $("#wrapper").stop().animate({ paddingLeft: 0}, 150, function(){
+        $('#example').DataTable().columns.adjust().draw();
+        $("#sidebar").stop().animate({"width": "0"}, 100);
+      });
+      
+    },
+    threshold: 100
+  });
 
   $(document).bind('keydown.f1', function(e){
     e.preventDefault();
