@@ -3,19 +3,21 @@
 </html>
 
 
-<!-- <link rel="stylesheet" href="< ?=base_url('tools/swiper.css');?>" /> -->
+<script src="<?=base_url('tools/jquery.mobile.min.js');?>"></script>
 <script src="<?=base_url('tools/jquery.touchSwipe.min.js');?>"></script>
 
 
 <script type="text/javascript">
 $(function(){
 
+  if($.browser.mobile){
+    console.log("mobile");
+  };
   // swal('Hello world!','', 'success')
 
   //Enable swiping...
   $(document).swipe( {
     swipeLeft:function(event, distance, duration, fingerCount, fingerData, currentDirection) {
-      // console.log("You swiped " + direction );
       // Cerrar menu
       $(".hamburger").removeClass("is-active");
       $("#wrapper").stop().animate({ paddingLeft: 0}, 150, function(){
@@ -25,7 +27,6 @@ $(function(){
 
     },
     swipeRight:function(event, distance, duration, fingerCount, fingerData, currentDirection){
-      // console.log("You swiped " + direction );
       // Abrir menu
       $(".hamburger").addClass("is-active");
       $("#sidebar").stop().animate({width: 220}, 150, function(){
@@ -36,7 +37,7 @@ $(function(){
       });
 
     },
-    threshold: 100
+    threshold: 150
   });
 
   $(document).bind('keydown.f1', function(e){
