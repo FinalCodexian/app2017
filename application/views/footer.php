@@ -14,15 +14,27 @@ $(function(){
 
   //Enable swiping...
   $(document).swipe( {
-    swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
-      console.log("You swiped " + direction );
+    swipeLeft:function(event, distance, duration, fingerCount, fingerData, currentDirection) {
+      // console.log("You swiped " + direction );
       // Cerrar menu
       $(".hamburger").removeClass("is-active");
       $("#wrapper").stop().animate({ paddingLeft: 0}, 150, function(){
         $('#example').DataTable().columns.adjust().draw();
         $("#sidebar").stop().animate({"width": "0"}, 100);
       });
-      
+
+    },
+    swipeRight:function(event, distance, duration, fingerCount, fingerData, currentDirection){
+      // console.log("You swiped " + direction );
+      // Abrir menu
+      $(".hamburger").addClass("is-active");
+      $("#sidebar").stop().animate({width: 220}, 150, function(){
+        $("#wrapper").stop().animate({ paddingLeft: 220}, 100)
+        $("#top-menu").stop().animate({"width": "100%",marginLeft: 0}, 100, function(){
+          $('#example').DataTable().columns.adjust().draw();
+        });
+      });
+
     },
     threshold: 100
   });
