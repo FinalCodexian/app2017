@@ -38,7 +38,10 @@ $sess = $this->uri->segment(3, 0);
 if($this->session->userdata($sess)["usuarioId"]=='LMVN'){
   ?>
 
-  <a class="item active" href="<?=base_url("menu/stockNeumaticos/".$sess);?>"><i class="code icon"></i>Stock Neumaticos</a>
+
+  <a class="item" href="<?=base_url("menu/imporPedido/".$sess);?>"><i class="code icon"></i>Importaciones</a>
+  <a class="item" href="<?=base_url("menu/stockNeumaticos/".$sess);?>"><i class="code icon"></i>Stock Neumaticos</a>
+
 
   <div class="item">
     <div class="header">
@@ -46,6 +49,7 @@ if($this->session->userdata($sess)["usuarioId"]=='LMVN'){
     </div>
     <div class="menu">
       <a class="item" href="<?=base_url("menu/adminUsuarios/".$sess);?>"><i class="users icon"></i>Usuarios</a>
+      <a class="item" href="<?=base_url("menu/adminAlmacenes/".$sess);?>"><i class="cube icon"></i>Almacenes</a>
     </div>
   </div>
   <?

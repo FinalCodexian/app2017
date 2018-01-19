@@ -15,7 +15,6 @@ $(function(){
   if($.browser.mobile){
     console.log("mobile then menu swipe");
 
-
     //Enable swiping...
     $(document).swipe( {
       swipeLeft:function(event, distance, duration, fingerCount, fingerData, currentDirection) {
@@ -42,7 +41,7 @@ $(function(){
     });
 
   };
-  
+
   $(document).bind('keydown.f1', function(e){
     e.preventDefault();
     $(".xInfoBox").stop().slideToggle();

@@ -8,6 +8,14 @@ class Menu extends CI_Controller {
 		$this->load->view('admin/usuarios');
 	}
 
+	public function adminAlmacenes(){
+		$this->load->view('admin/almacenes');
+	}
+
+	public function imporPedido(){
+		$this->load->view('importaciones/pedido');
+	}
+
 	// seccion: Archivos
 	public function archClientes(){
 		$this->load->view('archivos/clientes');
