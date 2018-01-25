@@ -52,6 +52,7 @@ class M_login extends CI_Model {
 		$dbLuis->join("ALCIAS C", 'C.AC_CCIA=S.UC_CIA', 'left');
 		$dbLuis->where("TU_ALIAS", $datos["usuario"]);
 		$dbLuis->where("TU_PASSWO", $this->EncriptaSoftcom($datos["clave"]));
+		$dbLuis->where("C.AC_CNOMCIA<>", "NULL");
 		$q = $dbLuis->get();
 
 		/*
