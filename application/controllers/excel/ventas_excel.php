@@ -144,17 +144,32 @@ class Ventas_excel extends CI_Controller {
             case 13: $valor = $row->cabecera->moneda; break;
 
             case 14:
-              $valor = ($row->cabecera->moneda=='MN' ? $det->precio_mn : $det->precio_us);
-              $valor = (substr($row->cabecera->forma_venta, 1,3) == 'O -') ? 0 : $valor; ;
+            $valor = ($row->cabecera->moneda=='MN' ? $det->precio_mn : $det->precio_us);
+            $valor = (substr($row->cabecera->forma_venta, 0,3) == 'O -') ? 0 : $valor;
             break;
-            case 15: $valor = ($row->cabecera->moneda=='MN' ? round($det->subtot_mn/1.18, 3) : round($det->subtot_us/1.18, 3)); break;
-            case 16: $valor = ($row->cabecera->moneda=='MN' ? $det->subtot_mn : $det->subtot_us); break;
+            case 15:
+            $valor = ($row->cabecera->moneda=='MN' ? round($det->subtot_mn/1.18, 3) : round($det->subtot_us/1.18, 3));
+            $valor = (substr($row->cabecera->forma_venta, 0,3) == 'O -') ? 0 : $valor;
+            break;
+            case 16:
+            $valor = ($row->cabecera->moneda=='MN' ? $det->subtot_mn : $det->subtot_us);
+            $valor = (substr($row->cabecera->forma_venta, 0,3) == 'O -') ? 0 : $valor;
+            break;
 
             case 17: $valor = $row->cabecera->tc; break;
 
-            case 18: $valor = $det->precio_us; break;
-            case 19: $valor = round($det->subtot_us/1.18,3); break;
-            case 20: $valor = $det->subtot_us; break;
+            case 18:
+            $valor = $det->precio_us;
+            $valor = (substr($row->cabecera->forma_venta, 0,3) == 'O -') ? 0 : $valor;
+            break;
+            case 19:
+            $valor = round($det->subtot_us/1.18,3);
+            $valor = (substr($row->cabecera->forma_venta, 0,3) == 'O -') ? 0 : $valor;
+            break;
+            case 20:
+            $valor = $det->subtot_us;
+            $valor = (substr($row->cabecera->forma_venta, 0,3) == 'O -') ? 0 : $valor;
+            break;
 
             default: $valor = " "; break;
           }
