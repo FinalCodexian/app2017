@@ -12,13 +12,47 @@
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin);
 */
 
-
 @font-face {
-  font-family: Lato;
+  font-family: "Lato";
   src: url('../../fonts/Lato-Regular.ttf');
   font-weight: normal;
 }
 
+@font-face {
+  font-family: "Roboto";
+  src: url('../../fonts/Roboto-Regular.ttf');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Roboto Light";
+  src: url('../../fonts/Roboto-Light.ttf');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Roboto Condensed";
+  src: url('../../fonts/RobotoCondensed-Regular.ttf');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Roboto Condensed Light";
+  src: url('../../fonts/RobotoCondensed-Light.ttf');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url('../../fonts/OpenSans-Regular.ttf');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Open Sans Light";
+  src: url('../../fonts/OpenSans-Light.ttf');
+  font-weight: normal;
+}
 /*!
  * # Semantic UI 2.2.12 - Reset
  * http://github.com/semantic-org/semantic-ui/

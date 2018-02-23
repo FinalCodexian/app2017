@@ -135,15 +135,15 @@ $this->load->view("ventas/estilos.php");
       </div>
 
       <div id="dinamico">
-
+        
         <!-- <input type="text" name="" value="" id="x">
         <script type="text/javascript">
         $(function(){
-          $('#x').pickadate({
-            format: 'dd/mm/yyyy'
-          });
-        })
-        </script> -->
+        $('#x').pickadate({
+        format: 'dd/mm/yyyy'
+      });
+    })
+  </script> -->
 
 
         <div class="ui tiny secondary yellow segment contenedorResult">
