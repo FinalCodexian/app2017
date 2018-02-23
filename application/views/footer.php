@@ -1,4 +1,8 @@
 
+</div>
+</div>
+
+
 </body>
 </html>
 
@@ -25,6 +29,9 @@ $(function(){
           $("#sidebar").stop().animate({"width": "0"}, 100);
         });
 
+
+
+
       },
       swipeRight:function(event, distance, duration, fingerCount, fingerData, currentDirection){
         // Abrir menu
@@ -34,6 +41,7 @@ $(function(){
           $("#top-menu").stop().animate({"width": "100%",marginLeft: 0}, 100, function(){
             $('#example').DataTable().columns.adjust().draw();
           });
+
         });
 
       },
@@ -73,7 +81,9 @@ $(function(){
           $('#example').DataTable().columns.adjust().draw();
         });
       });
+
     }
+
   });
 
   $(window).scroll(function(){
