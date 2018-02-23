@@ -12,12 +12,8 @@ $(function(){
     firstDay: 1,
     yearRange: [2010,2020],
     format: 'DD/MM/YYYY',
-    theme: 'triangle-theme',
-    onSelect: function(date) {
-      //console.log(this.getMoment().format('Do MMMM YYYY'));
-    }
+    theme: 'triangle-theme'
   });
-
 
 
   var $tabla = $("#tbReporte");
@@ -131,72 +127,82 @@ $(function(){
           url: "<?=base_url("ventas/reportevta");?>",
           data: { opcion: 'OP-2', agencia: $agencia, fecha: $fecha },
           success: function(d){
-            addFilaVacia("COBRANZAS")
-            $tabla.append( addCabecera("cobranzas") )
-            $tabla.append($("<tbody></tbody>"))
+            var $totAplica = 0
+            var $totCobran = 0
+            $totCobran = d.data.length;
 
             $.each(d.data, function(index, item) {
-
               if(item.FORMA_COD=='A'){
-
-                var $fila = $("<tr></tr>")
-                $("<td></td>").html(item.TD +"/" +item.DOC +'  ('+ item.REF_NC_APLICA + ')').appendTo($fila)
-                $("<td class=cen></td>").html(item.RUC).appendTo($fila)
-                $("<td></td>").html(item.CLIENTE).appendTo($fila)
-                $("<td></td>").html(item.TIPO_CLIENTE).appendTo($fila)
-                $("<td></td>").html(item.VENDEDOR).appendTo($fila)
-                $("<td></td>").html(item.FORMA_VENTA).appendTo($fila)
-                $("<td></td>").html(item.FORMA_PAGO).appendTo($fila)
-                $("<td class=mon></td>").html(parseFloat(item.TCAM).toFixed(3) ).appendTo($fila);
-                $("<td class=mon></td>").html( item.PAGO_MON=='MN' ? parseFloat(item.PAGO_IMP).toFixed(2) : '').appendTo($fila);
-                $("<td class=mon></td>").html( item.PAGO_MON=='US' ? parseFloat(item.PAGO_IMP).toFixed(2) : '').appendTo($fila);
-                $("<td></td>").appendTo($fila)
-                $("<td></td>").appendTo($fila)
-                $("<td></td>").appendTo($fila)
-                $("<td></td>").html(item.LIQUIDACION).appendTo($fila)
-                $("<td class=cen></td>").html(item.REF_TD).appendTo($fila);
-                $("<td></td>").html(item.REF_NUM).appendTo($fila);
-                $("<td></td>").html(item.BANCO).appendTo($fila);
-
-                $fila.appendTo($tabla.find("tbody").last())
+                $totAplica = $totAplica + 1
               }
-            });
+            })
 
+            if($totAplica>0){
+              addFilaVacia("APLICACIONES")
+              $tabla.append( addCabecera("cobranzas") )
+              $tabla.append($("<tbody></tbody>"))
 
+              $.each(d.data, function(index, item) {
 
+                if(item.FORMA_COD=='A'){
 
-            addFilaVacia()
-            addFilaVacia("COBRANZAS")
-            $tabla.append( addCabecera("cobranzas") )
-            $tabla.append($("<tbody></tbody>"))
+                  var $fila = $("<tr></tr>")
+                  $("<td></td>").html(item.TD +"/" +item.DOC +'  ('+ item.REF_NC_APLICA + ')').appendTo($fila)
+                  $("<td class=cen></td>").html(item.RUC).appendTo($fila)
+                  $("<td></td>").html(item.CLIENTE).appendTo($fila)
+                  $("<td></td>").html(item.TIPO_CLIENTE).appendTo($fila)
+                  $("<td></td>").html(item.VENDEDOR).appendTo($fila)
+                  $("<td></td>").html(item.FORMA_VENTA).appendTo($fila)
+                  $("<td></td>").html(item.FORMA_PAGO).appendTo($fila)
+                  $("<td class=mon></td>").html(parseFloat(item.TCAM).toFixed(3) ).appendTo($fila);
+                  $("<td class=mon></td>").html( item.PAGO_MON=='MN' ? parseFloat(item.PAGO_IMP).toFixed(2) : '').appendTo($fila);
+                  $("<td class=mon></td>").html( item.PAGO_MON=='US' ? parseFloat(item.PAGO_IMP).toFixed(2) : '').appendTo($fila);
+                  $("<td></td>").appendTo($fila)
+                  $("<td></td>").appendTo($fila)
+                  $("<td></td>").appendTo($fila)
+                  $("<td></td>").html(item.LIQUIDACION).appendTo($fila)
+                  $("<td class=cen></td>").html(item.REF_TD).appendTo($fila);
+                  $("<td></td>").html(item.REF_NUM).appendTo($fila);
+                  $("<td></td>").html(item.BANCO).appendTo($fila);
 
-            $.each(d.data, function(index, item) {
+                  $fila.appendTo($tabla.find("tbody").last())
+                }
+              });
+            }
+            
+            if($totCobran>0){
+              addFilaVacia()
+              addFilaVacia("COBRANZAS")
+              $tabla.append( addCabecera("cobranzas") )
+              $tabla.append($("<tbody></tbody>"))
 
-              if(item.FORMA_COD!=='A'){
+              $.each(d.data, function(index, item) {
 
-                var $fila = $("<tr></tr>")
-                $("<td></td>").html(item.TD +"/" +item.DOC +'  ('+ item.REF_NC_APLICA + ')').appendTo($fila)
-                $("<td class=cen></td>").html(item.RUC).appendTo($fila)
-                $("<td></td>").html(item.CLIENTE).appendTo($fila)
-                $("<td></td>").html(item.TIPO_CLIENTE).appendTo($fila)
-                $("<td></td>").html(item.VENDEDOR).appendTo($fila)
-                $("<td></td>").html(item.FORMA_VENTA).appendTo($fila)
-                $("<td></td>").html(item.FORMA_PAGO).appendTo($fila)
-                $("<td class=mon></td>").html(parseFloat(item.TCAM).toFixed(3) ).appendTo($fila);
-                $("<td class=mon></td>").html( item.PAGO_MON=='MN' ? parseFloat(item.PAGO_IMP).toFixed(2) : '').appendTo($fila);
-                $("<td class=mon></td>").html( item.PAGO_MON=='US' ? parseFloat(item.PAGO_IMP).toFixed(2) : '').appendTo($fila);
-                $("<td></td>").appendTo($fila)
-                $("<td></td>").appendTo($fila)
-                $("<td></td>").appendTo($fila)
-                $("<td></td>").html(item.LIQUIDACION).appendTo($fila)
-                $("<td class=cen></td>").html(item.REF_TD).appendTo($fila);
-                $("<td></td>").html(item.REF_NUM).appendTo($fila);
-                $("<td></td>").html(item.BANCO).appendTo($fila);
+                if(item.FORMA_COD!=='A'){
 
-                $fila.appendTo($tabla.find("tbody").last())
-              }
-            });
+                  var $fila = $("<tr></tr>")
+                  $("<td></td>").html(item.TD +"/" +item.DOC +'  ('+ item.REF_NC_APLICA + ')').appendTo($fila)
+                  $("<td class=cen></td>").html(item.RUC).appendTo($fila)
+                  $("<td></td>").html(item.CLIENTE).appendTo($fila)
+                  $("<td></td>").html(item.TIPO_CLIENTE).appendTo($fila)
+                  $("<td></td>").html(item.VENDEDOR).appendTo($fila)
+                  $("<td></td>").html(item.FORMA_VENTA).appendTo($fila)
+                  $("<td></td>").html(item.FORMA_PAGO).appendTo($fila)
+                  $("<td class=mon></td>").html(parseFloat(item.TCAM).toFixed(3) ).appendTo($fila);
+                  $("<td class=mon></td>").html( item.PAGO_MON=='MN' ? parseFloat(item.PAGO_IMP).toFixed(2) : '').appendTo($fila);
+                  $("<td class=mon></td>").html( item.PAGO_MON=='US' ? parseFloat(item.PAGO_IMP).toFixed(2) : '').appendTo($fila);
+                  $("<td></td>").appendTo($fila)
+                  $("<td></td>").appendTo($fila)
+                  $("<td></td>").appendTo($fila)
+                  $("<td></td>").html(item.LIQUIDACION).appendTo($fila)
+                  $("<td class=cen></td>").html(item.REF_TD).appendTo($fila);
+                  $("<td></td>").html(item.REF_NUM).appendTo($fila);
+                  $("<td></td>").html(item.BANCO).appendTo($fila);
 
+                  $fila.appendTo($tabla.find("tbody").last())
+                }
+              });
+            }
 
             HoldOn.close(); // Al final del ultimo Jedi.. no del ultimo AJAX :D
 
