@@ -36,6 +36,14 @@ $sess = $this->uri->segment(3, 0);
 
 
   <?
+  if($this->session->userdata($sess)["usuarioId"]=='DBANE' || $this->session->userdata($sess)["usuarioId"]=='SAVP'):
+    ?>
+    <a class="item active" href="<?=base_url("menu/vtaReporteVta/".$sess);?>"><i class="dollar icon"></i>Reporte de Ventas</a>
+    <?php
+  endif;
+  ?>
+
+  <?
   if($this->session->userdata($sess)["usuarioId"]=='LMVN'){
     ?>
 
