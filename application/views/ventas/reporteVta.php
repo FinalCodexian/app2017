@@ -63,8 +63,8 @@ $(function(){
             $("<td></td>").html(item.FORMA_VENTA).appendTo($fila);
             $("<td></td>").html(item.FORMA_PAGO).appendTo($fila);
           }else {
+            $("<td class=anulado> A  N  U  L  A  D  O</td>").appendTo($fila);
             $("<td></td>").appendTo($fila);
-            $("<td class=anulado> A N U L A D O</td>").appendTo($fila);
             $("<td></td>").appendTo($fila);
             $("<td></td>").appendTo($fila);
             $("<td></td>").appendTo($fila);
@@ -81,7 +81,12 @@ $(function(){
           if(item.FORMA_COD != null && item.FORMA_COD != 'F'){
 
             $pago = parseFloat(item.PAGO_IMP)
-            if(item.TD=='NC'){ $pago = $pago * -1 }
+            if(item.TD=='NC'){
+              $pago = $pago * -1
+            /*}else if (item.REF_TD=='NC') {
+              $pago = $pago * -1
+              */
+            }
 
             if (item.PAGO_MON=='MN') {
               $("<td class=mon></td>").html($pago.toFixed(2)).appendTo($fila);
@@ -143,11 +148,14 @@ $(function(){
           success: function(d){
             var $totAplica = 0
             var $totCobran = 0
-            $totCobran = d.data.length;
 
             $.each(d.data, function(index, item) {
-              if(item.FORMA_COD=='A'){
+              if(item.FORMA_COD=='A' && item.REF_NC_APLICA!==$fecha){
                 $totAplica = $totAplica + 1
+              }
+
+              if(item.FORMA_COD!=='A'){
+                $totCobran = $totCobran + 1
               }
             })
 
@@ -205,9 +213,19 @@ $(function(){
                   $("<td></td>").html(item.FORMA_VENTA).appendTo($fila)
                   $("<td></td>").html(item.FORMA_PAGO).appendTo($fila)
                   $("<td class=mon></td>").html(parseFloat(item.TCAM).toFixed(3) ).appendTo($fila);
-                  $("<td class=mon></td>").html( item.PAGO_MON=='MN' ? parseFloat(item.PAGO_IMP).toFixed(2) : '').appendTo($fila);
-                  $("<td class=mon></td>").html( item.PAGO_MON=='US' ? parseFloat(item.PAGO_IMP).toFixed(2) : '').appendTo($fila);
-                  $("<td></td>").appendTo($fila)
+                  if(item.FORMA_COD!=='F'){
+                    $("<td class=mon></td>").html( item.PAGO_MON=='MN' ? parseFloat(item.PAGO_IMP).toFixed(2) : '').appendTo($fila);
+                    $("<td class=mon></td>").html( item.PAGO_MON=='US' ? parseFloat(item.PAGO_IMP).toFixed(2) : '').appendTo($fila);
+                  }else {
+                    $("<td></td>").appendTo($fila)
+                    $("<td></td>").appendTo($fila)
+                  }
+
+                  if(item.FORMA_COD=='F'){
+                    $("<td class=mon></td>").html( item.PAGO_MON=='MN' ? parseFloat(item.PAGO_IMP).toFixed(2) : '').appendTo($fila);
+                  }else {
+                    $("<td></td>").appendTo($fila)
+                  }
                   $("<td></td>").appendTo($fila)
                   $("<td></td>").appendTo($fila)
                   $("<td class=cen></td>").html(item.LIQUIDACION).appendTo($fila)
