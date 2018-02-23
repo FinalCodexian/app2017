@@ -31,14 +31,12 @@ endif;
   <link rel="stylesheet" href="<?=base_url('tools/pretty-checkbox/dist/pretty-checkbox.css');?>">
   <link rel="stylesheet" href="<?=base_url('tools/material-icon/material-design-iconic-font.css');?>">
   <link rel="stylesheet" href="<?=base_url('tools/material-icon/material-design-color-palette.min.css');?>">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Condensed" />
   <link rel="stylesheet" href="<?=base_url('tools/handsontable/dist/pikaday/pikaday.css');?>">
   <link rel="stylesheet" href="<?=base_url('tools/jbox/jBox.css');?>">
 
   <link rel="stylesheet" href="<?=base_url('tools/datatables/jquery.dataTables.min.css');?>">
   <link rel="stylesheet" href="<?=base_url('tools/pickadate/lib/themes/default.css');?>">
   <link rel="stylesheet" href="<?=base_url('tools/pickadate/lib/themes/classic.date.css');?>">
-
 
 
   <script src="<?=base_url('tools/jquery/jquery.min.js');?>"></script>
@@ -62,9 +60,15 @@ endif;
   <script src="<?=base_url('tools/pickadate/lib/picker.date.js');?>"></script>
   <script src="<?=base_url('tools/pickadate/lib/translations/es_ES.js');?>"></script>
 
+  <link rel="stylesheet" type="text/css" href="<?=base_url('/tools/handson/handsontable.full.min.css');?>">
+  <script src="<?=base_url('/tools/handson/handsontable.full.min.js');?>"></script>
 
-  <style>
-  *, .dropdown, input, textarea, select, label {font-family: 'Roboto Condensed', sans-serif }
+  <script src="<?=base_url('/tools/ResizeSensor.js');?>"></script>
+  <script src="<?=base_url('/tools/Chart.js');?>"></script>
+
+  <style media="screen">
+
+  *, .dropdown, input, button, textarea, select, label, h1, h2, h3, h4, h5, h6, a {font-family: 'Roboto Condensed', sans-serif;}
   .alCielo {
     display: none;
     position: fixed;
