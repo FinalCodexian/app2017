@@ -44,22 +44,32 @@ $(function(){
 
           var $fila = $("<tr></tr>")
 
-          $("<td class=cen></td>").html(item.TD + '/' + item.SERIE + item.DOC).appendTo($fila);
+          if(item.ESTADO!=='A'){
+            $("<td class=cen></td>").html(item.TD + '/' + item.SERIE + item.DOC).appendTo($fila);
+          }else {
+            $("<td class='cen anulado'></td>").html(item.TD + '/' + item.SERIE + item.DOC).appendTo($fila);
+          }
 
           if($docActual == item.TD + '/' + item.SERIE + item.DOC){
             $tabla.find('tbody tr:last').addClass("sameFT")
             $fila.addClass("sameFT")
           }
 
-          $("<td class=cen></td>").html(item.RUC).appendTo($fila);
-
-          $("<td></td>").html(item.CLIENTE).appendTo($fila);
-          $("<td></td>").html(item.TIPO_CLIENTE).appendTo($fila);
-          $("<td></td>").html(item.VENDEDOR).appendTo($fila);
-
-          $("<td></td>").html(item.FORMA_VENTA).appendTo($fila);
-          $("<td></td>").html(item.FORMA_PAGO).appendTo($fila);
-
+          if(item.ESTADO!=='A'){
+            $("<td></td>").html(item.VENDEDOR).appendTo($fila);
+            $("<td class=cen></td>").html(item.RUC).appendTo($fila);
+            $("<td></td>").html(item.CLIENTE).appendTo($fila);
+            $("<td></td>").html(item.TIPO_CLIENTE).appendTo($fila);
+            $("<td></td>").html(item.FORMA_VENTA).appendTo($fila);
+            $("<td></td>").html(item.FORMA_PAGO).appendTo($fila);
+          }else {
+            $("<td></td>").appendTo($fila);
+            $("<td class=anulado> A N U L A D O</td>").appendTo($fila);
+            $("<td></td>").appendTo($fila);
+            $("<td></td>").appendTo($fila);
+            $("<td></td>").appendTo($fila);
+            $("<td></td>").appendTo($fila);
+          }
           if(item.FORMA_COD != null){
             $("<td class=mon></td>").html(parseFloat(item.TCAM).toFixed(3) ).appendTo($fila);
           }else{
@@ -96,14 +106,20 @@ $(function(){
 
           // Saldos por documento
           if($docActual !== item.TD + '/' + item.SERIE + item.DOC){
-            $("<td class=mon></td>").html( (item.SALDO_MON=='MN' ? parseFloat(item.SALDO_IMPORTE).toFixed(2) : "") ).appendTo($fila);
-            $("<td class=mon></td>").html( (item.SALDO_MON=='US' ? parseFloat(item.SALDO_IMPORTE).toFixed(2) : "") ).appendTo($fila);
+
+            if(item.ESTADO!=='A'){
+              $("<td class=mon></td>").html( (item.SALDO_MON=='MN' ? parseFloat(item.SALDO_IMPORTE).toFixed(2) : "") ).appendTo($fila);
+              $("<td class=mon></td>").html( (item.SALDO_MON=='US' ? parseFloat(item.SALDO_IMPORTE).toFixed(2) : "") ).appendTo($fila);
+            }else{
+              $("<td class=mon></td>").appendTo($fila);
+              $("<td class=mon></td>").appendTo($fila);
+            }
           }else{
             $("<td class=mon></td>").appendTo($fila);
             $("<td class=mon></td>").appendTo($fila);
           }
 
-          $("<td></td>").html(item.LIQUIDACION).appendTo($fila);
+          $("<td class=cen></td>").html(item.LIQUIDACION).appendTo($fila);
           $("<td class=cen></td>").html(item.REF_TD).appendTo($fila);
           $("<td></td>").html(item.REF_NUM).appendTo($fila);
 
@@ -117,8 +133,6 @@ $(function(){
 
           $docActual = item.TD + '/' + item.SERIE + item.DOC
         });
-
-        addFilaVacia()
 
 
         $.ajax({
@@ -138,6 +152,8 @@ $(function(){
             })
 
             if($totAplica>0){
+
+              addFilaVacia()
               addFilaVacia("APLICACIONES")
               $tabla.append( addCabecera("cobranzas") )
               $tabla.append($("<tbody></tbody>"))
@@ -148,10 +164,10 @@ $(function(){
 
                   var $fila = $("<tr></tr>")
                   $("<td></td>").html(item.TD +"/" +item.DOC +'  ('+ item.REF_NC_APLICA + ')').appendTo($fila)
+                  $("<td></td>").html(item.VENDEDOR).appendTo($fila)
                   $("<td class=cen></td>").html(item.RUC).appendTo($fila)
                   $("<td></td>").html(item.CLIENTE).appendTo($fila)
                   $("<td></td>").html(item.TIPO_CLIENTE).appendTo($fila)
-                  $("<td></td>").html(item.VENDEDOR).appendTo($fila)
                   $("<td></td>").html(item.FORMA_VENTA).appendTo($fila)
                   $("<td></td>").html(item.FORMA_PAGO).appendTo($fila)
                   $("<td class=mon></td>").html(parseFloat(item.TCAM).toFixed(3) ).appendTo($fila);
@@ -160,7 +176,7 @@ $(function(){
                   $("<td></td>").appendTo($fila)
                   $("<td></td>").appendTo($fila)
                   $("<td></td>").appendTo($fila)
-                  $("<td></td>").html(item.LIQUIDACION).appendTo($fila)
+                  $("<td class=cen></td>").html(item.LIQUIDACION).appendTo($fila)
                   $("<td class=cen></td>").html(item.REF_TD).appendTo($fila);
                   $("<td></td>").html(item.REF_NUM).appendTo($fila);
                   $("<td></td>").html(item.BANCO).appendTo($fila);
@@ -169,7 +185,7 @@ $(function(){
                 }
               });
             }
-            
+
             if($totCobran>0){
               addFilaVacia()
               addFilaVacia("COBRANZAS")
@@ -181,11 +197,11 @@ $(function(){
                 if(item.FORMA_COD!=='A'){
 
                   var $fila = $("<tr></tr>")
-                  $("<td></td>").html(item.TD +"/" +item.DOC +'  ('+ item.REF_NC_APLICA + ')').appendTo($fila)
+                  $("<td class=cen></td>").html(item.TD +"/" +item.DOC +'  ('+ item.REF_NC_APLICA + ')').appendTo($fila)
+                  $("<td></td>").html(item.VENDEDOR).appendTo($fila)
                   $("<td class=cen></td>").html(item.RUC).appendTo($fila)
                   $("<td></td>").html(item.CLIENTE).appendTo($fila)
                   $("<td></td>").html(item.TIPO_CLIENTE).appendTo($fila)
-                  $("<td></td>").html(item.VENDEDOR).appendTo($fila)
                   $("<td></td>").html(item.FORMA_VENTA).appendTo($fila)
                   $("<td></td>").html(item.FORMA_PAGO).appendTo($fila)
                   $("<td class=mon></td>").html(parseFloat(item.TCAM).toFixed(3) ).appendTo($fila);
@@ -194,7 +210,7 @@ $(function(){
                   $("<td></td>").appendTo($fila)
                   $("<td></td>").appendTo($fila)
                   $("<td></td>").appendTo($fila)
-                  $("<td></td>").html(item.LIQUIDACION).appendTo($fila)
+                  $("<td class=cen></td>").html(item.LIQUIDACION).appendTo($fila)
                   $("<td class=cen></td>").html(item.REF_TD).appendTo($fila);
                   $("<td></td>").html(item.REF_NUM).appendTo($fila);
                   $("<td></td>").html(item.BANCO).appendTo($fila);
@@ -232,25 +248,23 @@ $(function(){
     var $th = $("<thead></thead>");
 
     $th.append("<th>N° COMPROB.</th>");
+
+    switch ($opcion) {
+      case "inicio": $th.append("<th>VENDEDOR</th>"); break;
+      case "cobranzas": $th.append("<th>COBRADOR</th>"); break;
+    }
+
     $th.append("<th>RUC/DNI</th>");
     $th.append("<th>CLIENTE</th>");
     $th.append("<th>T/CLIENTE</th>");
 
-    switch ($opcion) {
-      case "inicio":
-      $th.append("<th>VENDEDOR</th>");
-      break;
-
-      case "cobranzas":
-      $th.append("<th>COBRADOR</th>");
-      break;
-
-    }
-
-
     $th.append("<th>COND. VENTA</th>");
 
-    $th.append("<th>(DIAS) FORMA PAGO</th>");
+    switch ($opcion) {
+      case "inicio": $th.append("<th>FORMA PAGO</th>"); break;
+      case "cobranzas": $th.append("<th>(DIAS) FORMA PAGO</th>"); break;
+    }
+
     $th.append("<th>T/C</th>");
 
     $th.append("<th>CONT S/</th>");
@@ -310,6 +324,7 @@ table#tbReporte thead th { border:1px solid #ccc; padding: 3px; font-size: 10px}
 table#tbReporte tbody td { font-size: 11px; border: 1px solid #ccc; padding: 1px 5px; cursor: default;}
 table#tbReporte tbody td.mon { text-align: right; padding: 0 10px 0 15px}
 table#tbReporte tbody td.cen { text-align: center; }
+table#tbReporte tbody td.anulado { color: rgb(121, 15, 15)}
 
 table#tbReporte tbody tr:hover { background-color: rgb(197, 255, 177) !important}
 
@@ -320,11 +335,11 @@ table#tbReporte tbody tr.sameFT { background-color: rgba(205, 244, 244, 0.66)}
 <table id="tbReporte">
   <thead>
     <th>N° COMPROB.</th>
+    <th>VENDEDOR</th>
     <th>RUC/DNI</th>
     <th>CLIENTE</th>
 
     <th>T/CLIENTE</th>
-    <th>VENDEDOR</th>
 
     <th>COND. VENTA</th>
 
