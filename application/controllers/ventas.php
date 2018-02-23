@@ -3,6 +3,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Ventas extends CI_Controller {
 
+  public function reporteVta(){
+    $this->load->model('ventas/m_reportevta');
+    $data['opcion'] = $this->input->post('opcion');
+    $data['agencia'] = $this->input->post('agencia');
+    $data['fecha'] = $this->input->post('fecha');
+    $data['base'] = 'JCHS2018'; 
+
+    $result =  $this->m_reportevta->datos($data);
+    $dataRet = array();
+    if($result <> FALSE) foreach ($result as $item) $dataRet[] = $item;
+    $datos = array("total_count" => count($result),"data" => $dataRet);
+    echo json_encode($datos);
+  }
+
   public function ranking(){
     $this->load->model('ventas/m_ranking');
     $data['base'] = $this->input->post('base');
