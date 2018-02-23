@@ -28,7 +28,9 @@ class Menu extends CI_Controller {
 	public function vtaRanking(){
 		$this->load->view('ventas/ranking');
 	}
-
+	public function vtaReporteVta(){
+		$this->load->view('ventas/reporteVta');
+	}
 	// seccion: Stock
 	public function stockNeumaticos(){
 		$this->load->view('stock/neumaticos');
