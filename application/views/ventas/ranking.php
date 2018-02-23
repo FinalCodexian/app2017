@@ -3,15 +3,12 @@ $sess = $this->uri->segment(3, 0);
 $data = array(
   "titulo"=>"Ranking de ventas"
 );
-
 $this->load->view("header", $data);
+$this->load->view("sidebar");
+$this->load->view("menu_top");
 $this->load->view("ventas/estilos.php");
 ?>
 
-<div id="sidebar"><? $this->load->view("sidebar"); ?></div>
-
-<div id="wrapper">
-  <div id="header"><? $this->load->view("menu_top", $data); ?></div>
 
   <div id="dinamico">
 

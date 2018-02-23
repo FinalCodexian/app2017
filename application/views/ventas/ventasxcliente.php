@@ -41,14 +41,12 @@ $changelog = [
 ];
 
 $this->load->view("header", $data);
-
+$this->load->view("sidebar");
+$this->load->view("menu_top");
 $this->load->view("ventas/estilos.php");
 ?>
 
-<div id="sidebar"><? $this->load->view("sidebar"); ?></div>
 
-<div id="wrapper">
-  <div id="header"><? $this->load->view("menu_top", $data); ?></div>
 
   <div class="xInfoBox">
 
@@ -135,7 +133,7 @@ $this->load->view("ventas/estilos.php");
       </div>
 
       <div id="dinamico">
-        
+
         <!-- <input type="text" name="" value="" id="x">
         <script type="text/javascript">
         $(function(){
