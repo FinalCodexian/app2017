@@ -8,7 +8,7 @@ class M_stock extends CI_Model {
     ->select("AR_CDESCRI, AR_CCODIGO, L.LI_CDESLIN, L.LI_COBSER2")
     ->join("FT0001LINE L", "L.LI_CCODLIN=A.AR_CLINEA", "left")
     ->from("AL0001ARTI A")
-    ->like("AR_CDESCRI","155/70","both")
+    ->like("AR_CDESCRI","continental","both")
     ->get();
 
     if($res->num_rows()>0){
@@ -19,12 +19,15 @@ class M_stock extends CI_Model {
         $data[] = [
           'codigo' => trim($row->AR_CCODIGO),
           'descripcion' => $row->AR_CDESCRI,
-          // 'medida' => $lista['medida'],
-          // 'ancho' => $lista['ancho'],
-          // 'alto' => $lista['alto'],
-          // 'aro' => $lista['aro'],
-          // 'pr' =>  $lista['pr'],
-          // 'general' => $lista['general'],
+          'medida' => $lista['medida'],
+          'ancho' => $lista['ancho'],
+          'alto' => $lista['alto'],
+          'aro' => $lista['aro'],
+          'pr' =>  $lista['pr'],
+          'liss' =>  $lista['liss'],
+          'ind_carga' =>  $lista['i_carga'],
+          'ind_velocidad' =>  $lista['i_velocidad'],
+          'general' => $lista['general'],
           'orden' => $lista['general'] .'-'. $lista['aro'] .'-'. $lista['alto'] .'-'. $lista['ancho'] .'-'. $lista['pr'] .'-'. trim($row->AR_CDESCRI)
         ];
 
@@ -78,9 +81,32 @@ class M_stock extends CI_Model {
     endif;
 
     $pliegues = '';
-    if(count(explode(' ', $cadena)) < 2):
+
+    if(strpos($cadena, "PR") && strpos($linea, 'NEUMA') > 0):
       $pliegues = strpos(explode(' ', $cadena)[2], 'PR') > 0 ? explode(' ', $cadena)[2] : $pliegues;
       $pliegues = strpos(explode(' ', $cadena)[3], 'PR') > 0 ? explode(' ', $cadena)[3] : $pliegues;
+      $pliegues = str_replace("PR", "", $pliegues);
+      if( !is_numeric($pliegues) ) $pliegues = "";
+    endif;
+
+
+    $liss = "";
+
+    $cats = explode(" ", $cadena);
+    foreach($cats as $cat) {
+      if( strpos($cat, 'PR') == 0 ):
+        $ini = substr($cat, 0, 2);
+        $fin = substr($cat, -1);
+        if( is_numeric($ini) && !is_numeric($fin) && strpos($linea, 'NEUMA') > 0) $liss = $cat;
+      endif;
+    }
+
+    $carga = "";
+    $velocidad = "";
+
+    if($liss<>""):
+      $carga = preg_replace('/[^0-9,\/.]+/i', '', $liss);
+      $velocidad = preg_replace('/[^A-Z,.]+/i', '', $liss);
     endif;
 
     return $respuesta = array(
@@ -89,6 +115,9 @@ class M_stock extends CI_Model {
       'alto' => trim($alto),
       'aro' => trim($aro),
       'pr' => $pliegues,
+      'liss' => $liss,
+      'i_carga' => $carga,
+      'i_velocidad' => $velocidad,
       'general' => trim($general)
     );
 

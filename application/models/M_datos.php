@@ -1,7 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-
-
 class M_datos extends CI_Model {
 
   public function listaSimple($datos){
