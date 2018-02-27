@@ -6,3 +6,29 @@
 
 
     http://animista.net/play/text/tracking-out
+
+
+
+    https://handsontable.com/blog/articles/getting-started-with-cell-renderers
+
+
+
+http://demo.interface.club/limitless/layout_2/RTL/default/handsontable_cells.html
+
+
+
+
+    <style media="screen">
+
+    /*
+    If [device width] is less than or equal to 600px, then do {...}
+    */
+    @media only screen and (max-width: 600px)  {
+    }
+
+    /*
+    If [device width] is greater than or equal to 600px, then do {...}
+    */
+    @media only screen and (min-width: 480px) {
+    }
+    </style>
