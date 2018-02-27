@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Condensed" />
   <script src="<?=base_url('tools/jquery/jquery.min.js')?>"></script>
   <script src="<?=base_url('/tools/semantic/semantic.min.js')?> "></script>
-  <script src="<?=base_url('/tools/jquery-validation/dist/jquery.validate.min.js')?> "></script>
+  <script src="<?=base_url('/tools/jquery-validation/dist/jquery.validate.min.js')?>"></script>
   <?php $this->load->view("login/css_login");?>
 </head>
 <body>

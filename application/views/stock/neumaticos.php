@@ -4,14 +4,10 @@ $data = array(
 );
 
 $this->load->view("header", $data);
+$this->load->view("sidebar");
+$this->load->view("menu_top", $data);
 ?>
 
-<div id="sidebar"><? $this->load->view("sidebar"); ?></div>
-
-<div id="wrapper">
-  <div id="header"><? $this->load->view("menu_top", $data); ?></div>
-
-  <div id="dinamico">
 
   <style media="screen">
   .xBusqueda { height: calc(100vh - 60px); width: 100%; padding: 10px; overflow-y: auto;}
@@ -19,8 +15,6 @@ $this->load->view("header", $data);
   .xBusqueda .secc2 { margin-top: 10px; display: block;}
   .dataTables_scrollBody { font-size: 12px}
   </style>
-
-  
 
   <div class="xBusqueda">
 
@@ -203,8 +197,6 @@ $this->load->view("header", $data);
   })
   </script>
 
-</div>
-
-</div>
-
-<? $this->load->view("footer"); ?>
+<?php
+$this->load->view("footer");
+?>
