@@ -4,10 +4,7 @@ class M_reportevta extends CI_Model {
 
   public function datos($params){
     $dbLuis = $this->load->database('default', TRUE);
-    $q = $dbLuis->query("EXEC VTA_REPORTEVTA '".$params["opcion"]."', 'JCHS2018', '".$params["agencia"]."', '".$params["fecha"]."'");
-
-    // $q = $dbLuis->query("EXEC RANKING '".$params["base"]."', '".$params["concar"]."', '".$params["agencia"]."', '".$params["inicio"]."' , '".$params["final"]."' ");
-
+    $q = $dbLuis->query("EXEC VTA_REPORTEVTA '".$params["base"]."', '".$params["agencia"]."', '".$params["fecha"]."'");
     return ($q->num_rows()>0) ? $q->result_array() : FALSE;
   }
 

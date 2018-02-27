@@ -9,6 +9,13 @@ class M_datos extends CI_Model {
     $dbLuis = $this->load->database($datos["base"], TRUE);
     switch($opcion):
 
+      case 'agencias':
+      $dbLuis->select('AG_CCODAGE CODIGO, RTRIM(AG_CDESCRI) AGENCIA');
+      $dbLuis->from('FT0001AGEN');
+      $dbLuis->where('NOT(AG_CDESCRI LIKE \'%INACTIVA%\') ');
+      $dbLuis->order_by('AG_CCODAGE', 'ASC');
+      break;
+
       case 'usuarios':
       $dbLuis->select('RTRIM(TU_ALIAS) CODIGO, RTRIM(TU_NOMUSU) USUARIO, TU_CCODAGE AGENCIA_COD, RTRIM(A.AG_CDESCRI) AGENCIA');
       $dbLuis->from('UT0030');

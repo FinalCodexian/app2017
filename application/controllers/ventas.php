@@ -5,17 +5,26 @@ class Ventas extends CI_Controller {
 
   public function reporteVta(){
     $this->load->model('ventas/m_reportevta');
-    $data['opcion'] = $this->input->post('opcion');
     $data['agencia'] = $this->input->post('agencia');
     $data['fecha'] = $this->input->post('fecha');
-    $data['base'] = 'JCHS2018'; 
+    $data['base'] = $this->input->post('base');
 
     $result =  $this->m_reportevta->datos($data);
     $dataRet = array();
     if($result <> FALSE) foreach ($result as $item) $dataRet[] = $item;
     $datos = array("total_count" => count($result),"data" => $dataRet);
-    echo json_encode($datos);
+
+    $html = $this->load->view('_pdf/formato_ReporteVta', $datos, true);
+
+    $this->load->library('pdfgenerator');
+    $filename = 'Documento_';
+    $this->pdfgenerator->generate($html, $filename, true, 'A3', 'landscape', true);
+    
+
   }
+
+
+
 
   public function ranking(){
     $this->load->model('ventas/m_ranking');
