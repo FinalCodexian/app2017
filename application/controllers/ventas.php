@@ -14,13 +14,17 @@ class Ventas extends CI_Controller {
     if($result <> FALSE) foreach ($result as $item) $dataRet[] = $item;
     $datos = array("total_count" => count($result),"data" => $dataRet);
 
-    $html = $this->load->view('_pdf/formato_ReporteVta', $datos, true);
+    $opcion = $this->input->post('opcion');
+    if($opcion=="resumen"){
+      echo json_encode($datos);
+    }
 
-    $this->load->library('pdfgenerator');
-    $filename = 'Documento_';
-    $this->pdfgenerator->generate($html, $filename, true, 'A3', 'landscape', true);
-    
-
+    if($opcion=="pdf"){
+      $html = $this->load->view('_pdf/formato_ReporteVta', $datos, true);
+      $this->load->library('pdfgenerator');
+      $filename = 'Documento_';
+      $this->pdfgenerator->generate($html, $filename, true, 'A3', 'landscape', true);
+    }
   }
 
 
