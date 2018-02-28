@@ -10,9 +10,15 @@ class Ventas extends CI_Controller {
     $data['base'] = $this->input->post('base');
 
     $result =  $this->m_reportevta->datos($data);
+
+    // Redondeos
+    $result2 =  $this->m_reportevta->redondeos($data);
+    $dataRet2 = array();
+    if($result2 <> FALSE) foreach ($result2 as $item) $dataRet2[] = $item;
+
     $dataRet = array();
     if($result <> FALSE) foreach ($result as $item) $dataRet[] = $item;
-    $datos = array("total_count" => count($result),"data" => $dataRet);
+    $datos = array("total_count" => count($result),"data" => $dataRet, "redondeos" => $dataRet2);
 
     $opcion = $this->input->post('opcion');
     if($opcion=="resumen"){

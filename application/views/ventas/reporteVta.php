@@ -77,7 +77,7 @@ table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight:
         </tr>
         <tr><td>Cobranzas</td><td class="importe" id="efec_cobran_MN">0.00</td><td class="importe" id="efec_cobran_US">0.00</td></tr>
         <tr><td>Percepciones</td><td class="importe" id="efec_percep_MN">0.00</td><td class="importe" id="efec_percep_US">0.00</td></tr>
-        <tr><td>Redondeo</td><td class="importe" id="efec_redond_MN">0.00</td><td class="importe" id="efec_redond_US">0.00</td></tr>
+        <tr><td>Redondeo (Sistema)</td><td class="importe" id="efec_redond_MN">0.00</td><td class="importe" id="efec_redond_US">0.00</td></tr>
         <tr><td class="vacio"></td><td class="total_des">Total EFECTIVO</td>
           <td class="total" id="efec_total_MN">0.00</td>
           <td class="total" id="efec_total_US">0.00</td>
@@ -91,7 +91,7 @@ table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight:
         </tr>
         <tr><td>Cobranzas</td><td class="importe" id="depo_cobran_MN">0.00</td><td class="importe" id="depo_cobran_US">0.00</td></tr>
         <tr><td>Percepciones</td><td class="importe" id="depo_percep_MN">0.00</td><td class="importe" id="depo_percep_US">0.00</td></tr>
-        <tr><td>Redondeo</td><td class="importe" id="depo_redond_MN">0.00</td><td class="importe" id="depo_redond_US">0.00</td></tr>
+        <tr><td>Redondeo (Sistema)</td><td class="importe" id="depo_redond_MN">0.00</td><td class="importe" id="depo_redond_US">0.00</td></tr>
         <tr>
           <td class="vacio"></td><td class="total_des">Total DEPOSITO</td>
           <td class="total" id="depo_total_MN">0.00</td><td class="total" id="depo_total_US">0.00</td>
@@ -105,7 +105,7 @@ table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight:
         </tr>
         <tr><td>Cobranzas</td><td class="importe" id="cheq_cobran_MN">0.00</td><td class="importe" id="cheq_cobran_US">0.00</td></tr>
         <tr><td>Percepciones</td><td class="importe" id="cheq_percep_MN">0.00</td><td class="importe" id="cheq_percep_US">0.00</td></tr>
-        <tr><td>Redondeo</td><td class="importe" id="cheq_redond_MN">0.00</td><td class="importe" id="cheq_redond_US">0.00</td></tr>
+        <tr><td>Redondeo (Sistema)</td><td class="importe" id="cheq_redond_MN">0.00</td><td class="importe" id="cheq_redond_US">0.00</td></tr>
         <tr>
           <td class="vacio"></td><td class="total_des">Total CHEQUE</td>
           <td class="total" id="cheq_total_MN">0.00</td><td class="total" id="cheq_total_US">0.00</td>
@@ -119,7 +119,7 @@ table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight:
         </tr>
         <tr><td>Cobranzas</td><td class="importe" id="tarj_cobran_MN">0.00</td><td class="importe" id="tarj_cobran_US">0.00</td></tr>
         <tr><td>Percepciones</td><td class="importe" id="tarj_percep_MN">0.00</td><td class="importe" id="tarj_percep_US">0.00</td></tr>
-        <tr><td>Redondeo</td><td class="importe" id="tarj_redond_MN">0.00</td><td class="importe" id="tarj_redond_US">0.00</td></tr>
+        <tr><td>Redondeo (Sistema)</td><td class="importe" id="tarj_redond_MN">0.00</td><td class="importe" id="tarj_redond_US">0.00</td></tr>
         <tr>
           <td class="vacio"></td><td class="total_des">Total TARJETA</td>
           <td class="total" id="tarj_total_MN">0.00</td><td class="total" id="tarj_total_US">0.00</td>
@@ -157,6 +157,10 @@ $(function(){
     window.open('', 'TheWindow');
     f.submit();
   }
+
+  $("#exporta").on("click",function(){
+    openWindowWithPost()
+  }); 
 
   $("#btnReporte").on("click",function(){
     $.ajax({
@@ -364,31 +368,6 @@ $(function(){
 
   })
 
-  $("#exporta").on("click",function(){
-    openWindowWithPost()
-    return;
-
-
-    $.ajax({
-      type: 'POST',
-      url: '<?=base_url('ventas/reporteVta');?>',
-      data: {
-        agencia: $("#agencia").val(),
-        fecha: $("#fecha").val(),
-        base: "<?=$this->session->userdata($sess)["base"];?>"
-      },
-      dataType: 'html',
-      beforeSend: function(){
-        HoldOn.open({ theme:"sk-bounce" });
-        $("#rrr").html("")
-      },
-      success: function(d){
-        $("#rrr").html( d )
-        HoldOn.close();
-
-      }
-    })
-  })
 
   HoldOn.open({ theme:"sk-bounce" });
 
