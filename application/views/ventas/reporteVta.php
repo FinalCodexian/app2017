@@ -10,21 +10,18 @@ $this->load->view("menu_top");
 
 ?>
 
-
-
-
-
-
-
 <style media="screen">
-table.resumen { border-collapse: collapse; width: 90%; font-size: 11px !important; margin: auto !important; }
-table.resumen thead tr th { text-align: center !important;}
+table.resumen { border-collapse: collapse; width: 95%; font-size: 11px !important; margin: auto !important; }
+table.resumen thead tr th { text-align: center !important; color: #06c}
 table.resumen thead tr th.vacio, table.resumen tr td.vacio { border: 0 none}
-table.resumen td, table.resumen th { border: 1px solid #999; padding: 2px 10px}
+table.resumen td, table.resumen th { border: 1px solid #999; padding: 1px 10px}
+table.resumen td.separa {border: 0 none; height: 8px}
 table.resumen td.grupo {text-align: center; font-weight: bold;}
 table.resumen td.importe {text-align: right; padding-right: 12px; width: 120px}
-table.resumen td.total {text-align: right; padding-right: 12px; font-weight: bold;}
+table.resumen td.total {text-align: right; padding-right: 12px; font-weight: bold; background-color: rgba(214, 214, 214, 0.4)}
 table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight: bold; border: 0px none}
+
+#exporta, #btnReporte { font-weight: normal;}
 </style>
 
 
@@ -32,25 +29,59 @@ table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight:
 
   <div class="seven wide column">
 
+    <h5 class="ui dividing header">
+      Reporte de Ventas
+    </h5>
+
+    <form class="ui tiny form">
+      <div class="field">
+        <label>Agencia</label>
+        <select class="ui dropdown" id="agencia"></select>
+      </div>
+
+      <div class="field">
+
+        <div class="two fields">
+
+          <div class="field">
+            <label>Fecha</label>
+            <div class="ui icon input">
+              <input id="fecha" type="text" class="datepicker" value="<?=date("d/m/Y");?>"><i class="calendar icon"></i>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>&nbsp;</label>
+            <button type="button" class="ui tiny blue fluid button" id="btnReporte">Reporte</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <button type="button" name="button" class="ui tiny green fluid button" id="exporta">Reporte a Excel (Contabilidad)</button>
+      </div>
+
+
+
+    </form>
+
+
 
     <div class="ui form">
       <div class="ui fields">
         <div class="field">
           <div class="ui icon input">
-            <input id="fecha" type="text" class="datepicker" value="<?=date("d/m/Y");?>"><i class="calendar icon"></i>
+
           </div>
         </div>
         <div class="field">
-          <select class="ui dropdown" id="agencia"></select>
+
         </div>
 
         <div class="field">
-          <button type="button" name="button" class="ui tiny blue button" id="btnReporte">Reporte</button>
+
         </div>
 
-        <div class="field">
-          <button type="button" name="button" class="ui tiny blue button" id="exporta">Reporte</button>
-        </div>
 
       </div>
     </div>
@@ -66,8 +97,8 @@ table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight:
         <tr>
           <th class="vacio"></th>
           <th class="vacio"></th>
-          <th width=70>Soles (S/)</th>
-          <th width=70>Dolares (US$)</th>
+          <th width=70>Soles ( S/ )</th>
+          <th width=70>Dolares ( US$ )</th>
         </tr>
       </thead>
       <tbody>
@@ -83,7 +114,7 @@ table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight:
           <td class="total" id="efec_total_US">0.00</td>
         </tr>
 
-        <tr><td class="vacio"></td><td class="vacio"></td><td class="vacio"></td><td class="vacio"></td></tr>
+        <tr><td class="separa"></td></tr>
 
         <tr>
           <td rowspan="4" class="grupo">DEPOSITO</td>
@@ -97,7 +128,7 @@ table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight:
           <td class="total" id="depo_total_MN">0.00</td><td class="total" id="depo_total_US">0.00</td>
         </tr>
 
-        <tr><td class="vacio"></td><td class="vacio"></td><td class="vacio"></td><td class="vacio"></td></tr>
+        <tr><td class="separa"></td></tr>
 
         <tr>
           <td rowspan="4" class="grupo">CHEQUE</td>
@@ -111,7 +142,7 @@ table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight:
           <td class="total" id="cheq_total_MN">0.00</td><td class="total" id="cheq_total_US">0.00</td>
         </tr>
 
-        <tr><td class="vacio"></td><td class="vacio"></td><td class="vacio"></td><td class="vacio"></td></tr>
+        <tr><td class="separa"></td></tr>
 
         <tr>
           <td rowspan="4" class="grupo">TARJETA</td>
@@ -159,10 +190,11 @@ $(function(){
   }
 
   $("#exporta").on("click",function(){
-    openWindowWithPost()
-  }); 
+    openWindowWithPost();
+  });
 
   $("#btnReporte").on("click",function(){
+
     $.ajax({
       type: 'POST',
       url: '<?=base_url('ventas/reporteVta');?>',
@@ -197,7 +229,28 @@ $(function(){
         let $tarjeta_MN = Object.assign({}, obj_secciones);
         let $tarjeta_US = Object.assign({}, obj_secciones);
 
-        var $ultimo_tipo_pago = "";
+
+
+        $.each(d.redondeos, function(index, item) {
+          // if(item.FORMA_COD=='R'){
+          if(item.FORMA=='E'){
+            $redondeo_MN.efectivo += (item.MONEDA=='MN' ? parseFloat(item.MN) : 0);
+            $redondeo_US.efectivo += (item.MONEDA=='US' ? parseFloat(item.US) : 0);
+          }
+          if(item.FORMA=='B'){
+            $redondeo_MN.deposito += (item.MONEDA=='MN' ? parseFloat(item.MN) : 0);
+            $redondeo_US.deposito += (item.MONEDA=='US' ? parseFloat(item.US) : 0);
+          }
+          if(item.FORMA=='C'){
+            $redondeo_MN.cheque += (item.MONEDA=='MN' ? parseFloat(item.MN) : 0);
+            $redondeo_US.cheque += (item.MONEDA=='US' ? parseFloat(item.US) : 0);
+          }
+          if(item.FORMA=='F'){
+            $redondeo_MN.tarjeta += (item.MONEDA=='MN' ? parseFloat(item.MN) : 0);
+            $redondeo_US.tarjeta += (item.MONEDA=='US' ? parseFloat(item.US) : 0);
+          }
+          // }
+        });
 
         $.each(d.data, function(index, item) {
 
@@ -265,27 +318,6 @@ $(function(){
             }
           }
 
-          // TODOS LOS REDONDEOS
-          if(item.FORMA_COD=='R'){
-            if($ultimo_tipo_pago=='E'){
-              $redondeo_MN.efectivo += (item.PAGO_MON=='MN' ? parseFloat(item.PAGO_IMP) : 0);
-              $redondeo_US.efectivo += (item.PAGO_MON=='US' ? parseFloat(item.PAGO_IMP) : 0);
-            }
-            if($ultimo_tipo_pago=='B'){
-              $redondeo_MN.deposito += (item.PAGO_MON=='MN' ? parseFloat(item.PAGO_IMP) : 0);
-              $redondeo_US.deposito += (item.PAGO_MON=='US' ? parseFloat(item.PAGO_IMP) : 0);
-            }
-            if($ultimo_tipo_pago=='C'){
-              $redondeo_MN.cheque += (item.PAGO_MON=='MN' ? parseFloat(item.PAGO_IMP) : 0);
-              $redondeo_US.cheque += (item.PAGO_MON=='US' ? parseFloat(item.PAGO_IMP) : 0);
-            }
-            if($ultimo_tipo_pago=='F'){
-              $redondeo_MN.tarjeta += (item.PAGO_MON=='MN' ? parseFloat(item.PAGO_IMP) : 0);
-              $redondeo_US.tarjeta += (item.PAGO_MON=='US' ? parseFloat(item.PAGO_IMP) : 0);
-            }
-          }
-
-          $ultimo_tipo_pago = item.FORMA_COD;
 
         });
 
@@ -389,7 +421,7 @@ $(function(){
       });
 
       $("#agencia").val('9100')
-      $("#fecha").val('08/02/2018')
+      $("#fecha").val('18/01/2018')
       HoldOn.close();
     }
   })
