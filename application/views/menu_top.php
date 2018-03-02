@@ -26,8 +26,7 @@
       <div class="right menu">
 
         <div class="item icon">
-          <i class="alarm outline icon"></i>
-
+          <i class="bell outline icon"></i>
         </div>
 
         <div class="item">

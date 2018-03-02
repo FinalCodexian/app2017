@@ -12,16 +12,19 @@ $this->load->view("menu_top");
 
 <style media="screen">
 table.resumen { border-collapse: collapse; width: 95%; font-size: 11px !important; margin: auto !important; }
-table.resumen thead tr th { text-align: center !important; color: #06c}
+table.resumen thead tr th { text-align: center !important; color: #06c; padding: 5px 0}
 table.resumen thead tr th.vacio, table.resumen tr td.vacio { border: 0 none}
 table.resumen td, table.resumen th { border: 1px solid #999; padding: 1px 10px}
-table.resumen td.separa {border: 0 none; height: 8px}
+table.resumen td.separa {border: 0 none; height: 12px}
 table.resumen td.grupo {text-align: center; font-weight: bold;}
 table.resumen td.importe {text-align: right; padding-right: 12px; width: 120px}
 table.resumen td.total {text-align: right; padding-right: 12px; font-weight: bold; background-color: rgba(214, 214, 214, 0.4)}
 table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight: bold; border: 0px none}
 
-#exporta, #btnReporte { font-weight: normal;}
+#exporta_1, #exporta_2, #btnReporte { font-weight: normal;}
+#exporta_1, #exporta_2 {padding-bottom:10px}
+#exporta_1 i, #exporta_2 i {margin-bottom: 7px !important}
+
 </style>
 
 
@@ -39,32 +42,71 @@ table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight:
         <select class="ui dropdown" id="agencia"></select>
       </div>
 
-      <div class="field">
+      <div class="two fields">
 
-        <div class="two fields">
-
-          <div class="field">
-            <label>Fecha</label>
-            <div class="ui icon input">
-              <input id="fecha" type="text" class="datepicker" value="<?=date("d/m/Y");?>"><i class="calendar icon"></i>
-            </div>
+        <div class="field">
+          <label>Fecha</label>
+          <div class="ui icon input">
+            <input id="fecha" type="text" class="datepicker" value="<?=date("d/m/Y");?>"><i class="calendar icon"></i>
           </div>
+        </div>
 
-          <div class="field">
-            <label>&nbsp;</label>
-            <button type="button" class="ui tiny blue fluid button" id="btnReporte">Reporte</button>
-          </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <button type="button" class="ui tiny blue fluid button" id="btnReporte">Reporte</button>
         </div>
       </div>
 
+
+      <div class="ui hidden divider"></div>
+
+
+      <h6 class="ui horizontal divider header">
+        <i class="check circle outline icon"></i>
+        Datos generales
+      </h6>
+
       <div class="field">
-        <button type="button" name="button" class="ui tiny green fluid button" id="exporta">Reporte a Excel (Contabilidad)</button>
+
+        <table class="ui definition table">
+          <tbody>
+            <tr>
+              <td width="120px">Reporte</td>
+              <td>......</td>
+            </tr>
+            <tr>
+              <td>Día de la semana</td>
+              <td>Jueves</td>
+            </tr>
+            <tr>
+              <td>Responsable</td>
+              <td>Jenny Venegas</td>
+            </tr>
+            <tr>
+              <td>Administración</td>
+              <td>Jenny Mamani Manchego</td>
+            </tr>
+          </tbody>
+        </table>
+
       </div>
 
-
+      <div class="two fields">
+        <div class="field">
+          <button type="button" id="exporta_1" class="ui tiny fluid teal button">
+            <i class="zmdi zmdi-check-all zmdi-hc-fw zmdi-hc-2x"></i><br>
+            Gerencia
+          </button>
+        </div>
+        <div class="field">
+          <button type="button" id="exporta_2" class="ui tiny fluid orange button">
+            <i class="zmdi zmdi-check-all zmdi-hc-fw zmdi-hc-2x"></i><br>
+            Finanzas y Contabilidad
+          </button>
+        </div>
+      </div>
 
     </form>
-
 
 
     <div class="ui form">
@@ -91,6 +133,10 @@ table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight:
 
 
   <div class="nine wide column">
+    <h6 class="ui horizontal divider header">
+      <i class="tasks icon"></i>
+      Resumen
+    </h6>
 
     <table class="resumen">
       <thead>
