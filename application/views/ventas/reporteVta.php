@@ -5,7 +5,6 @@ $this->load->view("header", $data);
 $this->load->view("sidebar");
 $this->load->view("menu_top");
 
-
 // $this->load->view("_pdf/formato_ReporteVta");
 
 ?>
