@@ -49,7 +49,7 @@ $this->load->view("menu_top", $data);
           url: "<?=base_url('stock/listar')?>",
           data: {
             opcion: "usuarios",
-            base: "JCHS2017",
+            base: "JCHS2018",
             q: $("#txtBuscar").val()
           },
           beforeSend: function(){

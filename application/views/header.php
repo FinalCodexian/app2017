@@ -56,9 +56,9 @@ endif;
   <script src="<?=base_url('tools/datatables/jquery.dataTables.min.js');?>"></script>
   <script src="<?=base_url('tools/jquery.number.min.js');?>"></script>
 
-  <script src="<?=base_url('tools/pickadate/lib/picker.js');?>"></script>
-  <script src="<?=base_url('tools/pickadate/lib/picker.date.js');?>"></script>
-  <script src="<?=base_url('tools/pickadate/lib/translations/es_ES.js');?>"></script>
+  <!-- <script src="< ?=base_url('tools/pickadate/lib/picker.js');?>"></script>
+  <script src="< ?=base_url('tools/pickadate/lib/picker.date.js');?>"></script>
+  <script src="< ?=base_url('tools/pickadate/lib/translations/es_ES.js');?>"></script> -->
 
   <link rel="stylesheet" type="text/css" href="<?=base_url('/tools/handson/handsontable.full.min.css');?>">
   <script src="<?=base_url('/tools/handson/handsontable.full.min.js');?>"></script>

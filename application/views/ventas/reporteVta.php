@@ -5,8 +5,6 @@ $this->load->view("header", $data);
 $this->load->view("sidebar");
 $this->load->view("menu_top");
 
-// $this->load->view("_pdf/formato_ReporteVta");
-
 ?>
 
 <style media="screen">
@@ -27,7 +25,7 @@ table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight:
 </style>
 
 
-<div class="ui divided grid" style="margin:5px auto">
+<div class="ui divided grid" style="margin:0px auto">
 
   <div class="seven wide column">
 
@@ -35,7 +33,7 @@ table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight:
       Reporte de Ventas
     </h5>
 
-    <form class="ui tiny form">
+    <form class="ui tiny form" autocomplete="off">
       <div class="field">
         <label>Agencia</label>
         <select class="ui dropdown" id="agencia"></select>
@@ -59,153 +57,134 @@ table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight:
 
       <div class="ui hidden divider"></div>
 
+      <div class="ui disabled segment">
 
-      <h6 class="ui horizontal divider header">
-        <i class="check circle outline icon"></i>
-        Datos generales
-      </h6>
+        <h6 class="ui horizontal divider header">
+          <i class="check circle outline icon"></i>
+          Datos generales
+        </h6>
 
-      <div class="field">
 
-        <table class="ui definition table">
-          <tbody>
-            <tr>
-              <td width="120px">Reporte</td>
-              <td>......</td>
-            </tr>
-            <tr>
-              <td>Día de la semana</td>
-              <td>Jueves</td>
-            </tr>
-            <tr>
-              <td>Responsable</td>
-              <td>Jenny Venegas</td>
-            </tr>
-            <tr>
-              <td>Administración</td>
-              <td>Jenny Mamani Manchego</td>
-            </tr>
-          </tbody>
-        </table>
-
-      </div>
-
-      <div class="two fields">
         <div class="field">
-          <button type="button" id="exporta_1" class="ui tiny fluid teal button">
-            <i class="zmdi zmdi-check-all zmdi-hc-fw zmdi-hc-2x"></i><br>
-            Gerencia
-          </button>
+
+          <table class="ui definition table">
+            <tbody>
+              <tr>
+                <td width="120px">Reporte</td>
+                <td>......</td>
+              </tr>
+              <tr>
+                <td>Día de la semana</td>
+                <td>Jueves</td>
+              </tr>
+              <tr>
+                <td>Responsable</td>
+                <td>Jenny Venegas</td>
+              </tr>
+              <tr>
+                <td>Administración</td>
+                <td>Jenny Mamani Manchego</td>
+              </tr>
+            </tbody>
+          </table>
+
         </div>
-        <div class="field">
-          <button type="button" id="exporta_2" class="ui tiny fluid orange button">
-            <i class="zmdi zmdi-check-all zmdi-hc-fw zmdi-hc-2x"></i><br>
-            Finanzas y Contabilidad
-          </button>
-        </div>
-      </div>
 
-    </form>
-
-
-    <div class="ui form">
-      <div class="ui fields">
-        <div class="field">
-          <div class="ui icon input">
-
+        <div class="two fields">
+          <div class="field">
+            <button type="button" id="exporta_1" class="ui tiny fluid teal button" disabled>
+              <i class="zmdi zmdi-check-all zmdi-hc-fw zmdi-hc-2x"></i><br>
+              Gerencia
+            </button>
+          </div>
+          <div class="field">
+            <button type="button" id="exporta_2" class="ui tiny fluid orange button" disabled>
+              <i class="zmdi zmdi-check-all zmdi-hc-fw zmdi-hc-2x"></i><br>
+              Finanzas y Contabilidad
+            </button>
           </div>
         </div>
-        <div class="field">
-
-        </div>
-
-        <div class="field">
-
-        </div>
-
-
       </div>
-    </div>
-
+    </form>
 
   </div>
 
 
   <div class="nine wide column">
-    <h6 class="ui horizontal divider header">
-      <i class="tasks icon"></i>
-      Resumen
-    </h6>
 
-    <table class="resumen">
-      <thead>
-        <tr>
-          <th class="vacio"></th>
-          <th class="vacio"></th>
-          <th width=70>Soles ( S/ )</th>
-          <th width=70>Dolares ( US$ )</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td rowspan="4" class="grupo">EFECTIVO</td>
-          <td>Ventas</td><td class="importe" id="efec_ventas_MN">0.00</td><td class="importe" id="efec_ventas_US">0.00</td>
-        </tr>
-        <tr><td>Cobranzas</td><td class="importe" id="efec_cobran_MN">0.00</td><td class="importe" id="efec_cobran_US">0.00</td></tr>
-        <tr><td>Percepciones</td><td class="importe" id="efec_percep_MN">0.00</td><td class="importe" id="efec_percep_US">0.00</td></tr>
-        <tr><td>Redondeo (Sistema)</td><td class="importe" id="efec_redond_MN">0.00</td><td class="importe" id="efec_redond_US">0.00</td></tr>
-        <tr><td class="vacio"></td><td class="total_des">Total EFECTIVO</td>
-          <td class="total" id="efec_total_MN">0.00</td>
-          <td class="total" id="efec_total_US">0.00</td>
-        </tr>
 
-        <tr><td class="separa"></td></tr>
+    <div class="ui disabled segment">
 
-        <tr>
-          <td rowspan="4" class="grupo">DEPOSITO</td>
-          <td>Ventas</td><td class="importe" id="depo_ventas_MN">0.00</td><td class="importe" id="depo_ventas_US">0.00</td>
-        </tr>
-        <tr><td>Cobranzas</td><td class="importe" id="depo_cobran_MN">0.00</td><td class="importe" id="depo_cobran_US">0.00</td></tr>
-        <tr><td>Percepciones</td><td class="importe" id="depo_percep_MN">0.00</td><td class="importe" id="depo_percep_US">0.00</td></tr>
-        <tr><td>Redondeo (Sistema)</td><td class="importe" id="depo_redond_MN">0.00</td><td class="importe" id="depo_redond_US">0.00</td></tr>
-        <tr>
-          <td class="vacio"></td><td class="total_des">Total DEPOSITO</td>
-          <td class="total" id="depo_total_MN">0.00</td><td class="total" id="depo_total_US">0.00</td>
-        </tr>
+      <table class="resumen">
+        <thead>
+          <tr>
+            <th class="vacio"></th>
+            <th class="vacio"></th>
+            <th width=70>Soles ( S/ )</th>
+            <th width=70>Dolares ( US$ )</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="4" class="grupo">EFECTIVO</td>
+            <td>Ventas</td><td class="importe" id="efec_ventas_MN">0.00</td><td class="importe" id="efec_ventas_US">0.00</td>
+          </tr>
+          <tr><td>Cobranzas</td><td class="importe" id="efec_cobran_MN">0.00</td><td class="importe" id="efec_cobran_US">0.00</td></tr>
+          <tr><td>Percepciones</td><td class="importe" id="efec_percep_MN">0.00</td><td class="importe" id="efec_percep_US">0.00</td></tr>
+          <tr><td>Redondeo (Sistema)</td><td class="importe" id="efec_redond_MN">0.00</td><td class="importe" id="efec_redond_US">0.00</td></tr>
+          <tr><td class="vacio"></td><td class="total_des">Total EFECTIVO</td>
+            <td class="total" id="efec_total_MN">0.00</td>
+            <td class="total" id="efec_total_US">0.00</td>
+          </tr>
 
-        <tr><td class="separa"></td></tr>
+          <tr><td class="separa"></td></tr>
 
-        <tr>
-          <td rowspan="4" class="grupo">CHEQUE</td>
-          <td>Ventas</td><td class="importe" id="cheq_ventas_MN">0.00</td><td class="importe" id="cheq_ventas_US">0.00</td>
-        </tr>
-        <tr><td>Cobranzas</td><td class="importe" id="cheq_cobran_MN">0.00</td><td class="importe" id="cheq_cobran_US">0.00</td></tr>
-        <tr><td>Percepciones</td><td class="importe" id="cheq_percep_MN">0.00</td><td class="importe" id="cheq_percep_US">0.00</td></tr>
-        <tr><td>Redondeo (Sistema)</td><td class="importe" id="cheq_redond_MN">0.00</td><td class="importe" id="cheq_redond_US">0.00</td></tr>
-        <tr>
-          <td class="vacio"></td><td class="total_des">Total CHEQUE</td>
-          <td class="total" id="cheq_total_MN">0.00</td><td class="total" id="cheq_total_US">0.00</td>
-        </tr>
+          <tr>
+            <td rowspan="4" class="grupo">DEPOSITO</td>
+            <td>Ventas</td><td class="importe" id="depo_ventas_MN">0.00</td><td class="importe" id="depo_ventas_US">0.00</td>
+          </tr>
+          <tr><td>Cobranzas</td><td class="importe" id="depo_cobran_MN">0.00</td><td class="importe" id="depo_cobran_US">0.00</td></tr>
+          <tr><td>Percepciones</td><td class="importe" id="depo_percep_MN">0.00</td><td class="importe" id="depo_percep_US">0.00</td></tr>
+          <tr><td>Redondeo (Sistema)</td><td class="importe" id="depo_redond_MN">0.00</td><td class="importe" id="depo_redond_US">0.00</td></tr>
+          <tr>
+            <td class="vacio"></td><td class="total_des">Total DEPOSITO</td>
+            <td class="total" id="depo_total_MN">0.00</td><td class="total" id="depo_total_US">0.00</td>
+          </tr>
 
-        <tr><td class="separa"></td></tr>
+          <tr><td class="separa"></td></tr>
 
-        <tr>
-          <td rowspan="4" class="grupo">TARJETA</td>
-          <td>Ventas</td><td class="importe" id="tarj_ventas_MN">0.00</td><td class="importe" id="tarj_ventas_US">0.00</td>
-        </tr>
-        <tr><td>Cobranzas</td><td class="importe" id="tarj_cobran_MN">0.00</td><td class="importe" id="tarj_cobran_US">0.00</td></tr>
-        <tr><td>Percepciones</td><td class="importe" id="tarj_percep_MN">0.00</td><td class="importe" id="tarj_percep_US">0.00</td></tr>
-        <tr><td>Redondeo (Sistema)</td><td class="importe" id="tarj_redond_MN">0.00</td><td class="importe" id="tarj_redond_US">0.00</td></tr>
-        <tr>
-          <td class="vacio"></td><td class="total_des">Total TARJETA</td>
-          <td class="total" id="tarj_total_MN">0.00</td><td class="total" id="tarj_total_US">0.00</td>
-        </tr>
+          <tr>
+            <td rowspan="4" class="grupo">CHEQUE</td>
+            <td>Ventas</td><td class="importe" id="cheq_ventas_MN">0.00</td><td class="importe" id="cheq_ventas_US">0.00</td>
+          </tr>
+          <tr><td>Cobranzas</td><td class="importe" id="cheq_cobran_MN">0.00</td><td class="importe" id="cheq_cobran_US">0.00</td></tr>
+          <tr><td>Percepciones</td><td class="importe" id="cheq_percep_MN">0.00</td><td class="importe" id="cheq_percep_US">0.00</td></tr>
+          <tr><td>Redondeo (Sistema)</td><td class="importe" id="cheq_redond_MN">0.00</td><td class="importe" id="cheq_redond_US">0.00</td></tr>
+          <tr>
+            <td class="vacio"></td><td class="total_des">Total CHEQUE</td>
+            <td class="total" id="cheq_total_MN">0.00</td><td class="total" id="cheq_total_US">0.00</td>
+          </tr>
 
-      </tbody>
-    </table>
+          <tr><td class="separa"></td></tr>
+
+          <tr>
+            <td rowspan="4" class="grupo">TARJETA</td>
+            <td>Ventas</td><td class="importe" id="tarj_ventas_MN">0.00</td><td class="importe" id="tarj_ventas_US">0.00</td>
+          </tr>
+          <tr><td>Cobranzas</td><td class="importe" id="tarj_cobran_MN">0.00</td><td class="importe" id="tarj_cobran_US">0.00</td></tr>
+          <tr><td>Percepciones</td><td class="importe" id="tarj_percep_MN">0.00</td><td class="importe" id="tarj_percep_US">0.00</td></tr>
+          <tr><td>Redondeo (Sistema)</td><td class="importe" id="tarj_redond_MN">0.00</td><td class="importe" id="tarj_redond_US">0.00</td></tr>
+          <tr>
+            <td class="vacio"></td><td class="total_des">Total TARJETA</td>
+            <td class="total" id="tarj_total_MN">0.00</td><td class="total" id="tarj_total_US">0.00</td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </div>
 
   </div>
-
 
 </div>
 
@@ -224,6 +203,7 @@ table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight:
 <script type="text/javascript">
 $(function(){
 
+
   function openWindowWithPost() {
     var f = document.getElementById('TheForm');
     f.agencia.value = $("#agencia").val();
@@ -240,6 +220,25 @@ $(function(){
 
   $("#btnReporte").on("click",function(){
 
+    HoldOn.open({ theme:"sk-bounce" });
+    // $.ajax({
+    //   type: 'POST',
+    //   url: '< ?=base_url('ventas/reporteVta');?>',
+    //   data: {
+    //     opcion: 'resumen',
+    //     agencia: $("#agencia").val(),
+    //     fecha: $("#fecha").val(),
+    //     base: "< ?=$this->session->userdata($sess)["base"];?>"
+    //   },
+    //   dataType: 'json',
+    //   beforeSend: function(){
+    //
+    //     $(".importe, .total").html("0.00")
+    //     $("#rrr").html("")
+    //   }
+    // });
+
+
     $.ajax({
       type: 'POST',
       url: '<?=base_url('ventas/reporteVta');?>',
@@ -251,7 +250,7 @@ $(function(){
       },
       dataType: 'json',
       beforeSend: function(){
-        HoldOn.open({ theme:"sk-bounce" });
+        // HoldOn.open({ theme:"sk-bounce" });
         $(".importe, .total").html("0.00")
         $("#rrr").html("")
       },
@@ -438,6 +437,9 @@ $(function(){
         $("#tarj_total_US").html( $.number( $T_tarjeta_US, 2, '.', ','))
 
 
+        $("#exporta_1, #exporta_2").prop("disabled", false);
+        $(".segment.disabled").removeClass('disabled').addClass("yellow");
+
         HoldOn.close();
 
       }
@@ -450,9 +452,10 @@ $(function(){
 
   $('.datepicker').pikaday({
     firstDay: 1,
-    yearRange: [2010,2020],
+    yearRange: [2016,2025],
     format: 'DD/MM/YYYY',
-    theme: 'triangle-theme'
+    theme: 'triangle-theme',
+    todayButton    : true
   });
 
   // combo Agencias

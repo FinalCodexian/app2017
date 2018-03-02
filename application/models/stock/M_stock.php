@@ -8,7 +8,7 @@ class M_stock extends CI_Model {
     ->select("AR_CDESCRI, AR_CCODIGO, L.LI_CDESLIN, L.LI_COBSER2")
     ->join("FT0001LINE L", "L.LI_CCODLIN=A.AR_CLINEA", "left")
     ->from("AL0001ARTI A")
-    ->like("AR_CDESCRI","continental","both")
+    ->like("AR_CDESCRI","DUNLOP","both")
     ->get();
 
     if($res->num_rows()>0){
