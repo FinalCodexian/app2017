@@ -8,7 +8,8 @@ $this->load->view("menu_top");
 ?>
 
 <style media="screen">
-table.resumen { border-collapse: collapse; width: 95%; font-size: 11px !important; margin: auto !important; }
+
+table.resumen { width: 95%; font-size: 11px !important; margin: auto !important; border-collapse: collapse;}
 table.resumen thead tr th { text-align: center !important; color: #06c; padding: 5px 0}
 table.resumen thead tr th.vacio, table.resumen tr td.vacio { border: 0 none}
 table.resumen td, table.resumen th { border: 1px solid #999; padding: 1px 10px}
@@ -17,6 +18,18 @@ table.resumen td.grupo {text-align: center; font-weight: bold;}
 table.resumen td.importe {text-align: right; padding-right: 12px; width: 120px}
 table.resumen td.total {text-align: right; padding-right: 12px; font-weight: bold; background-color: rgba(214, 214, 214, 0.4)}
 table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight: bold; border: 0px none}
+
+.tblResumen td { font-size: 12px !important; padding: 4px 8px !important}
+
+table.tipo_cambio {
+  width: 100%; border-collapse: collapse; margin-top: -5px;
+}
+table.tipo_cambio td { border: 1px solid #e3e3e4; padding: 4px 6px; font-size: 12px}
+
+table.tipo_cambio td:nth-child(1), table.tipo_cambio td:nth-child(3) {
+  background-color: #f7f7f7; font-weight: bold; color: #0d0d0d;
+  width: 120px
+}
 
 #exporta_1, #exporta_2, #btnReporte { font-weight: normal;}
 #exporta_1, #exporta_2 {padding-bottom:10px}
@@ -66,26 +79,40 @@ table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight:
 
 
         <div class="field">
-
-          <table class="ui definition table">
+          <table class="ui definition table tblResumen">
             <tbody>
               <tr>
-                <td width="120px">Reporte</td>
-                <td>......</td>
+                <td width="120px">Ciudad</td>
+                <td id="res_ciudad" class="resumen"></td>
+              </tr>
+              <tr>
+                <td>Reporte</td>
+                <td id="res_reporte" class="resumen"></td>
               </tr>
               <tr>
                 <td>Día de la semana</td>
-                <td>Jueves</td>
+                <td id="res_dia" class="resumen"></td>
               </tr>
               <tr>
                 <td>Responsable</td>
-                <td>Jenny Venegas</td>
+                <td id="res_respon" class="resumen"></td>
               </tr>
               <tr>
                 <td>Administración</td>
-                <td>Jenny Mamani Manchego</td>
+                <td id="res_admin" class="resumen"></td>
               </tr>
+
             </tbody>
+          </table>
+
+          <table class="tipo_cambio">
+            <tr>
+              <td>T/C Compra</td>
+              <td id="res_tc_compra"></td>
+
+              <td>T/C Venta</td>
+              <td id="res_tc_venta"></td>
+            </tr>
           </table>
 
         </div>
@@ -112,8 +139,7 @@ table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight:
 
   <div class="nine wide column">
 
-
-    <div class="ui disabled segment">
+    <div class="ui  disabled segment">
 
       <table class="resumen">
         <thead>
@@ -188,56 +214,36 @@ table.resumen td.total_des {text-align: right; padding-right: 12px; font-weight:
 
 </div>
 
-
-
-<div id="rrr"></div>
-
 <form id="TheForm" method="post" action="<?=base_url('ventas/reporteVta');?>" target="TheWindow">
-  <input type="hidden" name="agencia" value="something" />
-  <input type="hidden" name="fecha" value="something" />
-  <input type="hidden" name="base" value="something" />
-  <input type="hidden" name="opcion" value="something" />
+  <input type="hidden" name="agencia" value="" />
+  <input type="hidden" name="fecha" value="" />
+  <input type="hidden" name="base" value="" />
+  <input type="hidden" name="concar" value="" />
+  <input type="hidden" name="opcion" value="" />
 </form>
-
 
 <script type="text/javascript">
 $(function(){
-
 
   function openWindowWithPost() {
     var f = document.getElementById('TheForm');
     f.agencia.value = $("#agencia").val();
     f.fecha.value = $("#fecha").val();
     f.base.value = "<?=$this->session->userdata($sess)["base"];?>";
+    f.concar.value = "<?=$this->session->userdata($sess)["concar"];?>";
     f.opcion.value = "pdf";
+
     window.open('', 'TheWindow');
     f.submit();
   }
 
-  $("#exporta").on("click",function(){
+  $("#exporta_2").on("click",function(){
     openWindowWithPost();
   });
 
   $("#btnReporte").on("click",function(){
 
     HoldOn.open({ theme:"sk-bounce" });
-    // $.ajax({
-    //   type: 'POST',
-    //   url: '< ?=base_url('ventas/reporteVta');?>',
-    //   data: {
-    //     opcion: 'resumen',
-    //     agencia: $("#agencia").val(),
-    //     fecha: $("#fecha").val(),
-    //     base: "< ?=$this->session->userdata($sess)["base"];?>"
-    //   },
-    //   dataType: 'json',
-    //   beforeSend: function(){
-    //
-    //     $(".importe, .total").html("0.00")
-    //     $("#rrr").html("")
-    //   }
-    // });
-
 
     $.ajax({
       type: 'POST',
@@ -246,13 +252,14 @@ $(function(){
         opcion: 'resumen',
         agencia: $("#agencia").val(),
         fecha: $("#fecha").val(),
-        base: "<?=$this->session->userdata($sess)["base"];?>"
+        base: "<?=$this->session->userdata($sess)["base"];?>",
+        concar: "<?=$this->session->userdata($sess)["concar"];?>"
       },
       dataType: 'json',
       beforeSend: function(){
-        // HoldOn.open({ theme:"sk-bounce" });
-        $(".importe, .total").html("0.00")
-        $("#rrr").html("")
+        $(".importe, .total").html("0.00");
+        $("td.resumen").html("");
+        $("#res_tc_compra, #res_tc_venta").html("");
       },
       success: function(d){
 
@@ -273,10 +280,7 @@ $(function(){
         let $tarjeta_MN = Object.assign({}, obj_secciones);
         let $tarjeta_US = Object.assign({}, obj_secciones);
 
-
-
         $.each(d.redondeos, function(index, item) {
-          // if(item.FORMA_COD=='R'){
           if(item.FORMA=='E'){
             $redondeo_MN.efectivo += (item.MONEDA=='MN' ? parseFloat(item.MN) : 0);
             $redondeo_US.efectivo += (item.MONEDA=='US' ? parseFloat(item.US) : 0);
@@ -293,7 +297,16 @@ $(function(){
             $redondeo_MN.tarjeta += (item.MONEDA=='MN' ? parseFloat(item.MN) : 0);
             $redondeo_US.tarjeta += (item.MONEDA=='US' ? parseFloat(item.US) : 0);
           }
-          // }
+        });
+
+        $.each(d.resumen, function(index, item) {
+          $("#res_ciudad").html( item.CIUDAD );
+          $("#res_reporte").html( item.REPORTE );
+          $("#res_dia").html( item.DIA );
+          $("#res_admin").html( item.ADMIN );
+          $("#res_respon").html( item.RESPON );
+          $("#res_tc_compra").html( $.number( item.COMPRA, 3, '.', ',') );
+          $("#res_tc_venta").html( $.number( item.VENTA, 3, '.', ',') );
         });
 
         $.each(d.data, function(index, item) {
@@ -468,8 +481,8 @@ $(function(){
         $("<option>"+item.AGENCIA+"</option>").val(item.CODIGO).appendTo("#agencia")
       });
 
-      $("#agencia").val('9100')
-      $("#fecha").val('18/01/2018')
+      $("#agencia").val('4000')
+      $("#fecha").val('05/02/2018')
       HoldOn.close();
     }
   })

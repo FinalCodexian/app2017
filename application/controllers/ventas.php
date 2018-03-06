@@ -8,6 +8,7 @@ class Ventas extends CI_Controller {
     $data['agencia'] = $this->input->post('agencia');
     $data['fecha'] = $this->input->post('fecha');
     $data['base'] = $this->input->post('base');
+    $data['concar'] = $this->input->post('concar');
 
     $result =  $this->m_reportevta->datos($data);
 
@@ -16,9 +17,21 @@ class Ventas extends CI_Controller {
     $dataRet2 = array();
     if($result2 <> FALSE) foreach ($result2 as $item) $dataRet2[] = $item;
 
+    // Datos resumen
+    $result3 =  $this->m_reportevta->datos_resumen($data);
+    $dataRet3 = array();
+    $reporte = "Reporte_ventas";
+    if($result3 <> FALSE){
+      foreach ($result3 as $item){
+        $dataRet3[] = $item;
+        $reporte = $item["REPORTE"];
+      }
+    }
+
+    // RESULTADO FINAL
     $dataRet = array();
     if($result <> FALSE) foreach ($result as $item) $dataRet[] = $item;
-    $datos = array("total_count" => count($result),"data" => $dataRet, "redondeos" => $dataRet2);
+    $datos = array("total_count" => count($result),"data" => $dataRet, "redondeos" => $dataRet2, "resumen" => $dataRet3);
 
     $opcion = $this->input->post('opcion');
     if($opcion=="resumen"){
@@ -28,8 +41,7 @@ class Ventas extends CI_Controller {
     if($opcion=="pdf"){
       $html = $this->load->view('_pdf/formato_ReporteVta', $datos, true);
       $this->load->library('pdfgenerator');
-      $filename = 'Documento_';
-      $this->pdfgenerator->generate($html, $filename, true, 'A3', 'landscape', true);
+      $this->pdfgenerator->generate($html, $reporte, true, 'A3', 'landscape', true);
     }
   }
 
