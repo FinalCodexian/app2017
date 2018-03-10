@@ -20,11 +20,18 @@ $this->load->view("menu_top");
 <script type="text/javascript" src="<?=base_url('tools/datedropper3/datedropper.min.js');?>"></script>
 
 
-
-
 <script type="text/javascript">
 $(function(){
   $('input.x').dateDropper();
+
+  $('input.x').on("change", function(){
+    console.log("Limpia totales / bloquea");
+        $(".importe, .total").html("0.00");
+        $("td.resumen").html("");
+        $("#res_tc_compra, #res_tc_venta").html("");
+        $("#exporta_1, #exporta_2").prop("disabled", true);
+        $(".gResu").removeClass('yellow').addClass("disabled");
+  })
 })
 </script>
 
@@ -81,7 +88,7 @@ table.tipo_cambio td:nth-child(1), table.tipo_cambio td:nth-child(3) {
           <label>Fecha</label>
           <div class="ui icon input">
             <input id="fecha" type="text" class="x" data-large-mode="true" data-modal="true"
-            data-min-year="2010" data-max-year="2020" 
+            data-min-year="2010" data-max-year="2020"
             data-format="d/m/Y" data-lang="es" data-large-default="true" /><i class="calendar icon"></i>
             <!-- <input id="fecha" class="calentim" type="text" /><i class="calendar icon"></i> -->
             <!-- <input type='text' id="fecha" class="datepicker-here" value="" /><i class="calendar icon"></i> -->
