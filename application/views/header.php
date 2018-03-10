@@ -35,8 +35,9 @@ endif;
   <link rel="stylesheet" href="<?=base_url('tools/jbox/jBox.css');?>">
 
   <link rel="stylesheet" href="<?=base_url('tools/datatables/jquery.dataTables.min.css');?>">
-  <link rel="stylesheet" href="<?=base_url('tools/pickadate/lib/themes/default.css');?>">
-  <link rel="stylesheet" href="<?=base_url('tools/pickadate/lib/themes/classic.date.css');?>">
+
+  <!-- <link rel="stylesheet" href="< ?=base_url('tools/pickadate/lib/themes/default.css');?>"> -->
+  <!-- <link rel="stylesheet" href="< ?=base_url('tools/pickadate/lib/themes/classic.date.css');?>"> -->
 
 
   <script src="<?=base_url('tools/jquery/jquery.min.js');?>"></script>

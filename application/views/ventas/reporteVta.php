@@ -7,6 +7,29 @@ $this->load->view("menu_top");
 
 ?>
 
+<!-- <link rel="stylesheet" href="< ?=base_url('tools/air-datepicker/dist/css/datepicker.min.css');?>">
+<script src="< ?=base_url('tools/air-datepicker/dist/js/datepicker.min.js');?>"></script>
+<script src="< ?=base_url('tools/air-datepicker/dist/js/i18n/datepicker.es.js');?>"></script> -->
+
+<!-- <link rel="stylesheet" href="< ?=base_url('tools/font-awesome/css/fontawesome-all.min.css');?>">
+<link rel="stylesheet" href="http://rettica.com/calentim/build/css/calentim.min.css">
+<script type="text/javascript" src="http://rettica.com/calentim/build/js/moment.min.js"></script>
+<script type="text/javascript" src="http://rettica.com/calentim/build/js/calentim.min.js"></script> -->
+
+<link rel="stylesheet" type="text/css" href="<?=base_url('tools/datedropper3/datedropper.css');?>">
+<script type="text/javascript" src="<?=base_url('tools/datedropper3/datedropper.min.js');?>"></script>
+
+
+
+
+<script type="text/javascript">
+$(function(){
+  $('input.x').dateDropper();
+})
+</script>
+
+
+
 <style media="screen">
 
 table.resumen { width: 95%; font-size: 11px !important; margin: auto !important; border-collapse: collapse;}
@@ -46,7 +69,7 @@ table.tipo_cambio td:nth-child(1), table.tipo_cambio td:nth-child(3) {
       Reporte de Ventas
     </h5>
 
-    <form class="ui tiny form" autocomplete="off">
+    <form id="frmFi" class="ui tiny form" autocomplete="off">
       <div class="field">
         <label>Agencia</label>
         <select class="ui dropdown" id="agencia"></select>
@@ -57,7 +80,11 @@ table.tipo_cambio td:nth-child(1), table.tipo_cambio td:nth-child(3) {
         <div class="field">
           <label>Fecha</label>
           <div class="ui icon input">
-            <input id="fecha" type="text" class="datepicker" value="<?=date("d/m/Y");?>"><i class="calendar icon"></i>
+            <input id="fecha" type="text" class="x" data-large-mode="true" data-modal="true"
+            data-min-year="2010" data-max-year="2020" 
+            data-format="d/m/Y" data-lang="es" data-large-default="true" /><i class="calendar icon"></i>
+            <!-- <input id="fecha" class="calentim" type="text" /><i class="calendar icon"></i> -->
+            <!-- <input type='text' id="fecha" class="datepicker-here" value="" /><i class="calendar icon"></i> -->
           </div>
         </div>
 
@@ -70,7 +97,7 @@ table.tipo_cambio td:nth-child(1), table.tipo_cambio td:nth-child(3) {
 
       <div class="ui hidden divider"></div>
 
-      <div class="ui disabled segment">
+      <div class="ui disabled segment gResu">
 
         <h6 class="ui horizontal divider header">
           <i class="check circle outline icon"></i>
@@ -139,7 +166,7 @@ table.tipo_cambio td:nth-child(1), table.tipo_cambio td:nth-child(3) {
 
   <div class="nine wide column">
 
-    <div class="ui  disabled segment">
+    <div class="ui disabled segment gResu">
 
       <table class="resumen">
         <thead>
@@ -222,18 +249,73 @@ table.tipo_cambio td:nth-child(1), table.tipo_cambio td:nth-child(3) {
   <input type="hidden" name="opcion" value="" />
 </form>
 
+<style>
+/*
+.datepicker  {
+background: rgba(241, 241, 241, 1);
+}
+
+.datepicker--pointer {
+background: rgba(241, 241, 241, 1);
+}*/
+</style>
+
 <script type="text/javascript">
 $(function(){
 
+  // var userLanguage = navigator.language || navigator.userLanguage;
+  // if(userLanguage == "en") userLanguage = "fr";
+  // $(".calentim").calentim({
+  //   locale: userLanguage,
+  //   singleDate: true,
+  //   calendarCount: 1,
+  //   showHeader: false,
+  //   showFooter: true,
+  //   autoCloseOnSelect: true,
+  //   showTimePickers: false,
+  //   format: "L",
+  //   onafterselect: function(calentim, startDate, endDate) {
+  //     $(".importe, .total").html("0.00");
+  //     $("td.resumen").html("");
+  //     $("#res_tc_compra, #res_tc_venta").html("");
+  //     $("#exporta_1, #exporta_2").prop("disabled", true);
+  //     $(".gResu").removeClass('yellow').addClass("disabled");
+  //   }
+  // });
+
+  // $('#fecha').datepicker({
+  //   language: 'es',
+  //   firstDay: 1,
+  //   todayButton: new Date(),
+  //   autoClose: true,
+  //   toggleSelected: false,
+  //   onSelect: function(date) {
+  //       $(".importe, .total").html("0.00");
+  //       $("td.resumen").html("");
+  //       $("#res_tc_compra, #res_tc_venta").html("");
+  //       $("#exporta_1, #exporta_2").prop("disabled", true);
+  //       $(".gResu").removeClass('yellow').addClass("disabled");
+  //     }
+  // })
+  // .data('datepicker').selectDate(new Date());
+
+  $("#frmFi").submit(function(){
+    return false;
+  });
+
   function openWindowWithPost() {
     var f = document.getElementById('TheForm');
+    var $targ = $("#res_reporte").html();
+    console.log("target: " + $targ);
+    $("#TheForm").attr("target", $targ);
+
     f.agencia.value = $("#agencia").val();
     f.fecha.value = $("#fecha").val();
     f.base.value = "<?=$this->session->userdata($sess)["base"];?>";
     f.concar.value = "<?=$this->session->userdata($sess)["concar"];?>";
     f.opcion.value = "pdf";
 
-    window.open('', 'TheWindow');
+    window.open('', $targ);
     f.submit();
   }
 
@@ -451,7 +533,7 @@ $(function(){
 
 
         $("#exporta_1, #exporta_2").prop("disabled", false);
-        $(".segment.disabled").removeClass('disabled').addClass("yellow");
+        $(".gResu").removeClass('disabled').addClass("yellow");
 
         HoldOn.close();
 
@@ -462,14 +544,6 @@ $(function(){
 
 
   HoldOn.open({ theme:"sk-bounce" });
-
-  $('.datepicker').pikaday({
-    firstDay: 1,
-    yearRange: [2016,2025],
-    format: 'DD/MM/YYYY',
-    theme: 'triangle-theme',
-    todayButton    : true
-  });
 
   // combo Agencias
   $.ajax({
@@ -482,7 +556,7 @@ $(function(){
       });
 
       $("#agencia").val('4000')
-      $("#fecha").val('05/02/2018')
+      //$("#fecha").val('05/02/2018')
       HoldOn.close();
     }
   })

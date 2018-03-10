@@ -1,0 +1,25 @@
+*. Registro de pedido - revision de precio FOB/precio sistema/stock/ventas/transito/pedidos previos
+	- Calcular cantidad de contenedores (cubicaje m3)
+
+*. Enviar pedido al proveedor para revision (ajustes)
+
+*** PROVEEDOR: Revision de cambios, modificar pedido si es necesario (precio / cantidad)
+
+*. Aprobacion del pedido recibido
+
+*** PROVEEDOR: Emite proforma de atencion 
+
+*. Generar OC en el sistema x INVOICE 
+	- Liquidacion de importacion GASTOS (flete/transporte, seguro, servicio aduaneros, otros)
+
+*. Seguimiento de importacion: 
+	- Embarque (Puerto origen) (fecha aproximada de llegada, agente naviero)
+	- Transito via maritima
+	- Llegada puerto destino
+	- ADUANAS (Aforo y revision documentaria - asignacion de Canal VERDE/NARANJA/ROJO)
+	- Deposito temporal  
+
+
+*. Recepcion e ingreso de mercaderia en el sistema (almacen propio / dep. aduanero)
+
+*. Cerrar pedido / generar pedido nuevo (copia) 
